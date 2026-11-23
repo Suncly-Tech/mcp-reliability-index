@@ -52,4 +52,4 @@ F1 wrong result, F2 ignored input, F3 valid input rejected, F4 output differs fr
 - Release 2: every builder gets their results privately at least 10 days before publication, with a free retest and a right to reply printed next to their result.
 
 ## Changelog
-- 2026-11-23: method published.and 
+- 2026-11-23: method published.
