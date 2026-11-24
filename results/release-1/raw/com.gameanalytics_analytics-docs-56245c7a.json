@@ -1,0 +1,74 @@
+{
+  "registry_name": "com.gameanalytics/analytics-docs",
+  "url": "https://mcp.docs.gameanalytics.com",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T16:58:58Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "gameanalytics-docs",
+      "version": "1.0.0"
+    }
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "docs_search",
+          "description": "Search the documentation for relevant pages. Returns matching documents with URLs, snippets, and relevance scores. Use this to find information across all documentation.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The search query string"
+              },
+              "limit": {
+                "default": 16,
+                "description": "Maximum number of results to return (1-20, default: 16)",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "docs_fetch",
+          "description": "Fetch the complete content of a documentation page. Use this after searching to get the full markdown content of a specific page.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "The full URL of the page to fetch (e.g., \"https://docs.example.com/docs/getting-started\")"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    }
+  ]
+}

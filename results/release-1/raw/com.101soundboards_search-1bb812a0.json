@@ -1,0 +1,157 @@
+{
+  "registry_name": "com.101soundboards/search",
+  "url": "https://www.101soundboards.com/mcp/search",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:07:19Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      },
+      "resources": {
+        "listChanged": false
+      },
+      "prompts": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "Search",
+      "version": "0.0.1",
+      "icons": [
+        {
+          "src": "https://www.101soundboards.com/img/badge-monochrome-144px.png",
+          "mimeType": "image/png",
+          "sizes": [
+            "144x144"
+          ]
+        }
+      ]
+    },
+    "instructions": "Search public 101soundboards sounds and soundboards. Set only_tts to true when searching soundboards to limit results to text-to-speech boards."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "board-fetch-tool",
+          "title": "Board Fetch Tool",
+          "description": "Fetch a public soundboard by its URL.",
+          "inputSchema": {
+            "properties": {
+              "url": {
+                "description": "The public soundboard URL to fetch.",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "required": [
+              "url"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "board-search-tool",
+          "title": "Board Search Tool",
+          "description": "Search for public soundboards by search term. Optionally restrict the results to boards that have a text-to-speech engine.",
+          "inputSchema": {
+            "properties": {
+              "search_term": {
+                "description": "The term to search for. Minimum of 3 characters, maximum of 200 characters.",
+                "minLength": 3,
+                "maxLength": 200,
+                "type": "string"
+              },
+              "only_tts": {
+                "description": "When true, return only boards that are AI text-to-speech boards.",
+                "type": "boolean"
+              },
+              "record_source": {
+                "description": "Optional analytics source label for this search request.",
+                "type": "string"
+              },
+              "limit": {
+                "description": "Maximum results to return. Defaults to 10; maximum 50.",
+                "minimum": 1,
+                "maximum": 50,
+                "type": "integer"
+              },
+              "cursor": {
+                "description": "Cursor returned by a previous search request.",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "required": [
+              "search_term"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "sound-fetch-tool",
+          "title": "Sound Fetch Tool",
+          "description": "Fetch a public sound by its URL.",
+          "inputSchema": {
+            "properties": {
+              "url": {
+                "description": "The public sound URL to fetch.",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "required": [
+              "url"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "sound-search-tool",
+          "title": "Sound Search Tool",
+          "description": "Search for public sounds by search term.",
+          "inputSchema": {
+            "properties": {
+              "search_term": {
+                "description": "The sound to search for. Minimum of 3 characters, maximum of 200 characters.",
+                "minLength": 3,
+                "maxLength": 200,
+                "type": "string"
+              },
+              "record_source": {
+                "description": "Optional analytics source label for this search request.",
+                "type": "string"
+              },
+              "limit": {
+                "description": "Maximum results to return. Defaults to 10; maximum 50.",
+                "minimum": 1,
+                "maximum": 50,
+                "type": "integer"
+              },
+              "cursor": {
+                "description": "Cursor returned by a previous search request.",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "required": [
+              "search_term"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        }
+      ]
+    }
+  ]
+}

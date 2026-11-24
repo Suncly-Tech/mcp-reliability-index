@@ -1,0 +1,91 @@
+{
+  "registry_name": "com.ivisa.www/mcp",
+  "url": "https://www.ivisa.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:12:16Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "resultType": "complete",
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      },
+      "resources": {
+        "listChanged": false
+      },
+      "prompts": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "iVisa",
+      "version": "0.0.3"
+    },
+    "instructions": "Use this when a user asks whether they need a visa to travel to another country or when they ask about required travel documents. When the tools are available, it can also apply for an arrival card on the traveler's behalf: start with check_requirements, before asking the traveler anything else.",
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "iVisa",
+        "version": "0.0.3"
+      }
+    }
+  },
+  "tools_list_results": [
+    {
+      "resultType": "complete",
+      "ttlMs": 0,
+      "cacheScope": "private",
+      "tools": [
+        {
+          "name": "visa_availability",
+          "title": "Visa Availability Tool",
+          "description": "Provides visa availability for a given country, destination, and currency",
+          "inputSchema": {
+            "properties": {
+              "nationality": {
+                "description": "The nationality of the user; ISO 3166-1 alpha-2 code",
+                "type": "string"
+              },
+              "destination": {
+                "description": "The destination country; ISO 3166-1 alpha-2 code",
+                "type": "string"
+              },
+              "currency": {
+                "description": "The currency of the user; ISO 4217 code",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "required": [
+              "nationality",
+              "destination",
+              "currency"
+            ]
+          },
+          "annotations": {
+            "title": "Visa Availability Tool",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "ui": {
+              "resourceUri": "ui://ivisa/visa-availability.html"
+            },
+            "openai/locale": "en-US",
+            "openai/outputTemplate": "ui://ivisa/visa-availability.html",
+            "openai/toolInvocation/invoking": "Checking visa availability...",
+            "openai/toolInvocation/invoked": "Found visa availability information",
+            "openai/widgetDescription": "Renders a widget that displays visa availability for a given nationality, destination, and currency"
+          }
+        }
+      ],
+      "_meta": {
+        "io.modelcontextprotocol/serverInfo": {
+          "name": "iVisa",
+          "version": "0.0.3"
+        }
+      }
+    }
+  ]
+}

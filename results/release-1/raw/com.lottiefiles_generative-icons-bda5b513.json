@@ -1,0 +1,267 @@
+{
+  "registry_name": "com.lottiefiles/generative-icons",
+  "url": "https://generativeicons.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:02:18Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      },
+      "resources": {
+        "listChanged": false,
+        "subscribe": false
+      }
+    },
+    "serverInfo": {
+      "name": "generative-icons",
+      "title": "Generative Icons",
+      "version": "0.1.1",
+      "websiteUrl": "https://generativeicons.com",
+      "icons": [
+        {
+          "src": "https://generativeicons.com/favicon.svg",
+          "mimeType": "image/svg+xml",
+          "sizes": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "instructions": "Generative Icons is a library of animated UI icons (dotLottie) by LottieFiles for web, iOS and Android apps. Use search_icons with what the icon should mean (for example \"delete\", \"upload failed\", \"interrupt the bot\"), then get_icon for its file, install commands and code. Every icon has Light and Strong motion and Outline (three weights), Solid and Duotone styles, recolored at runtime. search_icons also says how well the library matches (\"strong\", \"loose\" or \"none\") and lists community icons: generated on the website by signed-in people, public and marked unreviewed (get_community_icon). If nothing fits, request_icon gives a link where a person signed in with LottieFiles generates it in about three minutes, or read_guide with \"creating-icons\" explains how a coding agent creates one in the same style in its own project."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "search_icons",
+          "title": "Search icons",
+          "description": "Find icons by name or meaning. Matches labels, search terms (synonyms, UI slang, abbreviations) and, through embeddings, plain-language needs; tolerates typos. Returns the best matches first.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "description": "What the icon should show or mean, e.g. \"trash\", \"go back\", \"payment failed\"."
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "essentials",
+                  "actions",
+                  "interface",
+                  "tools",
+                  "ai-conversation",
+                  "ai-knowledge",
+                  "ai-creation",
+                  "ai-agents",
+                  "feedback-status",
+                  "loading-indicators",
+                  "fintech-finance",
+                  "travel",
+                  "commerce-delivery",
+                  "voice",
+                  "media-playback",
+                  "motion-design",
+                  "agent-operations",
+                  "arrows",
+                  "annotation-arrows",
+                  "teamwork",
+                  "get-help",
+                  "file-transfer",
+                  "everyday-controls",
+                  "account-privacy",
+                  "forms-input",
+                  "tables-analytics",
+                  "text-document-editing",
+                  "accessibility-reading",
+                  "developer-version-control",
+                  "infrastructure-devices",
+                  "communication-social",
+                  "scheduling-time",
+                  "weather",
+                  "health-fitness",
+                  "smart-home",
+                  "education",
+                  "food-drink",
+                  "files-folders",
+                  "notifications",
+                  "search-discovery",
+                  "maps-navigation",
+                  "photos-camera",
+                  "music-audio",
+                  "drawing-tools",
+                  "events-tickets",
+                  "automotive",
+                  "legal-compliance",
+                  "preferences",
+                  "onboarding-tips",
+                  "video-editing",
+                  "chat-messaging",
+                  "gamification-rewards",
+                  "models-providers",
+                  "model-training",
+                  "vector-editing",
+                  "voice-agents",
+                  "emoji"
+                ],
+                "description": "Only icons of this category (see list_categories)."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50,
+                "default": 10,
+                "description": "At most this many results."
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Search icons",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_icon",
+          "title": "Get an icon",
+          "description": "Everything needed to use one icon: its description, states, styles, weights, motions, the dotLottie file URL and hash, install commands, and JavaScript, React, iOS and Android snippets.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]*$",
+                "description": "The icon id, e.g. \"trash\" (from search_icons)."
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Get an icon",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_community_icon",
+          "title": "Get a community icon",
+          "description": "A community icon (generated on the website, public and marked unreviewed): its label, the request it was made for, what its motion shows, the dotLottie file URL, its page and the descriptor the runtime takes.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]*$",
+                "description": "The community icon id (from search_icons)."
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Get a community icon",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "request_icon",
+          "title": "Request a new icon",
+          "description": "When search_icons finds nothing that fits: a link where a person signed in with LottieFiles generates the icon on the website, in the family's style, in about three minutes. Give the link to the person you are helping; the icon then appears in search_icons as a community icon. Nothing is generated by this call.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 200,
+                "description": "What the icon should show, e.g. \"a kite flying\" or \"piggy bank for a savings app\"."
+              }
+            },
+            "required": [
+              "description"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Request a new icon",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "list_categories",
+          "title": "List categories",
+          "description": "The library's categories with their ids and icon counts.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "List categories",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "read_guide",
+          "title": "Read a guide",
+          "description": "A guide as Markdown: \"using-packages\" (Install and use the packages), \"using-icons\" (Use an icon file), \"creating-icons\" (Create an icon), \"ai-operating-guide\" (AI operating guide), \"design-principles\" (Drawing principles), \"motion-principles\" (Motion principles), \"limitations\" (Known limitations).",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "slug": {
+                "type": "string",
+                "enum": [
+                  "using-packages",
+                  "using-icons",
+                  "creating-icons",
+                  "ai-operating-guide",
+                  "design-principles",
+                  "motion-principles",
+                  "limitations"
+                ]
+              }
+            },
+            "required": [
+              "slug"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Read a guide",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        }
+      ]
+    }
+  ]
+}

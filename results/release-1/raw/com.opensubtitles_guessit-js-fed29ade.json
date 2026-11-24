@@ -1,0 +1,162 @@
+{
+  "registry_name": "com.opensubtitles/guessit-js",
+  "url": "https://guessit.opensubtitles.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:03:10Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "guessit-js",
+      "title": "guessit-js",
+      "version": "5.3.2",
+      "description": "Parse movie and TV filenames: title, year, season, episode, codecs, languages, release group.",
+      "websiteUrl": "https://opensubtitles.github.io/guessit-js/"
+    },
+    "instructions": "guessit-js extracts metadata (title, year, season, episode, resolution, codecs, languages, release group, ...) from movie and TV filenames. Use guessit for one name, guessit_batch for many. Output matches Python guessit; pass options.output=\"codes\" for ISO language codes with regions."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "guessit",
+          "title": "Parse a media filename",
+          "description": "Extract metadata from one movie or TV episode filename or release name: title, year, season, episode, episode_title, screen_size, source, video_codec, audio_codec, language, subtitle_language, release_group, streaming_service, container, type (movie or episode) and more (56 properties). Output matches Python guessit's JSON. Pass just the file name or a full path; directory names help (e.g. \"Show/Season 2/episode.mkv\").",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "filename": {
+                "type": "string",
+                "description": "Filename, path or release name, e.g. \"The.Matrix.1999.1080p.BluRay.x264-GRP.mkv\""
+              },
+              "options": {
+                "type": "object",
+                "description": "Optional guessit options, as in the library and Python guessit: type (\"movie\" | \"episode\"), output (\"python\" default: language/country as names like \"French\"; \"codes\": {\"alpha3\": \"fra\"} objects that keep regions such as pt-BR), expected_title, allowed_languages, allowed_countries, name_only, date_day_first, date_year_first, excludes, includes.",
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "filename"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "Python guessit JSON: only the properties found; several values become an array. guessit_properties lists every property. Full schema: https://github.com/opensubtitles/guessit-js/blob/main/docs/output-schema.json",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "movie",
+                  "episode"
+                ]
+              },
+              "title": {},
+              "year": {},
+              "season": {},
+              "episode": {}
+            },
+            "additionalProperties": true
+          },
+          "annotations": {
+            "title": "Parse a media filename",
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "idempotentHint": true
+          }
+        },
+        {
+          "name": "guessit_batch",
+          "title": "Parse many media filenames",
+          "description": "Parse up to 100 filenames in one call with the same options. Returns one entry per name, in order: {input_string, result} or {input_string, error}. Faster than calling guessit repeatedly.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "filenames": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "maxItems": 100
+              },
+              "options": {
+                "type": "object",
+                "description": "Optional guessit options, as in the library and Python guessit: type (\"movie\" | \"episode\"), output (\"python\" default: language/country as names like \"French\"; \"codes\": {\"alpha3\": \"fra\"} objects that keep regions such as pt-BR), expected_title, allowed_languages, allowed_countries, name_only, date_day_first, date_year_first, excludes, includes.",
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "filenames"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "description": "One entry per input name, in order",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "input_string": {
+                      "type": "string"
+                    },
+                    "result": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "input_string"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "results"
+            ]
+          },
+          "annotations": {
+            "title": "Parse many media filenames",
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "idempotentHint": true
+          }
+        },
+        {
+          "name": "guessit_properties",
+          "title": "List guessit properties",
+          "description": "List every property guessit can return with its possible values (enum values such as source: [\"Blu-ray\", \"Web\", ...]; [null] for free-form ones such as title).",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "Property name -> possible values",
+            "additionalProperties": {
+              "type": "array"
+            }
+          },
+          "annotations": {
+            "title": "List guessit properties",
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "idempotentHint": true
+          }
+        }
+      ]
+    }
+  ]
+}

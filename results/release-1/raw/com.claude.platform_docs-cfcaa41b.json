@@ -1,0 +1,345 @@
+{
+  "registry_name": "com.claude.platform/docs",
+  "url": "https://platform.claude.com/docs/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T16:57:58Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "claude-platform-docs",
+      "title": "Claude Platform Docs",
+      "description": "Search and read the Claude Platform documentation and API reference.",
+      "version": "1.0.1",
+      "websiteUrl": "https://platform.claude.com/docs",
+      "icons": [
+        {
+          "src": "https://platform.claude.com/favicon.svg",
+          "mimeType": "image/svg+xml",
+          "sizes": [
+            "any"
+          ]
+        },
+        {
+          "src": "https://platform.claude.com/images/claude-platform-icon-512.png",
+          "mimeType": "image/png",
+          "sizes": [
+            "512x512"
+          ]
+        }
+      ]
+    },
+    "instructions": "Official docs for the Claude API, Anthropic SDKs and Claude Managed Agents (not Claude Code or the Agent SDK, which are at code.claude.com).\n\nUse before answering or recommending anything, never from memory, when the user mentions Claude or Anthropic, asks about LLM pricing, models or limits, or wants to build an agent or app that uses an LLM with no provider named. Skip only if the user has chosen other providers and none of them is Anthropic.\n\nStart with search_docs, then get_doc. Use get_navigation to see what exists."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "search_docs",
+          "title": "Search docs",
+          "description": "Search Claude documentation (the guides and the API reference together) by keyword. Put a phrase in double quotes to match it exactly (case is ignored). Returns matching pages and API endpoints ranked by relevance, with snippets showing context around matches.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query: keywords. Double quotes mark an exact phrase, which a result must contain. Example: \"extended thinking\" budget"
+              },
+              "limit": {
+                "description": "Maximum results to return (default: 10, max: 50)",
+                "type": "number"
+              },
+              "sdk_language": {
+                "description": "Search this SDK's API reference together with the guides. Accepts an SDK language such as \"python\" or \"typescript\", or \"http\" (default — the language-neutral REST reference); unrecognized values fall back to \"http\". Results for endpoints then link to that SDK's reference pages and match its method names.",
+                "type": "string"
+              },
+              "kind": {
+                "description": "Only return results of one kind: \"prose_page\" (guide pages), \"api_sdk_method\" (one API method, such as \"Create a Message\"), or \"api_sdk_resource\" (a group of endpoints, such as Messages).",
+                "type": "string",
+                "enum": [
+                  "prose_page",
+                  "api_sdk_method",
+                  "api_sdk_resource"
+                ]
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "title": "Search docs"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_navigation",
+          "title": "List docs pages",
+          "description": "Get the documentation navigation: tabs, groups of pages, and pages with their paths. Call it without arguments to see every tab and its groups, then pass `tab` and `group_path` to see the pages of a group. A group marked \"(not expanded)\" in the markdown, or without pages and groups in the structured result, has pages or subgroups that the result leaves out.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "tab": {
+                "description": "Start at this tab, by label or slug, including a sub-tab of a dropdown (e.g., messages, api-reference). Without it, the result covers every tab.",
+                "type": "string"
+              },
+              "group_path": {
+                "description": "Start at this group inside `tab`: the labels of the nested groups, outermost first (e.g., [\"Context management\"]). Needs `tab`.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "depth": {
+                "description": "How many levels of groups below the start to include (default: 1). Groups at the last level come without their pages or subgroups; add their labels to `group_path` to see them. Each extra level makes the result larger.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "format": {
+                "description": "Format of the text result (default: markdown). The structured result is always JSON.",
+                "type": "string",
+                "enum": [
+                  "json",
+                  "markdown"
+                ]
+              }
+            }
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "title": "List docs pages"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "tabs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/__schema0"
+                }
+              }
+            },
+            "required": [
+              "tabs"
+            ],
+            "additionalProperties": {},
+            "definitions": {
+              "__schema0": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "defaultPath": {
+                    "type": "string",
+                    "pattern": "^\\/docs\\/[\\s\\S]{0,}\\/[\\s\\S]{0,}$"
+                  },
+                  "externalUrl": {
+                    "type": "string",
+                    "pattern": "^https:\\/\\/[\\s\\S]{0,}$"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/__schema1"
+                    }
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/__schema0"
+                    }
+                  }
+                },
+                "required": [
+                  "label"
+                ],
+                "additionalProperties": {}
+              },
+              "__schema1": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string",
+                    "pattern": "^\\/docs\\/[\\s\\S]{0,}\\/[\\s\\S]{0,}$"
+                  },
+                  "pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "description": "The title of the page."
+                        },
+                        "path": {
+                          "type": "string",
+                          "pattern": "^\\/docs\\/[\\s\\S]{0,}\\/[\\s\\S]{0,}$"
+                        },
+                        "beta": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "path"
+                      ],
+                      "additionalProperties": {}
+                    }
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/__schema1"
+                    }
+                  }
+                },
+                "required": [
+                  "label"
+                ],
+                "additionalProperties": {},
+                "description": "A group without pages and groups has more that the depth input left out: add its label to group_path to see it."
+              }
+            }
+          }
+        },
+        {
+          "name": "get_doc",
+          "title": "Read docs page",
+          "description": "Get the full content of a documentation page. Returns the page title, description, URL, and cleaned markdown content.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Documentation path (e.g., /docs/en/intro or intro) or a result URL from search_docs (e.g., https://platform.claude.com/docs/en/intro). For fuzzy lookup, use search_docs."
+              },
+              "sdk_languages": {
+                "description": "Only include code examples in these languages. Without it, pages include the examples in every language and are much longer.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "typescript",
+                    "javascript",
+                    "boto3",
+                    "python",
+                    "java",
+                    "kotlin",
+                    "swift",
+                    "ruby",
+                    "go",
+                    "cli",
+                    "bash",
+                    "curl",
+                    "php",
+                    "csharp",
+                    "http",
+                    "terraform",
+                    "node",
+                    "shell",
+                    "c#"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "path"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "title": "Read docs page"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_api_endpoint",
+          "title": "Read API endpoint reference",
+          "description": "Get detailed information about a specific API endpoint including parameters, request body, and responses.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "PATCH",
+                  "DELETE"
+                ],
+                "description": "HTTP method"
+              },
+              "path": {
+                "type": "string",
+                "description": "API path (e.g., /v1/messages)"
+              },
+              "sdk_language": {
+                "description": "Language of the endpoint's types and code example. Default: http (a cURL example).",
+                "type": "string",
+                "enum": [
+                  "http",
+                  "cli",
+                  "typescript",
+                  "python",
+                  "java",
+                  "go",
+                  "ruby",
+                  "csharp",
+                  "php"
+                ]
+              }
+            },
+            "required": [
+              "method",
+              "path"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "title": "Read API endpoint reference"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    }
+  ]
+}

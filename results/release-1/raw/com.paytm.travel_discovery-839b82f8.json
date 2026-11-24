@@ -1,0 +1,4928 @@
+{
+  "registry_name": "com.paytm.travel/discovery",
+  "url": "https://travel.paytm.com/mcp/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:00:17Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "experimental": {},
+      "logging": {},
+      "prompts": {
+        "listChanged": true
+      },
+      "resources": {
+        "subscribe": false,
+        "listChanged": true
+      },
+      "tools": {
+        "listChanged": true
+      },
+      "extensions": {
+        "io.modelcontextprotocol/ui": {}
+      }
+    },
+    "serverInfo": {
+      "name": "Paytm Travel",
+      "version": "3.4.11",
+      "icons": [
+        {
+          "src": "https://paytmtravel-images-akamai.paytm.com/icons/checkin_logo.png",
+          "mimeType": "image/png"
+        }
+      ]
+    }
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "search_flights",
+          "title": "Search flights",
+          "description": "Searches live flights on Paytm and shows an interactive results card (airlines, logos, timings, stops, fares). Origin and destination are IATA codes (e.g. DEL, BOM, DXB) and dates are ISO (YYYY-MM-DD). A round trip uses trip_type='round_trip' with return_date. Filters: non_stop, airlines, max_price, time_slot, refundable; sort_by: best, cheapest or fastest. This is the tool for requests to show, find or list flights (e.g. 'cheapest flights next weekend', 'flights this Saturday', 'show me flights HYD to BLR'); fare_calendar on its own covers cheapest dates and lists no flights. It needs one concrete departure date: a relative date the traveller stated ('tomorrow', 'next Friday') resolves to YYYY-MM-DD for the call, and the traveller sees results only once the search runs. TIME WINDOWS: time_slot is one same-day bucket (early_morning 00:00-06:00, morning 06:00-12:00, afternoon 12:00-18:00, evening 18:00-24:00; there is no night slot) and applies to the OUTBOUND leg only. A narrower ask than a bucket ('between 6 and 9 am', 'after 9pm', 'around 6:30') maps to depart_after / depart_before (an hour or \"HH:MM\"; depart_before is exclusive, so 4-7 AM is 04:00 to 07:00). A window that crosses midnight is not one call. The RETURN leg of a round trip uses return_time_slot and return_depart_after / return_depart_before, so 'leave 6-9am, come back 7-10pm' is depart_after=6, depart_before=9, return_depart_after=19, return_depart_before=22. A bucket wider than a stated window is an approximation, and the traveller is told when one is used. AIRPORTS: results contain only the exact airports requested. Nearby-airport options (e.g. DXN Noida or HDO Hindon for DEL, NMI for BOM, AUH/SHJ for DXB) are excluded server-side and counted in search.excludedAlternateAirports, which matters when the traveller might want them; each flight is from the airport it actually uses, not from a nearby city. BUDGET: for a round trip, max_price is the COMBINED both-legs total, not per leg (search.maxPriceScope confirms which). Every applied filter is echoed under structured_content.search (timeSlot, returnTimeSlot, departAfter/Before, returnDepartAfter/Before, maxPrice, airlines, refundable), so whether a constraint was met, or could not be, is readable from the result. Invalid filter values are rejected with an error rather than silently ignored. Domestic round trips come back only as schedule-valid pairs (no overlap between legs, and ≥2 hours between onward arrival and return departure), to be compared on the traveller's preferences (price, airline, timing). International round trips come back as Paytm's pre-stitched combinations; free onward×return mixes are not valid itineraries. Refining the current results (morning/evening/afternoon departures, non-stop only, fastest, refundable) is a new search with the changed filters and the same route, date and passengers; cheaper dates come from fare_calendar. The card's suggestion chips send exactly such a request as a new turn, so a refine request is answered with new results rather than text suggestions or a pointer to the chips. For a short window (a weekend or a few days), the results card for one concrete date in that window (the Sunday or last day when none is preferred), sorted cheapest, is designed to appear above fare_calendar for the same window: search first, calendar second. Results carry summary fares only, without branded fare families or baggage/cancellation/reschedule policies. Those are keyed by the signed offerToken in this result: get_fare_family answers WHICH FARE to buy (fare families, Saver vs Flexi, what more money buys); get_flight_details answers POLICY (baggage, cancellation, reschedule rules).",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "origin": {
+                "type": "string",
+                "description": "Departure IATA code, e.g. \"DEL\"."
+              },
+              "destination": {
+                "type": "string",
+                "description": "Arrival IATA code, e.g. \"DXB\"."
+              },
+              "departure_date": {
+                "type": "string",
+                "description": "Outbound date as YYYY-MM-DD."
+              },
+              "trip_type": {
+                "default": "one_way",
+                "type": "string",
+                "description": "\"one_way\" or \"round_trip\" (round_trip needs return_date)."
+              },
+              "return_date": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Return date YYYY-MM-DD (required for round_trip)."
+              },
+              "passengers": {
+                "default": 1,
+                "type": "integer",
+                "description": "Number of adult travellers (default 1)."
+              },
+              "children": {
+                "default": 0,
+                "type": "integer",
+                "description": "Number of child travellers (default 0)."
+              },
+              "infants": {
+                "default": 0,
+                "type": "integer",
+                "description": "Number of infant travellers (default 0)."
+              },
+              "cabin": {
+                "default": "economy",
+                "type": "string",
+                "description": "economy | premium economy | business | first (default economy)."
+              },
+              "non_stop": {
+                "default": false,
+                "type": "boolean",
+                "description": "Only non-stop flights."
+              },
+              "airlines": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Restrict to these airline names or codes, e.g. [\"IndiGo\",\"6E\"]."
+              },
+              "max_price": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Budget cap in INR. For one_way this is the per-flight fare;\nfor round_trip it is the COMBINED both-legs total."
+              },
+              "time_slot": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "OUTBOUND departure bucket: early_morning [00:00, 06:00) |\nmorning [06:00, 12:00) | afternoon [12:00, 18:00) |\nevening [18:00, 24:00). Applies to the outbound leg only.\n\"early morning\" is accepted. \"night\" is rejected. An unrecognised\nvalue is rejected, not ignored."
+              },
+              "return_time_slot": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Same buckets, for the RETURN leg of a round trip. Omit\nto leave the return leg unfiltered by time."
+              },
+              "depart_after": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Earliest outbound departure hour, e.g. 6 or \"06:00\"\n(inclusive). Use with depart_before for a narrow window that the\ncoarse time_slot buckets cannot express."
+              },
+              "depart_before": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Exclusive end — \"09:00\" means the last acceptable\ndeparture is 08:59. 9 and \"09:00\" are the same instant. \"09:30\"\nkeeps 09:15. A window whose end is earlier than its start is\nrejected; this search does not cross midnight."
+              },
+              "return_depart_after": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Earliest RETURN departure hour, e.g. \"19:00\"."
+              },
+              "return_depart_before": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Latest RETURN departure hour, exclusive."
+              },
+              "refundable": {
+                "default": false,
+                "type": "boolean",
+                "description": "Only refundable fares."
+              },
+              "sort_by": {
+                "default": "cheapest",
+                "type": "string",
+                "description": "best | cheapest | fastest (default cheapest)."
+              }
+            },
+            "required": [
+              "origin",
+              "destination",
+              "departure_date"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "search": {
+                "additionalProperties": true,
+                "title": "Search",
+                "type": "object"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              },
+              "flights": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Id"
+                    },
+                    "offerToken": {
+                      "title": "Offertoken",
+                      "type": "string"
+                    },
+                    "offerRef": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "description": "Short reference to this same offer (about 30 characters). Valid wherever offer_token is accepted — pass it as offer_token to get_fare_family / get_flight_details / get_flight_review. It is not an internal id: it exists so a 400-character signed token does not have to travel through the conversation.",
+                      "title": "Offerref"
+                    },
+                    "airline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Airline"
+                    },
+                    "airlineCode": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Airlinecode"
+                    },
+                    "logoUrl": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Logourl"
+                    },
+                    "flightNumber": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Flightnumber"
+                    },
+                    "origin": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Origin"
+                    },
+                    "destination": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Destination"
+                    },
+                    "originCity": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Origincity"
+                    },
+                    "destinationCity": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Destinationcity"
+                    },
+                    "bookingUrl": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Bookingurl"
+                    },
+                    "departTime": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Departtime"
+                    },
+                    "arriveTime": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Arrivetime"
+                    },
+                    "departDate": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Departdate"
+                    },
+                    "arriveDate": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Arrivedate"
+                    },
+                    "arriveDayOffset": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Arrivedayoffset"
+                    },
+                    "duration": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Duration"
+                    },
+                    "durationMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Durationminutes"
+                    },
+                    "stops": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Stops"
+                    },
+                    "stopAirports": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Stopairports"
+                    },
+                    "cabin": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Cabin"
+                    },
+                    "refundable": {
+                      "anyOf": [
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Refundable"
+                    },
+                    "price": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Price"
+                    },
+                    "currency": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Currency"
+                    }
+                  },
+                  "required": [
+                    "offerToken"
+                  ],
+                  "title": "FlightCard",
+                  "type": "object"
+                },
+                "title": "Flights",
+                "type": "array"
+              },
+              "followups": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Followups",
+                "type": "array"
+              },
+              "disclaimer": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Disclaimer"
+              },
+              "serverProcessingMs": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Serverprocessingms"
+              },
+              "returnFlights": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Id"
+                        },
+                        "offerToken": {
+                          "title": "Offertoken",
+                          "type": "string"
+                        },
+                        "offerRef": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "description": "Short reference to this same offer (about 30 characters). Valid wherever offer_token is accepted — pass it as offer_token to get_fare_family / get_flight_details / get_flight_review. It is not an internal id: it exists so a 400-character signed token does not have to travel through the conversation.",
+                          "title": "Offerref"
+                        },
+                        "airline": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Airline"
+                        },
+                        "airlineCode": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Airlinecode"
+                        },
+                        "logoUrl": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Logourl"
+                        },
+                        "flightNumber": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Flightnumber"
+                        },
+                        "origin": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Origin"
+                        },
+                        "destination": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Destination"
+                        },
+                        "originCity": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Origincity"
+                        },
+                        "destinationCity": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Destinationcity"
+                        },
+                        "bookingUrl": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Bookingurl"
+                        },
+                        "departTime": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Departtime"
+                        },
+                        "arriveTime": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivetime"
+                        },
+                        "departDate": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Departdate"
+                        },
+                        "arriveDate": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivedate"
+                        },
+                        "arriveDayOffset": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivedayoffset"
+                        },
+                        "duration": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Duration"
+                        },
+                        "durationMinutes": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Durationminutes"
+                        },
+                        "stops": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Stops"
+                        },
+                        "stopAirports": {
+                          "anyOf": [
+                            {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Stopairports"
+                        },
+                        "cabin": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Cabin"
+                        },
+                        "refundable": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Refundable"
+                        },
+                        "price": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Price"
+                        },
+                        "currency": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Currency"
+                        }
+                      },
+                      "required": [
+                        "offerToken"
+                      ],
+                      "title": "FlightCard",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Returnflights"
+              },
+              "flightPairs": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "onwardOfferToken": {
+                          "title": "Onwardoffertoken",
+                          "type": "string"
+                        },
+                        "returnOfferToken": {
+                          "title": "Returnoffertoken",
+                          "type": "string"
+                        },
+                        "price": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Price"
+                        }
+                      },
+                      "required": [
+                        "onwardOfferToken",
+                        "returnOfferToken"
+                      ],
+                      "title": "FlightPair",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Flightpairs"
+              },
+              "moreFlights": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Id"
+                        },
+                        "offerToken": {
+                          "title": "Offertoken",
+                          "type": "string"
+                        },
+                        "offerRef": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "description": "Short reference to this same offer (about 30 characters). Valid wherever offer_token is accepted — pass it as offer_token to get_fare_family / get_flight_details / get_flight_review. It is not an internal id: it exists so a 400-character signed token does not have to travel through the conversation.",
+                          "title": "Offerref"
+                        },
+                        "airline": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Airline"
+                        },
+                        "airlineCode": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Airlinecode"
+                        },
+                        "logoUrl": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Logourl"
+                        },
+                        "flightNumber": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Flightnumber"
+                        },
+                        "origin": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Origin"
+                        },
+                        "destination": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Destination"
+                        },
+                        "originCity": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Origincity"
+                        },
+                        "destinationCity": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Destinationcity"
+                        },
+                        "bookingUrl": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Bookingurl"
+                        },
+                        "departTime": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Departtime"
+                        },
+                        "arriveTime": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivetime"
+                        },
+                        "departDate": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Departdate"
+                        },
+                        "arriveDate": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivedate"
+                        },
+                        "arriveDayOffset": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivedayoffset"
+                        },
+                        "duration": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Duration"
+                        },
+                        "durationMinutes": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Durationminutes"
+                        },
+                        "stops": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Stops"
+                        },
+                        "stopAirports": {
+                          "anyOf": [
+                            {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Stopairports"
+                        },
+                        "cabin": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Cabin"
+                        },
+                        "refundable": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Refundable"
+                        },
+                        "price": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Price"
+                        },
+                        "currency": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Currency"
+                        }
+                      },
+                      "required": [
+                        "offerToken"
+                      ],
+                      "title": "FlightCard",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Moreflights"
+              },
+              "sortRanks": {
+                "anyOf": [
+                  {
+                    "additionalProperties": {
+                      "items": {
+                        "type": "integer"
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sortranks"
+              }
+            },
+            "required": [
+              "search",
+              "flights"
+            ],
+            "title": "SearchFlightsOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Search flights",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/flight-search-v31.html",
+            "openai/toolInvocation/invoking": "Searching Paytm for flights…",
+            "openai/toolInvocation/invoked": "Found flights on Paytm.",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/flight-search-v31.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "get_flight_details",
+          "title": "Get flight details",
+          "description": "Fare options and travel policies for one flight. Renders the Flight Details panel: multi-fare upsell comparison (Saver, Flexi, etc.) plus baggage, cancellation, and reschedule tabs. This is the source for flight details, fare options, upsell fares, baggage allowance, cancellation fees, reschedule fees, or policies for a specific flight, including right after search_flights or when the traveller taps Fare options in the widget. The search_flights summary carries none of these, and the identifiers it returned are enough without a new search. Input: offer_token for the chosen flight, listed in the prior search_flights summary and structured_content. Either form is valid: the long signed token, or that flight's short `offerRef` (about 30 characters). A short value is valid input, not an internal id. A round trip also takes return_offer_token. Values are matched exactly, character for character: a retyped, abbreviated or merged value fails, and the onward value is not valid for the return leg. They expire; a rejected value needs a fresh search.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "offer_token": {
+                "type": "string",
+                "description": "Offer token from search_flights — either the long signed\ntoken or the flight's short `offerRef`. Both resolve to the same\noffer."
+              },
+              "return_offer_token": {
+                "default": "",
+                "type": "string",
+                "description": "Optional return-leg token for a round trip, in\neither of the same two forms."
+              }
+            },
+            "required": [
+              "offer_token"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "origin": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Origin"
+              },
+              "destination": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination"
+              },
+              "flightNumber": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Flightnumber"
+              },
+              "offerToken": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Offertoken"
+              },
+              "provider": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Provider"
+              },
+              "header": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Header"
+              },
+              "fares": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "fareId": {
+                      "anyOf": [
+                        {},
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Fareid"
+                    },
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Name"
+                    },
+                    "subHeading": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Subheading"
+                    },
+                    "price": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Price"
+                    },
+                    "originalPrice": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Originalprice"
+                    },
+                    "base": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Base"
+                    },
+                    "taxes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Taxes"
+                    },
+                    "recommended": {
+                      "anyOf": [
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Recommended"
+                    },
+                    "tag": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Tag"
+                    },
+                    "offerToken": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Offertoken"
+                    },
+                    "priceId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Priceid"
+                    },
+                    "cabinClass": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Cabinclass"
+                    },
+                    "currency": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Currency"
+                    }
+                  },
+                  "title": "FareOption",
+                  "type": "object"
+                },
+                "title": "Fares",
+                "type": "array"
+              },
+              "featureRows": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Id"
+                    },
+                    "label": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Label"
+                    },
+                    "values": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Values",
+                      "type": "array"
+                    }
+                  },
+                  "title": "FeatureRow",
+                  "type": "object"
+                },
+                "title": "Featurerows",
+                "type": "array"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              },
+              "minirules": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "properties": {
+                      "route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": true,
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Route"
+                      },
+                      "tabs": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Tabs",
+                        "type": "array"
+                      }
+                    },
+                    "title": "Minirules",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "tripType": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Triptype"
+              },
+              "onward": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Onward"
+              },
+              "return": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Return"
+              },
+              "checkinUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Checkinurl"
+              },
+              "bookingUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Bookingurl"
+              },
+              "airline": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Airline"
+              },
+              "airlineName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Airlinename"
+              },
+              "logoUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Logourl"
+              },
+              "originCity": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Origincity"
+              },
+              "destinationCity": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destinationcity"
+              }
+            },
+            "title": "FlightDetailsOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get flight details",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/flight-details-v8.html",
+            "openai/toolInvocation/invoking": "Loading fare options…",
+            "openai/toolInvocation/invoked": "Loaded flight fare options.",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/flight-details-v8.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "get_flight_review",
+          "title": "Get flight review",
+          "description": "Shows the Paytm flight details / review page for a selected fare: itinerary summary, fare breakdown (base, taxes, total), refundability, and a Book on Paytm Checkin link. The review call refreshes the fare before handoff. It is the step between choosing a fare and booking: requests to continue, review, see flight details for a chosen fare, or book after picking a fare in get_fare_family land here, including the fare-family Continue CTA, which posts a new user turn naming this tool. The review page comes before any handoff to Paytm. Input: offer_token from search_flights / get_fare_family (the long signed token or that flight's short `offerRef`; a short value is valid, not an internal id), matched exactly. A round trip also takes return_offer_token. Optional: price and fare_name of the branded fare the traveller picked (and return_price / return_fare_name on a round trip), used verbatim when the widget or the user named them, so review reprices THAT product (Saver vs Flexi have different Paytm ids). A review / continue / book request that names no fare or price still works from the offer_token already in hand, with price omitted: the tool fetches the recommended (best-value) fare from the fare family and reviews that. The total comes from this call, so no new search or fare-family call is needed to settle on a fare.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "offer_token": {
+                "type": "string",
+                "description": "Offer token from search_flights / get_fare_family —\neither the long signed token or the short `offerRef`."
+              },
+              "return_offer_token": {
+                "default": "",
+                "type": "string",
+                "description": "Optional return-leg token for a round trip."
+              },
+              "price": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Selected onward fare in INR from the fare-family Continue tap.\nOmit when the user asked to review without picking a fare — the\ntool then uses the recommended branded fare."
+              },
+              "fare_name": {
+                "default": "",
+                "type": "string",
+                "description": "Optional branded-fare name (Saver, Flexi, …) as a second\nmatch key when price is missing or no longer live."
+              },
+              "return_price": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Selected return fare in INR (round trip only)."
+              },
+              "return_fare_name": {
+                "default": "",
+                "type": "string",
+                "description": "Optional return-leg fare name."
+              },
+              "trip_type": {
+                "default": "oneway",
+                "type": "string",
+                "description": "\"oneway\" (default) or \"roundtrip\". Set automatically when\nreturn_offer_token is present."
+              }
+            },
+            "required": [
+              "offer_token"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "base": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Base"
+              },
+              "taxes": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Taxes"
+              },
+              "convenienceFee": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Conveniencefee"
+              },
+              "total": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Total"
+              },
+              "perAdult": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Peradult"
+              },
+              "taxBreakUp": {
+                "items": {},
+                "title": "Taxbreakup",
+                "type": "array"
+              },
+              "inclusions": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Inclusions"
+              },
+              "refundable": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Refundable"
+              },
+              "refundableText": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Refundabletext"
+              },
+              "handBaggageOnly": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Handbaggageonly"
+              },
+              "fareClass": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Fareclass"
+              },
+              "fareName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Farename"
+              },
+              "notes": {
+                "items": {},
+                "title": "Notes",
+                "type": "array"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              },
+              "checkinUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Checkinurl"
+              },
+              "bookingUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Bookingurl"
+              },
+              "airline": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Airline"
+              },
+              "airlineCode": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Airlinecode"
+              },
+              "flightNumber": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Flightnumber"
+              },
+              "logoUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Logourl"
+              },
+              "origin": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Origin"
+              },
+              "destination": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination"
+              },
+              "originCity": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Origincity"
+              },
+              "destinationCity": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destinationcity"
+              },
+              "departTime": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Departtime"
+              },
+              "arriveTime": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Arrivetime"
+              },
+              "departDate": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Departdate"
+              },
+              "arriveDayOffset": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Arrivedayoffset"
+              },
+              "duration": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Duration"
+              },
+              "stops": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Stops"
+              },
+              "stopAirports": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Stopairports"
+              },
+              "cabin": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Cabin"
+              },
+              "tripType": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Triptype"
+              },
+              "returnFareName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Returnfarename"
+              },
+              "return": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Return"
+              }
+            },
+            "title": "FlightReviewOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get flight review",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/flight-review-v8.html",
+            "openai/toolInvocation/invoking": "Loading flight details…",
+            "openai/toolInvocation/invoked": "Loaded flight details.",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/flight-review-v8.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "combine_roundtrip_fare",
+          "title": "Combine round-trip fare",
+          "description": "Computes the combined round-trip fare for a chosen onward + return flight pair, reprices it, and returns the total plus a Paytm booking link. Used by the flight results card when both legs are selected.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "onward_offer_token": {
+                "type": "string"
+              },
+              "return_offer_token": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "onward_offer_token",
+              "return_offer_token"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "displayFare": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Displayfare"
+              },
+              "onwardBase": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Onwardbase"
+              },
+              "returnBase": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Returnbase"
+              },
+              "taxes": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Taxes"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              },
+              "checkinUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Checkinurl"
+              },
+              "bookingUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Bookingurl"
+              }
+            },
+            "title": "CombineRoundtripOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Combine round-trip fare",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/widgetAccessible": true,
+            "ui": {
+              "visibility": [
+                "app"
+              ]
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "fare_calendar",
+          "title": "Fare calendar",
+          "description": "Shows a Paytm fare calendar: the cheapest flight fare for every date in a range, so the traveller can spot the cheapest days to fly. Supports date-range queries and round trips. Origin and destination are IATA codes (e.g. DEL, BOM, DXB) and dates are ISO (YYYY-MM-DD). It answers cheapest *dates/days* and lists no individual flights; requests to show or find flights are served by search_flights. For a short window, the calendar is designed to appear below the search_flights card (sort_by='cheapest' on a date in that window) for the same route.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "origin": {
+                "type": "string",
+                "description": "Origin IATA code, e.g. \"DEL\"."
+              },
+              "destination": {
+                "type": "string",
+                "description": "Destination IATA code, e.g. \"DXB\"."
+              },
+              "start_date": {
+                "type": "string",
+                "description": "First date of the range, YYYY-MM-DD."
+              },
+              "end_date": {
+                "type": "string",
+                "description": "Last date of the range, YYYY-MM-DD."
+              },
+              "trip_type": {
+                "default": "oneway",
+                "type": "string",
+                "description": "\"oneway\" or \"roundtrip\" (roundtrip also returns the return leg)."
+              },
+              "cabin": {
+                "default": "economy",
+                "type": "string",
+                "description": "economy | premium economy | business | first."
+              },
+              "adults": {
+                "default": 1,
+                "type": "integer",
+                "description": "Adult travellers (default 1)."
+              },
+              "children": {
+                "default": 0,
+                "type": "integer",
+                "description": "Child travellers (default 0)."
+              },
+              "infants": {
+                "default": 0,
+                "type": "integer",
+                "description": "Infant travellers (default 0)."
+              }
+            },
+            "required": [
+              "origin",
+              "destination",
+              "start_date",
+              "end_date"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "search": {
+                "additionalProperties": true,
+                "title": "Search",
+                "type": "object"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              },
+              "cheapest": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "properties": {
+                      "date": {
+                        "title": "Date",
+                        "type": "string"
+                      },
+                      "fare": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Fare"
+                      },
+                      "airline": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Airline"
+                      },
+                      "level": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Level"
+                      },
+                      "weekday": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Weekday"
+                      },
+                      "best": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Best"
+                      },
+                      "holidays": {
+                        "anyOf": [
+                          {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Holidays"
+                      }
+                    },
+                    "required": [
+                      "date"
+                    ],
+                    "title": "CalendarDay",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "stats": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "properties": {
+                      "min": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Min"
+                      },
+                      "max": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Max"
+                      },
+                      "avg": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Avg"
+                      }
+                    },
+                    "title": "FareStats",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "onward": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "date": {
+                      "title": "Date",
+                      "type": "string"
+                    },
+                    "fare": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Fare"
+                    },
+                    "airline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Airline"
+                    },
+                    "level": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Level"
+                    },
+                    "weekday": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Weekday"
+                    },
+                    "best": {
+                      "anyOf": [
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Best"
+                    },
+                    "holidays": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Holidays"
+                    }
+                  },
+                  "required": [
+                    "date"
+                  ],
+                  "title": "CalendarDay",
+                  "type": "object"
+                },
+                "title": "Onward",
+                "type": "array"
+              },
+              "return": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "date": {
+                          "title": "Date",
+                          "type": "string"
+                        },
+                        "fare": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Fare"
+                        },
+                        "airline": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Airline"
+                        },
+                        "level": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Level"
+                        },
+                        "weekday": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Weekday"
+                        },
+                        "best": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Best"
+                        },
+                        "holidays": {
+                          "anyOf": [
+                            {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Holidays"
+                        }
+                      },
+                      "required": [
+                        "date"
+                      ],
+                      "title": "CalendarDay",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Return"
+              },
+              "holidays": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "date": {
+                      "title": "Date",
+                      "type": "string"
+                    },
+                    "name": {
+                      "title": "Name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "date",
+                    "name"
+                  ],
+                  "title": "Holiday",
+                  "type": "object"
+                },
+                "title": "Holidays",
+                "type": "array"
+              },
+              "disclaimer": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Disclaimer"
+              }
+            },
+            "required": [
+              "search"
+            ],
+            "title": "FareCalendarOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Fare calendar",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/fare-calendar-v4.html",
+            "openai/toolInvocation/invoking": "Checking Paytm fares across dates…",
+            "openai/toolInvocation/invoked": "Loaded the Paytm fare calendar.",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/fare-calendar-v4.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "get_fare_family",
+          "title": "Get fare family",
+          "description": "Fare family / branded fare selector for ONE specific flight. Returns every fare the airline sells on that flight (Saver, Flexi, Flexi Plus, ...) with a single recommended pick and the reasons for it, scored on concrete rupee benefit per rupee of premium. It answers which fare to pick, fare families, branded fares, fare types, 'what do I get for more', or a comparison of fare options for a flight already chosen, typically straight after search_flights or when the traveller taps the fare CTA in the results widget. Policy detail (baggage, cancellation, reschedule) comes from get_flight_details instead. Input: that flight's offer_token from search_flights (plus return_offer_token for a round trip). TWO FORMS ARE VALID and the tool accepts either: the long signed token, or the SHORT REFERENCE from the same flight's `offerRef` field (about 30 characters, e.g. 'AkJMUkRFTGUJAABFEAAhRs3JWXw'). A short value is NOT a mistake and not an internal id: the widget's Book action deliberately passes the short form so a 400-character token stays out of the conversation, and it goes in as `offer_token` as given. Values are matched exactly, character for character: a retyped, abbreviated or merged value fails, the onward value is not valid for the return leg, and a round trip needs BOTH. They expire; a rejected value needs a fresh search_flights, not an old value. The selector's Continue (or a request to review / book the fare on screen) leads to get_flight_review: that follow-up arrives as a new user turn naming the offer_token and the selected fare's price, which are exactly get_flight_review's arguments, so the review page renders as its own card. The identifiers in hand are enough without a new search. One result covers every fare on that flight, so later questions about that flight's fares are answerable from it. A repeat call for the same flight re-renders the same widget above the answer; only a different flight needs a new call.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "offer_token": {
+                "type": "string",
+                "description": "Offer token from search_flights — either the long signed\ntoken or the flight's short `offerRef`. Both resolve to the same\noffer."
+              },
+              "return_offer_token": {
+                "default": "",
+                "type": "string",
+                "description": "Optional return-leg token for a round trip, in\neither of the same two forms."
+              }
+            },
+            "required": [
+              "offer_token"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "fares": {
+                "items": {
+                  "additionalProperties": true,
+                  "description": "One fare tab. `reasons` is the generated copy; `benefits` the parsed inputs.",
+                  "properties": {
+                    "fareId": {
+                      "anyOf": [
+                        {},
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Fareid"
+                    },
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Name"
+                    },
+                    "price": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Price"
+                    },
+                    "originalPrice": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Originalprice"
+                    },
+                    "recommended": {
+                      "default": false,
+                      "title": "Recommended",
+                      "type": "boolean"
+                    },
+                    "tag": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Tag"
+                    },
+                    "ctaLabel": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Ctalabel"
+                    },
+                    "reasons": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Reasons",
+                      "type": "array"
+                    },
+                    "benefits": {
+                      "additionalProperties": true,
+                      "title": "Benefits",
+                      "type": "object"
+                    },
+                    "score": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Score"
+                    },
+                    "premium": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Premium"
+                    },
+                    "savings": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Savings"
+                    },
+                    "bookingUrl": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Bookingurl"
+                    },
+                    "currency": {
+                      "default": "INR",
+                      "title": "Currency",
+                      "type": "string"
+                    }
+                  },
+                  "title": "FareFamilyFare",
+                  "type": "object"
+                },
+                "title": "Fares",
+                "type": "array"
+              },
+              "recommendedIndex": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Recommendedindex"
+              },
+              "recommendedFare": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Recommendedfare"
+              },
+              "heading": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Heading"
+              },
+              "compareRows": {
+                "items": {},
+                "title": "Comparerows",
+                "type": "array"
+              },
+              "fareCount": {
+                "default": 0,
+                "title": "Farecount",
+                "type": "integer"
+              },
+              "legs": {
+                "items": {},
+                "title": "Legs",
+                "type": "array"
+              },
+              "pairBookingUrls": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Pairbookingurls"
+              },
+              "tripType": {
+                "default": "one_way",
+                "title": "Triptype",
+                "type": "string"
+              },
+              "flightNumber": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Flightnumber"
+              },
+              "origin": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Origin"
+              },
+              "destination": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination"
+              },
+              "cabin": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Cabin"
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Requestid"
+              },
+              "solutionId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Solutionid"
+              },
+              "offerToken": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Offertoken"
+              },
+              "returnOfferToken": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Returnoffertoken"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              }
+            },
+            "title": "FareFamilyOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get fare family",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/fare-family-v8.html",
+            "openai/toolInvocation/invoking": "Comparing fare options",
+            "openai/toolInvocation/invoked": "Fare options compared",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/fare-family-v8.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "relay_pulse_batch",
+          "title": "Relay Pulse batch",
+          "description": "Sends the results cards' interaction analytics to Paytm's first-party Signal ingest. The cards' analytics script calls this because the card sandbox cannot reach that ingest on its own. The server chooses the ingest endpoint and accepts a Signal analytics batch.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "headers": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "body": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "headers",
+              "body"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "status": {
+                "title": "Status",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "title": "RelayPulseBatchOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Relay Pulse batch",
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/widgetAccessible": true,
+            "ui": {
+              "visibility": [
+                "app"
+              ]
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "search_buses",
+          "title": "Search buses",
+          "description": "Searches live Paytm bus routes and shows an interactive results card (operator, bus type, timings, rating, seats left, price). One-way, domestic, search only -- no seat selection or booking happens in chat. REQUIRED ARGS (same posture as search_flights): source, destination, and date are ALL mandatory. source/destination are free-text city names (e.g. 'Bengaluru', 'Hyderabad'); date is YYYY-MM-DD. There is no default date. The search runs for a date the traveller gave; a relative date they actually said ('tomorrow', 'next Friday') resolves to YYYY-MM-DD. When the date, source or destination is missing, the request is incomplete and the missing value comes from the traveller: a guessed today, tomorrow or weekend searches a day they did not ask for. With all three present, the traveller sees results only once the search runs. CITY DISAMBIGUATION: many Indian city names are ambiguous (e.g. 'Aurangabad' matches cities in Maharashtra, Bihar, Uttar Pradesh and West Bengal). An ambiguous name returns needsDisambiguation=true with sourceCityOptions / destinationCityOptions instead of a guess; the traveller picks one, and the search runs again with the chosen source_city_id / destination_city_id plus the original free-text source/destination. Filters: bus_type is 'AC' or 'Non-AC' when the traveller only named climate ('ac buses', 'non ac'), and a full type ('AC Sleeper', 'AC Semi-Sleeper', 'AC Seater', 'Non-AC Sleeper', 'Non-AC Semi-Sleeper', 'Non-AC Seater') only when they named a berth; a berth they did not name narrows the search wrongly. time_slot (early_morning 00:00-06:00, morning 06:00-12:00, afternoon 12:00-18:00, evening 18:00-24:00; no night slot), depart_after/depart_before (an hour or \"HH:MM\"; depart_before is exclusive, so 4-7 AM is 04:00 to 07:00, not 08:00). A window that crosses midnight is not one call. operators (list of operator names), max_price, min_rating, paytm_assured, boarding_point (matches by area name across all boarding points). Sort: recommended (default) | cheapest | fastest | earliest | rating. Invalid filter values are rejected with an error rather than silently ignored. Ratings below 15 reviews are not shown -- a missing rating means 'not enough reviews yet', not a bad bus. Named filters are sent to the Paytm wrapper (e.g. AC → is_ac) and the matching buses are shown. When those filters match nothing, the result says so; dropping the filters is the traveller's call, since an unfiltered search opens a second results card for the same query. Refining the search (only AC, cheaper, leaving after 9pm, better rated, etc.) is a new search with the changed filters and the same route and date, answered with new results rather than a pointer to the widget's chips. This tool lists a per-trip Paytm Checkin seat-layout URL as the dweb booking link (bookingUrl) and a matching seat deeplink for mweb/app (bookingDeeplink) -- there is no in-chat seat selection or payment; the traveller completes booking on Paytm Checkin. Questions about amenities, boarding/dropping points, or cancellation for a specific bus (or a tap on a card) are answered by get_bus_details with that card's tripRef, without a new search.\n\nAI CARD SUMMARIES: the bus-search widget loads its one-line AI summaries itself (skeleton footers, then text or remove), so the results card is complete without another tool. Amenities and ratings come only from Paytm's data.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "Departure city name, e.g. \"Bengaluru\"."
+              },
+              "destination": {
+                "type": "string",
+                "description": "Arrival city name, e.g. \"Hyderabad\"."
+              },
+              "date": {
+                "type": "string",
+                "description": "Travel date as YYYY-MM-DD. Mandatory — do not invent a date\nif the traveller omitted it; ask them first."
+              },
+              "source_city_id": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Resolved Paytm city id for source -- only pass this\nafter a prior call returned needsDisambiguation with\nsourceCityOptions, using the id the traveller picked."
+              },
+              "destination_city_id": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Same, for destination."
+              },
+              "bus_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "\"AC\" or \"Non-AC\" when the traveller only named climate,\nor a full type (\"AC Sleeper\", \"AC Semi-Sleeper\", \"AC Seater\",\n\"Non-AC Sleeper\", \"Non-AC Semi-Sleeper\", \"Non-AC Seater\")."
+              },
+              "time_slot": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "early_morning [00:00, 06:00) | morning [06:00, 12:00) |\nafternoon [12:00, 18:00) | evening [18:00, 24:00). \"early morning\"\nis accepted. \"night\" is rejected. There is no overnight slot."
+              },
+              "depart_after": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Earliest departure, e.g. 18 or \"18:00\" (inclusive).\n7, \"7\", and \"07:00\" are the same instant."
+              },
+              "depart_before": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Exclusive end, e.g. 7 or \"07:30\". \"4–7 AM\" is\ndepart_after=\"04:00\", depart_before=\"07:00\". \"00:00\" means the\nend of this day. A window whose end is earlier than its start\n(22:00 to 04:00) is rejected; this search does not cross midnight."
+              },
+              "operators": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Restrict to these operator names."
+              },
+              "max_price": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Budget cap in INR (per traveller, starting fare)."
+              },
+              "min_rating": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Minimum star rating (buses with under 15 ratings are\nexcluded from this filter -- their rating isn't shown either)."
+              },
+              "paytm_assured": {
+                "default": false,
+                "type": "boolean",
+                "description": "Only Paytm Assured buses."
+              },
+              "boarding_point": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Restrict to buses with a matching boarding-point area."
+              },
+              "sort_by": {
+                "default": "recommended",
+                "type": "string",
+                "description": "recommended | cheapest | fastest | earliest | rating."
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "date"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "search": {
+                "additionalProperties": true,
+                "title": "Search",
+                "type": "object"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              },
+              "buses": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "tripRef": {
+                      "title": "Tripref",
+                      "type": "string"
+                    },
+                    "operator": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Operator"
+                    },
+                    "busType": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Bustype"
+                    },
+                    "departTime": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Departtime"
+                    },
+                    "arriveTime": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Arrivetime"
+                    },
+                    "arriveDayOffset": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Arrivedayoffset"
+                    },
+                    "duration": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Duration"
+                    },
+                    "durationMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Durationminutes"
+                    },
+                    "rating": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Rating"
+                    },
+                    "ratingCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Ratingcount"
+                    },
+                    "seatsLeft": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Seatsleft"
+                    },
+                    "price": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Price"
+                    },
+                    "originalPrice": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Originalprice"
+                    },
+                    "discountPct": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Discountpct"
+                    },
+                    "currency": {
+                      "default": "INR",
+                      "title": "Currency",
+                      "type": "string"
+                    },
+                    "paytmAssured": {
+                      "default": false,
+                      "title": "Paytmassured",
+                      "type": "boolean"
+                    },
+                    "womenBooking": {
+                      "default": false,
+                      "title": "Womenbooking",
+                      "type": "boolean"
+                    },
+                    "boardingPoint": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Boardingpoint"
+                    },
+                    "droppingPoint": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Droppingpoint"
+                    },
+                    "boardingPoints": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Boardingpoints",
+                      "type": "array"
+                    },
+                    "droppingPoints": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Droppingpoints",
+                      "type": "array"
+                    },
+                    "tags": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Tags",
+                      "type": "array"
+                    },
+                    "bookingUrl": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Bookingurl"
+                    },
+                    "bookingDeeplink": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Bookingdeeplink"
+                    }
+                  },
+                  "required": [
+                    "tripRef"
+                  ],
+                  "title": "BusCard",
+                  "type": "object"
+                },
+                "title": "Buses",
+                "type": "array"
+              },
+              "moreBuses": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "tripRef": {
+                          "title": "Tripref",
+                          "type": "string"
+                        },
+                        "operator": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Operator"
+                        },
+                        "busType": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Bustype"
+                        },
+                        "departTime": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Departtime"
+                        },
+                        "arriveTime": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivetime"
+                        },
+                        "arriveDayOffset": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Arrivedayoffset"
+                        },
+                        "duration": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Duration"
+                        },
+                        "durationMinutes": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Durationminutes"
+                        },
+                        "rating": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Rating"
+                        },
+                        "ratingCount": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Ratingcount"
+                        },
+                        "seatsLeft": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Seatsleft"
+                        },
+                        "price": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Price"
+                        },
+                        "originalPrice": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Originalprice"
+                        },
+                        "discountPct": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Discountpct"
+                        },
+                        "currency": {
+                          "default": "INR",
+                          "title": "Currency",
+                          "type": "string"
+                        },
+                        "paytmAssured": {
+                          "default": false,
+                          "title": "Paytmassured",
+                          "type": "boolean"
+                        },
+                        "womenBooking": {
+                          "default": false,
+                          "title": "Womenbooking",
+                          "type": "boolean"
+                        },
+                        "boardingPoint": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Boardingpoint"
+                        },
+                        "droppingPoint": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Droppingpoint"
+                        },
+                        "boardingPoints": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Boardingpoints",
+                          "type": "array"
+                        },
+                        "droppingPoints": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Droppingpoints",
+                          "type": "array"
+                        },
+                        "tags": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Tags",
+                          "type": "array"
+                        },
+                        "bookingUrl": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Bookingurl"
+                        },
+                        "bookingDeeplink": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Bookingdeeplink"
+                        }
+                      },
+                      "required": [
+                        "tripRef"
+                      ],
+                      "title": "BusCard",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Morebuses"
+              },
+              "sortRanks": {
+                "anyOf": [
+                  {
+                    "additionalProperties": {
+                      "items": {
+                        "type": "integer"
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sortranks"
+              },
+              "followups": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Followups",
+                "type": "array"
+              },
+              "needsDisambiguation": {
+                "default": false,
+                "title": "Needsdisambiguation",
+                "type": "boolean"
+              },
+              "sourceCityOptions": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "id": {
+                          "title": "Id",
+                          "type": "integer"
+                        },
+                        "label": {
+                          "title": "Label",
+                          "type": "string"
+                        },
+                        "state": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "State"
+                        },
+                        "district": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "District"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "title": "CityOption",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sourcecityoptions"
+              },
+              "destinationCityOptions": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "id": {
+                          "title": "Id",
+                          "type": "integer"
+                        },
+                        "label": {
+                          "title": "Label",
+                          "type": "string"
+                        },
+                        "state": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "State"
+                        },
+                        "district": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "District"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "title": "CityOption",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destinationcityoptions"
+              },
+              "disclaimer": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Disclaimer"
+              },
+              "serverProcessingMs": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Serverprocessingms"
+              },
+              "summariesPending": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Summariespending"
+              },
+              "summaries": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "tripRef": {
+                          "title": "Tripref",
+                          "type": "string"
+                        },
+                        "summary": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Summary"
+                        }
+                      },
+                      "required": [
+                        "tripRef"
+                      ],
+                      "title": "BusAiSummaryEntry",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Summaries"
+              },
+              "totalBeforeFilter": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Totalbeforefilter"
+              }
+            },
+            "required": [
+              "search"
+            ],
+            "title": "SearchBusesOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Search buses",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/bus-search-v24.html",
+            "openai/toolInvocation/invoking": "Searching Paytm for buses…",
+            "openai/toolInvocation/invoked": "Found buses on Paytm.",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/bus-search-v24.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "get_bus_ai_summaries",
+          "title": "Get bus AI summaries",
+          "description": "Builds one differentiating line for each bus on the results card, from the search payload already fetched (no bus-details calls), using Azure OpenAI inside this server. An empty line is valid when nothing stands out. Used by the bus results card after it renders; it renders no card of its own. It prefers the search_context that search_buses returned, so no second search is needed, and re-fetches the route only when that handoff is missing.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "trip_refs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "source": {
+                "type": "string"
+              },
+              "destination": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "cards": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "search_context": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "source_city_id": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "destination_city_id": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "bus_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "time_slot": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "depart_after": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "depart_before": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "operators": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "max_price": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "min_rating": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "paytm_assured": {
+                "default": false,
+                "type": "boolean"
+              },
+              "boarding_point": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "sort_by": {
+                "default": "recommended",
+                "type": "string"
+              }
+            },
+            "required": [
+              "trip_refs",
+              "source",
+              "destination",
+              "date",
+              "cards"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "summaries": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "tripRef": {
+                      "title": "Tripref",
+                      "type": "string"
+                    },
+                    "summary": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Summary"
+                    }
+                  },
+                  "required": [
+                    "tripRef"
+                  ],
+                  "title": "BusAiSummaryEntry",
+                  "type": "object"
+                },
+                "title": "Summaries",
+                "type": "array"
+              }
+            },
+            "title": "BusAiSummariesOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get bus AI summaries",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/widgetAccessible": true,
+            "ui": {
+              "visibility": [
+                "app"
+              ]
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "get_bus_details",
+          "title": "Get bus details",
+          "description": "Shows the Bus Details sheet for one trip from search_buses: amenities (iconified), pickup and dropping points with times, cancellation-policy slabs, rating, and a Book on Paytm Checkin CTA. This is the source for amenities, boarding/dropping points, cancellation policy, or details for a specific bus, including a tap on a bus card in the widget. The tripRef from the card is enough, without a new search_buses call. Required: trip_ref, the opaque tripRef from the prior search_buses card, matched exactly. Optional: summary (the card's AI summary line) and booking_url (the card's Paytm hand-off link). No seat map or payment in chat — booking continues on Paytm Checkin.",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "trip_ref": {
+                "type": "string",
+                "description": "Opaque trip token from search_buses (`tripRef` on each card)."
+              },
+              "summary": {
+                "default": "",
+                "type": "string",
+                "description": "Optional AI summary line already shown on the card, so the\ndetails sheet shows the same line."
+              },
+              "booking_url": {
+                "default": "",
+                "type": "string",
+                "description": "Optional Paytm Checkin seat URL from the search card (dweb)."
+              },
+              "booking_deeplink": {
+                "default": "",
+                "type": "string",
+                "description": "Optional H5/mweb/app deeplink (`paytmtr://bus-seat`)."
+              }
+            },
+            "required": [
+              "trip_ref"
+            ],
+            "type": "object"
+          },
+          "outputSchema": {
+            "additionalProperties": true,
+            "properties": {
+              "tripRef": {
+                "title": "Tripref",
+                "type": "string"
+              },
+              "operator": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Operator"
+              },
+              "busType": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Bustype"
+              },
+              "rating": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Rating"
+              },
+              "ratingCount": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ratingcount"
+              },
+              "ratingCountLabel": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Ratingcountlabel"
+              },
+              "summary": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Summary"
+              },
+              "amenities": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "title": "Name",
+                      "type": "string"
+                    },
+                    "iconUrl": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Iconurl"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "title": "BusAmenity",
+                  "type": "object"
+                },
+                "title": "Amenities",
+                "type": "array"
+              },
+              "cancellationPolicy": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "window": {
+                      "title": "Window",
+                      "type": "string"
+                    },
+                    "refund": {
+                      "title": "Refund",
+                      "type": "string"
+                    },
+                    "refundable": {
+                      "default": true,
+                      "title": "Refundable",
+                      "type": "boolean"
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Status"
+                    }
+                  },
+                  "required": [
+                    "window",
+                    "refund"
+                  ],
+                  "title": "BusCancellationSlab",
+                  "type": "object"
+                },
+                "title": "Cancellationpolicy",
+                "type": "array"
+              },
+              "cancellationNote": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Cancellationnote"
+              },
+              "cancellationSummary": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Cancellationsummary"
+              },
+              "boardingPoints": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "title": "Name",
+                      "type": "string"
+                    },
+                    "time": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Time"
+                    },
+                    "address": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Address"
+                    },
+                    "landmark": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Landmark"
+                    },
+                    "tags": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Tags",
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "title": "BusStopPoint",
+                  "type": "object"
+                },
+                "title": "Boardingpoints",
+                "type": "array"
+              },
+              "droppingPoints": {
+                "items": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "name": {
+                      "title": "Name",
+                      "type": "string"
+                    },
+                    "time": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Time"
+                    },
+                    "address": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Address"
+                    },
+                    "landmark": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Landmark"
+                    },
+                    "tags": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Tags",
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "title": "BusStopPoint",
+                  "type": "object"
+                },
+                "title": "Droppingpoints",
+                "type": "array"
+              },
+              "seatsLeft": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Seatsleft"
+              },
+              "bookingUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Bookingurl"
+              },
+              "bookingDeeplink": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Bookingdeeplink"
+              },
+              "currency": {
+                "default": "INR",
+                "title": "Currency",
+                "type": "string"
+              }
+            },
+            "required": [
+              "tripRef"
+            ],
+            "title": "BusDetailsOutput",
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get bus details",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "openai/outputTemplate": "ui://widget/bus-details-v8.html",
+            "openai/toolInvocation/invoking": "Loading bus details…",
+            "openai/toolInvocation/invoked": "Loaded bus details.",
+            "openai/widgetAccessible": true,
+            "ui": {
+              "resourceUri": "ui://widget/bus-details-v8.html",
+              "prefersBorder": false
+            },
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

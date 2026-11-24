@@ -1,0 +1,4281 @@
+{
+  "registry_name": "com.studocu/studocu",
+  "url": "https://agent-os-mcp.alpha.studocu.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T16:59:24Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      },
+      "resources": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "agent-os-service",
+      "version": "0.0.1",
+      "icons": [
+        {
+          "src": "https://agent-os-mcp.alpha.studocu.com/favicon.ico",
+          "mimeType": "image/x-icon",
+          "sizes": [
+            "32x32"
+          ]
+        },
+        {
+          "src": "https://website-assets.studocu.com/img/apple/apple-touch-icon-76x76.png",
+          "sizes": [
+            "76x76"
+          ],
+          "mimeType": "image/png"
+        },
+        {
+          "src": "https://website-assets.studocu.com/img/apple/apple-touch-icon-120x120.png",
+          "sizes": [
+            "120x120"
+          ],
+          "mimeType": "image/png"
+        },
+        {
+          "src": "https://website-assets.studocu.com/img/apple/apple-touch-icon-152x152.png",
+          "sizes": [
+            "152x152"
+          ],
+          "mimeType": "image/png"
+        },
+        {
+          "src": "https://website-assets.studocu.com/img/apple/apple-touch-icon-180x180.png",
+          "sizes": [
+            "180x180"
+          ],
+          "mimeType": "image/png"
+        }
+      ]
+    },
+    "instructions": "Search Studocu and, after the learner signs in, work with their projects. search-documents, search-institutions, search-courses, list-degrees, get-course-syllabus, and list-course-recordings need no login, and neither does previewing Studocu documents; every other tool needs a signed-in Studocu account. Leave the Authorization header off when the learner is not signed in: a bad or expired token is rejected, even for the no-login tools. Do not call search-institutions or search-courses before every search-documents."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "search-documents",
+          "title": "Document Search",
+          "description": "Find Studocu documents such as lecture notes and summaries. Pass topic keywords as query. Prefer numeric course_id from search-courses; it overrides course and institution. Results with match_type: semantic are closest matches, not exact keyword hits, and may be only loosely related.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Topic keywords only. Example: \"supply and demand\" or \"microeconomics midterm 2025\". Do not put a course name, course id, or school name here. Use institution, course, and course_id for those."
+              },
+              "institution": {
+                "description": "School name only. Example: \"University of Amsterdam\". Not an id. This tool has no institution_id. Use the name from the user or from search-institutions. Omit if unknown. If course_id is also set, course_id wins and the result school is that course's school, not this name.",
+                "type": "string"
+              },
+              "course": {
+                "description": "Course name or code. Example: \"Economics\" or \"ECON101\". Use this when you do not have course_id. Do not put a numeric id here. Optional extra when you already have course_id. Omit if unknown.",
+                "type": "string"
+              },
+              "course_id": {
+                "description": "Numeric course id from search-courses (the course_id field). Example: 1581710. Prefer this: it pins the course and overrides the course name or code. Omit if you only have a name or code.",
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2147483647
+              },
+              "use_no_course_as_fallback": {
+                "description": "Only used with course_id. When true and that course has no matching Studocu documents, search again without the course, so results may come from other courses. Check each result's course_id. Default false. Omit for false.",
+                "type": "boolean"
+              },
+              "limit": {
+                "default": 10,
+                "description": "How many Studocu documents to return. Integer from 1 to 50. Default 10.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "documents": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "course": {
+                      "type": "string"
+                    },
+                    "course_id": {
+                      "type": "number"
+                    },
+                    "institution": {
+                      "type": "string"
+                    },
+                    "institution_id": {
+                      "type": "number"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "ratingPositive": {
+                      "type": "number"
+                    },
+                    "ratingNegative": {
+                      "type": "number"
+                    },
+                    "publishedAt": {
+                      "type": "string"
+                    },
+                    "academicYears": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "numberOfPages": {
+                      "type": "number"
+                    },
+                    "language": {
+                      "type": "string"
+                    },
+                    "match_type": {
+                      "type": "string",
+                      "const": "semantic"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "url"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "documents"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "noauth"
+            },
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "search-institutions",
+          "title": "Search Institutions",
+          "description": "Find a school (university or high school) on Studocu by name, to get its id for search-courses. Show the user the name, type, and country, not the id. If several results are plausible, ask the user to pick.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "description": "School name to search, 1-200 characters after trimming. Example: \"University of Amsterdam\"."
+              },
+              "limit": {
+                "default": 3,
+                "description": "How many schools to return. Integer from 1 to 10. Default 3.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              },
+              "type": {
+                "description": "Optional filter: UNIVERSITY or HIGH_SCHOOL. Omit to search both.",
+                "type": "string",
+                "enum": [
+                  "UNIVERSITY",
+                  "HIGH_SCHOOL"
+                ]
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "institutions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "UNIVERSITY",
+                        "HIGH_SCHOOL"
+                      ]
+                    },
+                    "region_code": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "type",
+                    "region_code",
+                    "country"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "institutions"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "noauth"
+            },
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "search-courses",
+          "title": "Search Courses",
+          "description": "Find a course on Studocu by name or code, to get its course_id for search-documents, get-course-syllabus, or get-course-mastery. Pass institution_id from search-institutions when you know the school. For a high school, pass degree_id and grade_id from list-degrees. Those ids are national, so a school is optional. With a school, the level filter is added to that school search. Ids only, not names. Pass include_levels: true to include degree and grade on every course. A course whose institution_id is null cannot be used to create or update a project. Prefer a course with an institution_id, or ask the user to pick their school. Show the user the name, code, school, degree, and grade, not the ids. If several results are plausible, ask the user to pick.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "description": "Course name or code, 1-200 characters after trimming. Example: \"ECON101\" or \"Introduction to Psychology\"."
+              },
+              "institution_id": {
+                "description": "Numeric school id from search-institutions (the id field). Example: 42. Omit to search every school. Prefer setting it when you already know the school.",
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2147483647
+              },
+              "degree_id": {
+                "description": "Numeric national high-school degree id, taken from list-degrees (the id field) or from degree.id on a search-courses result. Never guess it and never pass the degree name. A school is optional. Matches courses of that degree and courses of its grades. Omit if unknown.",
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2147483647
+              },
+              "grade_id": {
+                "description": "Numeric national high-school grade id, taken from list-degrees (grades[].id) or from grade.id on a search-courses result. Never guess it and never pass the grade name. A school is optional. Omit if unknown.",
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2147483647
+              },
+              "include_levels": {
+                "description": "Set true to include degree and grade on every course. Omit for the legacy payload.",
+                "type": "boolean"
+              },
+              "limit": {
+                "default": 3,
+                "description": "How many courses to return. Integer from 1 to 10. Default 3.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "courses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "course_id": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "institution_id": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "institution_name": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "degree": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "grade": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "degree_id": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "degree_id"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "course_id",
+                    "name",
+                    "code",
+                    "institution_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "courses"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "noauth"
+            },
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "list-degrees",
+          "title": "List Degrees",
+          "description": "List the degrees taught at a high school, with their ids, so you can pass degree_id to search-courses. The ids are national, so search-courses can use them with no school. Pass institution_id from search-institutions. A university id is not a high school. Each degree may include grades with grade ids. When grades are not listed, take grade_id from a search-courses result. Show the user the degree and grade names, not the ids.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "institution_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2147483647,
+                "description": "Numeric high-school id from search-institutions (the id field). Example: 42. A university id does not list degrees."
+              }
+            },
+            "required": [
+              "institution_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "degrees": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "grades": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "grades"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "degrees"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "noauth"
+            },
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "get-course-syllabus",
+          "title": "Get Course Syllabus",
+          "description": "Return Studocu's generated outline for a course as markdown. If none exists yet, the call returns an error; try again in a few minutes.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "course_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "Numeric course id from search-courses. Example: 1581710. A numeric string such as \"1581710\" is accepted."
+              }
+            },
+            "required": [
+              "course_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "course_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Course id whose published syllabus was loaded."
+              },
+              "content": {
+                "type": "string",
+                "description": "Published syllabus text for this course."
+              }
+            },
+            "required": [
+              "course_id",
+              "content"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "noauth"
+            },
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "list-course-recordings",
+          "title": "List Course Recordings",
+          "description": "List public class recordings (lecture audio with a transcript) that students shared for a course. Pass course_id from search-courses. Most recently recorded first; each recording has a recording date and an artifact_id. An empty list means no one has shared a recording for this course yet.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "course_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2147483647,
+                "description": "Numeric course id from search-courses. Example: 1581710. A numeric string such as \"1581710\" is accepted."
+              },
+              "limit": {
+                "default": 10,
+                "description": "How many recordings to return. Integer from 1 to 20. Default 10.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              }
+            },
+            "required": [
+              "course_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "course_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Course id whose recordings were listed."
+              },
+              "recordings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "artifact_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Artifact id of the recording: studocu://project/{id}/source/{id}."
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Recording title."
+                    },
+                    "duration_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Recording length in seconds. Null when the length is unknown."
+                    },
+                    "recorded_at": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "When the lecture was recorded, ISO 8601 in UTC: the date stored in the audio file when it has one, otherwise the upload time. Null when unknown."
+                    },
+                    "project_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Id of the public project that holds the recording."
+                    }
+                  },
+                  "required": [
+                    "artifact_id",
+                    "title",
+                    "duration_seconds",
+                    "recorded_at",
+                    "project_id"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Public class recordings for this course, most recently recorded first. Empty when none are shared yet."
+              }
+            },
+            "required": [
+              "course_id",
+              "recordings"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "noauth"
+            },
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "agent-os-session",
+          "title": "Check Studocu Sign-in",
+          "description": "Show who the current Studocu sign-in belongs to: authenticated, subject, clientId, and scopes. Use only to check that login worked.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "authenticated": {
+                "type": "boolean"
+              },
+              "subject": {
+                "type": "string"
+              },
+              "clientId": {
+                "type": "string"
+              },
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "authenticated",
+              "clientId",
+              "scopes"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "read-artifact",
+          "title": "Read Studocu Artifact",
+          "description": "Read a project source or creation by its studocu:// id (from get-project-state, add-document-sources, write-artifact, or request-creation). File and image sources also return the image when a viewable copy, or an original upload under 5 MB, exists. A class recording returns its transcript only to its owner; anyone else gets the recording's summary.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "artifact_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Id shaped like studocu://project/{project_id}/{kind}/{uuid}. kind is source (a project source) or creation (a quiz, mock exam, note, or flashcard set). Example: studocu://project/11111111-1111-4111-8111-111111111111/source/22222222-2222-4222-8222-222222222222."
+              },
+              "cursor": {
+                "description": "Token from a previous read when the result said there is more, for long content. Omit on the first read. Pass it back unchanged with the same artifact_id.",
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "artifact_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "artifactId": {
+                "type": "string"
+              },
+              "projectId": {
+                "type": "string"
+              },
+              "details": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "source",
+                      "creation"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                    "description": "UUID string in 8-4-4-4-12 hexadecimal form. Example: 11111111-1111-4111-8111-111111111111."
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "pending",
+                          "processing",
+                          "ready",
+                          "completed",
+                          "failed"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "creating",
+                          "created",
+                          "failed"
+                        ]
+                      }
+                    ]
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "folder": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "content": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991,
+                            "description": "Use this ID to fetch the Quiz from the Rest API."
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "questions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": -9007199254740991,
+                                      "maximum": 9007199254740991
+                                    },
+                                    {
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "body": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "difficulty": {
+                                  "type": "string"
+                                },
+                                "question": {
+                                  "type": "string"
+                                },
+                                "explanation": {
+                                  "type": "string"
+                                },
+                                "explanationMd": {
+                                  "type": "string"
+                                },
+                                "correctAnswer": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": -9007199254740991,
+                                      "maximum": 9007199254740991
+                                    },
+                                    {
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "correctAnswerIds": {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      {
+                                        "type": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "options": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "anyOf": [
+                                          {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          {
+                                            "type": "string"
+                                          }
+                                        ]
+                                      },
+                                      "text": {
+                                        "type": "string"
+                                      },
+                                      "correct": {
+                                        "type": "boolean"
+                                      },
+                                      "isCorrect": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "text"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "answers": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "anyOf": [
+                                          {
+                                            "type": "integer",
+                                            "minimum": -9007199254740991,
+                                            "maximum": 9007199254740991
+                                          },
+                                          {
+                                            "type": "string"
+                                          }
+                                        ]
+                                      },
+                                      "answer": {
+                                        "type": "string"
+                                      },
+                                      "isCorrect": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "answer",
+                                      "isCorrect"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "count",
+                          "questions"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                            "description": "Use this ID to fetch the Mock Exam from the API."
+                          },
+                          "hasPdf": {
+                            "anyOf": [
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                                "description": "Use this ID to fetch the Mock Exam from the API."
+                              },
+                              "schemaVersion": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "frontMatter": {
+                                "type": "object",
+                                "properties": {
+                                  "instructionsMarkdown": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "content": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "allOf": [
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "enum": [
+                                                "section"
+                                              ]
+                                            },
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "title": {
+                                              "type": "string"
+                                            },
+                                            "questionType": {
+                                              "type": "string"
+                                            },
+                                            "instructions": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "kind",
+                                            "id",
+                                            "questionType"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "const": "section"
+                                            }
+                                          },
+                                          "required": [
+                                            "kind"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "allOf": [
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "enum": [
+                                                "stimulus"
+                                              ]
+                                            },
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "title": {
+                                              "type": "string"
+                                            },
+                                            "stimulusMarkdown": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "kind",
+                                            "id",
+                                            "stimulusMarkdown"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "const": "stimulus"
+                                            }
+                                          },
+                                          "required": [
+                                            "kind"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "allOf": [
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "enum": [
+                                                "question"
+                                              ]
+                                            },
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "sectionId": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string"
+                                            },
+                                            "marks": {
+                                              "type": "number"
+                                            },
+                                            "questionMarkdown": {
+                                              "type": "string"
+                                            },
+                                            "stimulusIdRefs": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            },
+                                            "options": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "anyOf": [
+                                                      {
+                                                        "type": "integer",
+                                                        "minimum": -9007199254740991,
+                                                        "maximum": 9007199254740991
+                                                      },
+                                                      {
+                                                        "type": "string"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "text": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "text"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "templateMarkdown": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "string"
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            },
+                                            "blanks": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "label": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "grading": {
+                                              "type": "object",
+                                              "properties": {
+                                                "correctAnswerIds": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "correctAnswer": {
+                                                  "type": "string"
+                                                },
+                                                "modelAnswer": {
+                                                  "type": "string"
+                                                },
+                                                "keyPoints": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string"
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "modelAnswer"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "topics": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "kind",
+                                            "id",
+                                            "sectionId",
+                                            "type",
+                                            "marks",
+                                            "questionMarkdown"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "const": "question"
+                                            }
+                                          },
+                                          "required": [
+                                            "kind"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "schemaVersion",
+                              "title",
+                              "content"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "hasPdf",
+                          "data"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                            "description": "Use this ID to fetch the flashcard set from the API."
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "flashcards": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "front": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "back": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "front",
+                                    "back"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "description",
+                              "flashcards"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "data"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                  },
+                  "updatedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "category": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "file/audio",
+                          "file/image",
+                          "file/pdf",
+                          "file/markdown",
+                          "studocu/document"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "id",
+                  "title",
+                  "status",
+                  "type",
+                  "folder",
+                  "content",
+                  "createdAt",
+                  "updatedAt"
+                ],
+                "additionalProperties": false
+              },
+              "continuations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "enum": [
+                        "details.content.questions"
+                      ]
+                    },
+                    "returned": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "hasMore": {
+                      "type": "boolean"
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "returned",
+                    "total",
+                    "hasMore"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "url": {
+                "description": "Studocu web link that opens this item in its project. Share it with the user.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "artifactId",
+              "projectId",
+              "details"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "read-detached-document",
+          "title": "Read Studocu Document",
+          "description": "Read the text of a Studocu document by its search-documents id, without adding it to a project.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "Positive integer id from search-documents (documents[].id). Example: 17."
+              },
+              "page": {
+                "description": "1-based page to return as an image instead of the text. Only when the text misses something (a figure, plot, handwriting, math); text reads say how many pages exist.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "document_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "description": "The raw full text content of the Studocu document."
+              }
+            },
+            "required": [
+              "content"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "get-context",
+          "title": "Get Learner Context",
+          "description": "Load the learner's profile, followed courses, and projects. Use get-project-state for what is inside a project. Per-topic practice scores are included only when one course is in scope; otherwise use get-course-mastery.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "description": "Return only this project. Example: \"11111111-1111-4111-8111-111111111111\". From an earlier get-context or create-project result. Omit to include the learner's projects.",
+                "type": "string",
+                "minLength": 1
+              },
+              "course_id": {
+                "description": "Return only this course and its projects. Numeric id or the same id as text. Example: 1581710 or \"1581710\". Omit to include every followed course.",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                ]
+              },
+              "recent_only": {
+                "description": "Optional true or false. It is echoed on the response and does not change which courses or projects are returned. Omit it.",
+                "type": "boolean"
+              },
+              "active_only": {
+                "description": "Optional true or false. It is echoed on the response and does not change which courses or projects are returned. Omit it.",
+                "type": "boolean"
+              }
+            }
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "context_schema_version": {
+                "type": "number",
+                "const": 1
+              },
+              "generated_at": {
+                "type": "string"
+              },
+              "requested_filters": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "course_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recent_only": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "active_only": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "project_id",
+                  "course_id"
+                ],
+                "additionalProperties": false
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "locale": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "study_year": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "level": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "gender": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "institution": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "type",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "first_name",
+                      "last_name",
+                      "locale",
+                      "study_year",
+                      "level",
+                      "gender",
+                      "stage",
+                      "institution"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "followed_courses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "course_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "institution_id": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "course_id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "memory": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {}
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "projects": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "project_id": {
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "is_mobile": {
+                              "type": "boolean"
+                            },
+                            "emoji": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "course_id": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "institution_id": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "course_name": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "thread_id": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "pending_sources_count": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "pending_creations_count": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "url": {
+                              "description": "Studocu web link to the project. Share it with the user.",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "title",
+                            "is_mobile",
+                            "emoji",
+                            "course_id",
+                            "institution_id"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "memory": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "object",
+                                "propertyNames": {
+                                  "type": "string"
+                                },
+                                "additionalProperties": {}
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "has_course_mastery": {
+                          "type": "boolean"
+                        },
+                        "started_course_mastery": {
+                          "type": "boolean"
+                        },
+                        "topic_masteries": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "topic_id": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "topic_name": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "mastery": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "questions_answered": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                              }
+                            },
+                            "required": [
+                              "topic_id",
+                              "mastery",
+                              "questions_answered"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "project_id",
+                        "metadata",
+                        "memory",
+                        "has_course_mastery",
+                        "started_course_mastery"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "profile",
+                  "followed_courses",
+                  "memory",
+                  "projects"
+                ],
+                "additionalProperties": false
+              },
+              "aggregates": {
+                "type": "object",
+                "properties": {
+                  "recent_activity": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "seen_at": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "seen_at"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false
+              },
+              "prompt_views": {
+                "type": "object",
+                "properties": {
+                  "by_project": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "section": {
+                          "type": "string"
+                        },
+                        "body": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "section",
+                        "body"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "user_wide_summary": {
+                    "type": "object",
+                    "properties": {
+                      "section": {
+                        "type": "string"
+                      },
+                      "body": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "section",
+                      "body"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "context_schema_version",
+              "generated_at",
+              "requested_filters",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "get-project-state",
+          "title": "Studocu Project State",
+          "description": "List the project sources and creations inside one or more projects. A creation may include external_id (a quiz id or mock-exam id) to match a request-creation result that is still being saved.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "ids": {
+                "minItems": 1,
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "1 to 20 project ids from get-context or create-project. Example: [\"11111111-1111-4111-8111-111111111111\"]. Projects you cannot access are left out."
+              }
+            },
+            "required": [
+              "ids"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "project_id": {
+                      "type": "string"
+                    },
+                    "sources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "artifact_id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "const": "source"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "capabilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "summary": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "agent_input_type": {
+                            "type": "string"
+                          },
+                          "lineage_id": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "description": "Studocu web link that opens this item in its project. Share it with the user.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "artifact_id",
+                          "kind",
+                          "type",
+                          "title",
+                          "capabilities"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "creations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "artifact_id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "const": "creation"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "capabilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "summary": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "agent_input_type": {
+                            "type": "string"
+                          },
+                          "lineage_id": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "external_id": {
+                            "description": "Kind-specific downstream id (quizId or mockExamId) for matching a pending request-creation.",
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "url": {
+                            "description": "Studocu web link that opens this item in its project. Share it with the user.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "artifact_id",
+                          "kind",
+                          "type",
+                          "title",
+                          "capabilities"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "url": {
+                      "description": "Studocu web link to the project. Share it with the user.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "project_id",
+                    "sources",
+                    "creations"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "projects"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "get-course-mastery",
+          "title": "Get Course Practice Scores",
+          "description": "Return the learner's practice scores (0-100) for the topics they have practised in one course. An empty list means no practice yet.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "course_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "Numeric course id from search-courses or get-context. Example: 1581710. A numeric string such as \"1581710\" is accepted."
+              }
+            },
+            "required": [
+              "course_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "course_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Course id whose mastery was loaded, matching followed_courses.course_id."
+              },
+              "topic_masteries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "topic_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "topic_name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "mastery": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "questions_answered": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "topic_id",
+                    "mastery",
+                    "questions_answered"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Topics the learner has already practised. Empty means this course was loaded and they have not practised yet."
+              }
+            },
+            "required": [
+              "course_id",
+              "topic_masteries"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "write-artifact",
+          "title": "Save Study Item to Project",
+          "description": "Save a quiz, mock exam, note, or flashcard set you have already written into a project. To have Studocu generate a quiz or mock exam instead, use request-creation.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "description": "UUID of the project that will own the creation. Example: 11111111-1111-4111-8111-111111111111. From create-project or get-context."
+              },
+              "artifact": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "creation",
+                        "description": "Must be the string creation. A project source cannot be written with this tool."
+                      },
+                      "description": {
+                        "description": "Optional short description of the creation (quiz, mock exam, or flashcard set). The note type does not have this field.",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 20,
+                        "maxLength": 255,
+                        "description": "Quiz title shown to the learner. 20-255 characters."
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "quiz"
+                      },
+                      "content": {
+                        "type": "object",
+                        "properties": {
+                          "questions": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "question": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "description": "Question prompt shown to the learner."
+                                },
+                                "answers": {
+                                  "minItems": 2,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "answer": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "description": "Answer option text."
+                                      },
+                                      "is_correct": {
+                                        "type": "boolean",
+                                        "description": "True for the correct option or options."
+                                      }
+                                    },
+                                    "required": [
+                                      "answer",
+                                      "is_correct"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "explanation": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 255,
+                                  "description": "Why the correct answer is right. Required. 1-255 characters."
+                                },
+                                "difficulty": {
+                                  "type": "string",
+                                  "enum": [
+                                    "EASY",
+                                    "MEDIUM",
+                                    "HARD"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "question",
+                                "answers",
+                                "explanation"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "course_id": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "questions"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Quiz content."
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "title",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "creation",
+                        "description": "Must be the string creation. A project source cannot be written with this tool."
+                      },
+                      "description": {
+                        "description": "Optional short description of the creation (quiz, mock exam, or flashcard set). The note type does not have this field.",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Title shown to the learner. At least 1 character."
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "mockExam"
+                      },
+                      "content": {
+                        "type": "object",
+                        "properties": {
+                          "exam_json": {
+                            "type": "object",
+                            "properties": {
+                              "schema_version": {
+                                "type": "string",
+                                "const": "0.8"
+                              },
+                              "title": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "front_matter": {
+                                "type": "object",
+                                "properties": {
+                                  "instructions_markdown": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "content": {
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "kind": {
+                                          "type": "string",
+                                          "const": "section"
+                                        },
+                                        "id": {
+                                          "type": "string",
+                                          "minLength": 1
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "minLength": 1
+                                        },
+                                        "question_type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "mcq",
+                                            "multi_select",
+                                            "true_false",
+                                            "fill_in_blank",
+                                            "text_answer_short",
+                                            "text_answer_long"
+                                          ],
+                                          "description": "Question type: mcq, multi_select, true_false, fill_in_blank, text_answer_short, or text_answer_long. Use mcq, not multiple_choice."
+                                        },
+                                        "instructions": {
+                                          "type": "string",
+                                          "minLength": 1
+                                        }
+                                      },
+                                      "required": [
+                                        "kind",
+                                        "id",
+                                        "question_type"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "kind": {
+                                          "type": "string",
+                                          "const": "stimulus"
+                                        },
+                                        "id": {
+                                          "type": "string",
+                                          "minLength": 1
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "minLength": 1
+                                        },
+                                        "stimulus_markdown": {
+                                          "type": "string",
+                                          "minLength": 1
+                                        }
+                                      },
+                                      "required": [
+                                        "kind",
+                                        "id",
+                                        "stimulus_markdown"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "oneOf": [
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "const": "question"
+                                            },
+                                            "id": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "section_id": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "mcq",
+                                                "multi_select",
+                                                "true_false"
+                                              ]
+                                            },
+                                            "marks": {
+                                              "type": "number",
+                                              "minimum": 0
+                                            },
+                                            "question_markdown": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "stimulus_id_refs": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            },
+                                            "options": {
+                                              "minItems": 2,
+                                              "type": "array",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string",
+                                                    "minLength": 1,
+                                                    "description": "Stable option id."
+                                                  },
+                                                  "text": {
+                                                    "type": "string",
+                                                    "minLength": 1,
+                                                    "description": "Option text."
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "text"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "grading": {
+                                              "type": "object",
+                                              "properties": {
+                                                "correct_answer_ids": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                "correct_answer": {
+                                                  "type": "string"
+                                                },
+                                                "model_answer": {
+                                                  "type": "string",
+                                                  "minLength": 1
+                                                },
+                                                "key_points": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "model_answer"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "topics": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "kind",
+                                            "id",
+                                            "section_id",
+                                            "type",
+                                            "marks",
+                                            "question_markdown",
+                                            "options"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "const": "question"
+                                            },
+                                            "id": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "section_id": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "const": "fill_in_blank"
+                                            },
+                                            "marks": {
+                                              "type": "number",
+                                              "minimum": 0
+                                            },
+                                            "question_markdown": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "stimulus_id_refs": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            },
+                                            "template_markdown": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "string"
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            },
+                                            "blanks": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  },
+                                                  "label": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "grading": {
+                                              "type": "object",
+                                              "properties": {
+                                                "correct_answer_ids": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                "correct_answer": {
+                                                  "type": "string"
+                                                },
+                                                "model_answer": {
+                                                  "type": "string",
+                                                  "minLength": 1
+                                                },
+                                                "key_points": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "model_answer"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "topics": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "kind",
+                                            "id",
+                                            "section_id",
+                                            "type",
+                                            "marks",
+                                            "question_markdown"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "kind": {
+                                              "type": "string",
+                                              "const": "question"
+                                            },
+                                            "id": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "section_id": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "text_answer_short",
+                                                "text_answer_long"
+                                              ]
+                                            },
+                                            "marks": {
+                                              "type": "number",
+                                              "minimum": 0
+                                            },
+                                            "question_markdown": {
+                                              "type": "string",
+                                              "minLength": 1
+                                            },
+                                            "stimulus_id_refs": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            },
+                                            "grading": {
+                                              "type": "object",
+                                              "properties": {
+                                                "correct_answer_ids": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                "correct_answer": {
+                                                  "type": "string"
+                                                },
+                                                "model_answer": {
+                                                  "type": "string",
+                                                  "minLength": 1
+                                                },
+                                                "key_points": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "model_answer"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "topics": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "string",
+                                                    "minLength": 1
+                                                  }
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "kind",
+                                            "id",
+                                            "section_id",
+                                            "type",
+                                            "marks",
+                                            "question_markdown"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "schema_version",
+                              "title",
+                              "content"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "exam_json"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Mock exam content."
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "title",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "creation",
+                        "description": "Must be the string creation. A project source cannot be written with this tool."
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "description": "Note title. 1-255 characters."
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "note"
+                      },
+                      "content": {
+                        "type": "object",
+                        "properties": {
+                          "html": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "Complete HTML document for the note body (max 1 MiB UTF-8)."
+                          }
+                        },
+                        "required": [
+                          "html"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Note content."
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "title",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "creation",
+                        "description": "Must be the string creation. A project source cannot be written with this tool."
+                      },
+                      "description": {
+                        "description": "Optional short description of the creation (quiz, mock exam, or flashcard set). The note type does not have this field.",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Title shown to the learner. At least 1 character."
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "flashcard"
+                      },
+                      "content": {
+                        "type": "object",
+                        "properties": {
+                          "flashcards_json": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "flashcards": {
+                                "minItems": 1,
+                                "maxItems": 200,
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "front": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "back": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "front",
+                                    "back"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "description",
+                              "flashcards"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "flashcards_json"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Flashcard set content."
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "title",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "The creation to save. type is quiz, mockExam, note, or flashcard. Each type has its own content shape. kind must be creation."
+              }
+            },
+            "required": [
+              "project_id",
+              "artifact"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "artifactId": {
+                "type": "string",
+                "description": "Canonical Studocu artifact URI for the created creation."
+              },
+              "kind": {
+                "type": "string",
+                "const": "creation",
+                "description": "Artifact kind returned by the write operation."
+              },
+              "projectId": {
+                "type": "string",
+                "description": "UUID of the Studocu project that owns the created artifact."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "quiz",
+                  "mockExam",
+                  "note",
+                  "flashcard"
+                ],
+                "description": "Creation type that was written."
+              },
+              "title": {
+                "type": "string",
+                "description": "Human-readable title of the created artifact."
+              },
+              "status": {
+                "type": "string",
+                "const": "created",
+                "description": "Stable write status for successful creation writes."
+              },
+              "url": {
+                "description": "Studocu web link that opens this item in its project. Share it with the user.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "artifactId",
+              "kind",
+              "projectId",
+              "type",
+              "title",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "add-document-sources",
+          "title": "Add Studocu Document Sources",
+          "description": "Attach up to 10 Studocu documents from search-documents to a project as project sources. Returns the added sources with their studocu:// ids; compare with document_ids if some are missing.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "description": "UUID of the project that should receive the Studocu documents. Example: 11111111-1111-4111-8111-111111111111. From create-project or get-context."
+              },
+              "document_ids": {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "description": "1 to 10 different positive integer Studocu document ids from search-documents (documents[].id). Example: [17, 42]."
+              }
+            },
+            "required": [
+              "project_id",
+              "document_ids"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "document_id": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "status": {
+                      "type": "string",
+                      "const": "completed"
+                    },
+                    "url": {
+                      "description": "Studocu web link that opens this source in its project. Share it with the user.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "source_id",
+                    "document_id",
+                    "title",
+                    "status"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "project_id",
+              "sources"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "create-project",
+          "title": "Create Studocu Project",
+          "description": "Create a new project. Every field is optional. Returns project_id for add-document-sources, write-artifact, and request-creation.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "Name, 1-255 characters, with at least one non-space character. Example: \"Biology midterm\". Omit to create the project without a name; the returned title is then \"Untitled project\".",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "\\S"
+              },
+              "emoji": {
+                "description": "Icon text, usually an emoji. Example: \"📚\". Omit to leave the icon unset.",
+                "type": "string",
+                "minLength": 1
+              },
+              "course_id": {
+                "description": "Positive integer course id from search-courses. Example: 1581710. The course is checked before the project is created; an unknown id creates nothing. Omit to leave the project unlinked.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "description": "UUID string in 8-4-4-4-12 hexadecimal form. Example: 11111111-1111-4111-8111-111111111111."
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Agent-displayable project title. Null Alpha names become \"Untitled project\"."
+              },
+              "is_mobile": {
+                "type": "boolean"
+              },
+              "emoji": {
+                "type": "string",
+                "minLength": 1
+              },
+              "course_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "institution_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string",
+                "description": "Studocu web link to the project, for the user to open. Returned to external MCP clients only."
+              }
+            },
+            "required": [
+              "project_id",
+              "title",
+              "is_mobile",
+              "emoji",
+              "course_id",
+              "institution_id"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "update-project",
+          "title": "Update Studocu Project",
+          "description": "Change the name, icon, or linked course of an existing project. Pass course_id null to unlink the course.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "description": "UUID of the project to change. Example: 11111111-1111-4111-8111-111111111111. From create-project or get-context."
+              },
+              "title": {
+                "description": "New name, 1-255 characters, with at least one non-space character. Example: \"Biology midterm\". Omit to leave the name unchanged.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "\\S"
+              },
+              "emoji": {
+                "description": "New icon text, usually an emoji. Example: \"📚\". Omit to leave it unchanged.",
+                "type": "string",
+                "minLength": 1
+              },
+              "course_id": {
+                "description": "Positive integer course id from search-courses, or null to unlink the course. Example: 1581710. Omit to leave the link unchanged.",
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "additionalProperties": false,
+            "minProperties": 2,
+            "anyOf": [
+              {
+                "required": [
+                  "title"
+                ]
+              },
+              {
+                "required": [
+                  "emoji"
+                ]
+              },
+              {
+                "required": [
+                  "course_id"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": true,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "description": "UUID string in 8-4-4-4-12 hexadecimal form. Example: 11111111-1111-4111-8111-111111111111."
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Agent-displayable project title. Null Alpha names become \"Untitled project\"."
+              },
+              "is_mobile": {
+                "type": "boolean"
+              },
+              "emoji": {
+                "type": "string",
+                "minLength": 1
+              },
+              "course_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "institution_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string",
+                "description": "Studocu web link to the project, for the user to open. Returned to external MCP clients only."
+              }
+            },
+            "required": [
+              "project_id",
+              "title",
+              "is_mobile",
+              "emoji",
+              "course_id",
+              "institution_id"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "request-creation",
+          "title": "Generate Quiz or Mock Exam",
+          "description": "Ask Studocu to generate a quiz or mock exam from 1 to 10 project sources. Can take about 3 minutes. If status is creating or outcome_unknown, check get-project-state before calling again.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "description": "UUID of the project that owns the project sources. Example: 11111111-1111-4111-8111-111111111111. From create-project or get-context."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "quiz",
+                  "mockExam"
+                ],
+                "description": "What to generate: quiz or mockExam."
+              },
+              "artifact_ids": {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "1 to 10 different project source ids to generate from. Each id looks like studocu://project/{project_id}/source/{uuid} and must belong to project_id. Get them from add-document-sources or get-project-state. Do not pass creation ids."
+              },
+              "instruction": {
+                "description": "Optional hint, 1-6000 characters. Example: \"focus on chapter 3\". Omit for a general quiz or mock exam.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 6000
+              },
+              "idempotency_key": {
+                "description": "Optional retry key, 1-256 characters. Send the same key when you retry the same request. A different request body with a used key is rejected. Omit to let Studocu derive a key from the request; identical retries still count as the same request.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
+            },
+            "required": [
+              "project_id",
+              "type",
+              "artifact_ids"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "artifact_id": {
+                "description": "Agent OS artifact ID of the new creation. Present when status is created.",
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "quiz",
+                  "mockExam"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "creating",
+                  "outcome_unknown"
+                ],
+                "description": "created: saved, with artifact_id and external_id. creating: generation finished but the new creation is not linked yet; match external_id on get-project-state. outcome_unknown: the call timed out or a duplicate is still running; check get-project-state and do not send a new retry key. Failures come back as errors, not as a status."
+              },
+              "external_id": {
+                "description": "Quiz id or mock-exam id. Present when status is created or creating. Match it on get-project-state. Omitted when the call times out.",
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "url": {
+                "description": "Studocu web link for the user: the creation when status is created, otherwise its project. Share it with the user.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "read-memory",
+          "title": "Read Studocu Agent Memory",
+          "description": "Read memories saved for this signed-in learner: one per scope and kind.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "scope": {
+                "description": "Which memories to read: global (learner-wide), project (one project), or both. If omitted, the scope is both when project_id is a UUID, otherwise global.",
+                "type": "string",
+                "enum": [
+                  "global",
+                  "project",
+                  "both"
+                ]
+              },
+              "project_id": {
+                "description": "UUID of the project, or null. Example: 11111111-1111-4111-8111-111111111111. Required when scope is project or both. Omit or null for learner-wide memories. Ignored when scope is global.",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "kind": {
+                "description": "Return only this kind. Example: \"study_preference\". Omit to return every saved memory in the chosen scope.",
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "memories": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "description": "Memory kind for this document."
+                    },
+                    "projectId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Owning project UUID, or null for global memory."
+                    },
+                    "value": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {},
+                      "description": "Freeform memory document."
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "Last time this memory document changed."
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "projectId",
+                    "value",
+                    "updatedAt"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Durable memory documents for the authenticated user."
+              }
+            },
+            "required": [
+              "memories"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "write-memory",
+          "title": "Write Studocu Agent Memory",
+          "description": "Save one memory (a preference or project fact) for this learner. Writing the same kind again replaces it.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "description": "UUID of the project this memory belongs to, or null. Example: 11111111-1111-4111-8111-111111111111. Omit or null to store a learner-wide memory.",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Kind for this memory. At least 1 character. Example: \"study_preference\" or \"project_learning_context\". Writing the same kind again replaces the previous memory."
+              },
+              "value": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {},
+                "description": "JSON object to store. Usual shape: { \"content\": \"the memory text\" }. Other keys are allowed."
+              }
+            },
+            "required": [
+              "kind",
+              "value"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": true,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "Owner of the memory document."
+              },
+              "projectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Owning project UUID, or null for global memory."
+              },
+              "kind": {
+                "type": "string",
+                "description": "Memory kind that was written."
+              },
+              "value": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {},
+                "description": "Stored memory document."
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "Creation timestamp of the row."
+              },
+              "updatedAt": {
+                "type": "string",
+                "description": "Last write timestamp of the row."
+              }
+            },
+            "required": [
+              "userId",
+              "projectId",
+              "kind",
+              "value",
+              "createdAt",
+              "updatedAt"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "delete-memory",
+          "title": "Delete Studocu Agent Memory",
+          "description": "Delete one saved memory for this learner, chosen by project_id and kind.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "description": "UUID of the project memory to delete, or null. Example: 11111111-1111-4111-8111-111111111111. Omit or null to delete a learner-wide memory.",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Kind of the memory to delete. Example: \"study_preference\" or \"project_learning_context\"."
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "openWorldHint": false,
+            "destructiveHint": true,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp:use"
+                ]
+              }
+            ]
+          },
+          "outputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "Owner of the deleted memory document."
+              },
+              "projectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Owning project UUID, or null for global memory."
+              },
+              "kind": {
+                "type": "string",
+                "description": "Memory kind that was deleted."
+              },
+              "deleted": {
+                "type": "boolean",
+                "const": true,
+                "description": "Always true when the delete succeeds."
+              }
+            },
+            "required": [
+              "userId",
+              "projectId",
+              "kind",
+              "deleted"
+            ],
+            "additionalProperties": false
+          },
+          "securitySchemes": [
+            {
+              "type": "oauth2",
+              "scopes": [
+                "mcp:use"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
