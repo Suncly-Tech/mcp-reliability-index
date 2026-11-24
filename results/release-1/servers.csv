@@ -1,0 +1,446 @@
+tranco_rank,tranco_domain,registry_name,title,domain,terms_verdict,registry_version,url,transport,server_info_name,server_info_version,protocol_version,read_at_utc,tools_total,m3_tokens,m3_rank,m4_tools_labelled,m4_share,m4_rank,m5_tools_undescribed,m5_tools_share,m5_tools_rank,m5_params_total,m5_params_undescribed,m5_params_share,m5_params_rank,tool_list_sha256,excluded_reason
+2,cloudflare.com,com.cloudflare.mcp/mcp,,mcp.cloudflare.com,,1.0.0,https://docs.mcp.cloudflare.com/mcp,streamable-http,docs-ai-search,0.5.0,2025-06-18,2026-11-23T16:56:54Z,2,407,6,2,1.0,1,0,0.0,1,1,1,1.0,96,474ea5ab2c038e904d1b921fe2b8d5d0e769f5cafa1729d76a7b802128b174e4,
+8,microsoft.com,com.microsoft/microsoft-learn-mcp,Microsoft Learn MCP,microsoft.com,,1.0.0,https://learn.microsoft.com/api/mcp,streamable-http,Microsoft Learn MCP Server,1.0.0,2025-06-18,2026-11-23T16:57:00Z,3,972,26,3,1.0,1,0,0.0,1,4,0,0.0,1,b42695bd3fabafaf9ed7583b262496d45e88fdf7aaa2bd6553c59d399e3a1c9f,
+343,autodesk.com,com.autodesk.aps.api/product-help-mcp,Autodesk Product Help MCP,api.aps.autodesk.com,,1.0.12,https://api.aps.autodesk.com/knowledge/public/v1/mcp,streamable-http,autodesk-knowledge-public-v1-mcp-server,1.0.13,2025-06-18,2026-11-23T16:57:10Z,2,4199,55,2,1.0,1,0,0.0,1,7,0,0.0,1,a07add63551db0ebbffdf9888bd05cd5e558a02195aa74942c7b4799859d313e,
+753,hugedomains.com,com.hugedomains/catalog,HugeDomains: premium domain names for sale,hugedomains.com,,1.0.75,https://api.hugedomains.com/public/v1/mcp,streamable-http,hugedomains,1.0.85,2025-06-18,2026-11-23T16:57:24Z,4,902,23,4,1.0,1,0,0.0,1,10,0,0.0,1,cd903b61f3c4051860556fcc30abece6bebaa216fc5eb1b52343ed09c765efca,
+826,fiverr.com,com.fiverr/mcp,Fiverr,fiverr.com,,1.0.0,https://mcp.fiverr.com/mcp,streamable-http,Fiverr-MCP,1.0.0,2025-06-18,2026-11-23T16:57:33Z,9,4519,57,9,1.0,1,0,0.0,1,23,7,0.3043,88,63602d911b4a584f98dbd5a1280c698359a319abf50abb4ca6df925a05449153,
+1157,siemens.com,com.siemens.mcp/siemens,Siemens,mcp.siemens.com,,1.20261117.1,https://mcp.siemens.com/mcp,streamable-http,siemens-mcp-server,2026-11-20-dd27255,2025-06-18,2026-11-23T16:57:44Z,5,11237,82,5,1.0,1,0,0.0,1,45,0,0.0,1,d4e2189914142dd0ef3019dd0d2c7ae521624cc7f5af0781b2a25be30e1f029b,
+1808,sslip.io,io.sslip.128.221.67.45.agent-exec/agent-exec,agent-exec,agent-exec.45.67.221.128.sslip.io,,0.2.0,https://agent-exec.45.67.221.128.sslip.io/mcp,streamable-http,agent-exec,0.1.0,2025-06-18,2026-11-23T16:57:52Z,32,11550,84,32,1.0,1,0,0.0,1,93,0,0.0,1,377476ccd4af1f7951e815b219c296d4e6992520bd64bfcc8eb8e6363954fc33,
+1900,claude.com,com.claude.platform/docs,Claude Platform Docs,platform.claude.com,,1.0.1,https://platform.claude.com/docs/mcp,streamable-http,claude-platform-docs,1.0.1,2025-06-18,2026-11-23T16:57:58Z,4,1519,33,4,1.0,1,0,0.0,1,13,0,0.0,1,26505148868fa3be8991881250e783e862c87cf2ddcb4537db9b76b795cab009,
+2079,thousandeyes.com,com.thousandeyes/mcp,ThousandEyes MCP,thousandeyes.com,,1.0.0,https://api.thousandeyes.com/mcp-public,streamable-http,thousandeyes-mcp-open,0.0.17,2025-06-18,2026-11-23T16:58:04Z,2,626,16,2,1.0,1,0,0.0,1,4,0,0.0,1,862bdab85eae0de1c5236f96342acea70a11264180eb3903de9a483d2f150db3,
+2407,gameanalytics.com,com.gameanalytics/analytics-docs,GameAnalytics Documentation,gameanalytics.com,,1.0.0,https://mcp.docs.gameanalytics.com,streamable-http,gameanalytics-docs,1.0.0,2025-06-18,2026-11-23T16:58:58Z,2,239,4,0,0.0,91,0,0.0,1,3,0,0.0,1,239dc90c535ce83627727af6e6a7621cf4cba3fd0a6f1261bc3d958f5628b471,
+2942,atom.com,com.atom/premium-domains,Atom.com — Premium Domains,atom.com,,2.0.7,https://mcp.atom.com/mcp,streamable-http,atom-marketplace-mcp-server,2.0.0,2025-06-18,2026-11-23T16:59:11Z,25,15578,88,25,1.0,1,0,0.0,1,97,2,0.0206,60,7fc983568269dd5e5ad8d30dcd0e4c84bdc4b6e15ffe037c650264ec474e3109,
+4263,studocu.com,com.studocu/studocu,Studocu,studocu.com,,1.0.0,https://agent-os-mcp.alpha.studocu.com/mcp,streamable-http,agent-os-service,0.0.1,2025-06-18,2026-11-23T16:59:24Z,20,16647,91,20,1.0,1,0,0.0,1,53,0,0.0,1,9c7938b4ab69e2b7c71bbb1cfeaca42ae273df5447bfe5fc259bd6679107b080,
+4875,wolfram.com,com.wolfram/mcp,,wolfram.com,,1.0.1,https://agenttools.wolfram.com/mcp,streamable-http,Wolfram,2026.09.15,2025-03-26,2026-11-23T16:59:31Z,3,495,10,3,1.0,1,0,0.0,1,4,0,0.0,1,2a4e6885552ef1887d04792e29abf4d6ed4e40c59634cfbdce45ade47d4bd3ca,
+5516,infobip.com,com.infobip/mcp,,infobip.com,,2.0.0,https://mcp.infobip.com/search,streamable-http,Infobip Search MCP server,1.9.3,2025-06-18,2026-11-23T16:59:40Z,1,167,2,1,1.0,1,0,0.0,1,1,0,0.0,1,fd382b6f0ce9addb258e655c4647630eab9c56587599a071efe7b883afe19408,
+5680,etherscan.io,io.etherscan/etherscan-mcp,Etherscan,etherscan.io,,2.3.0,https://mcp-keyless.etherscan.io/mcp,streamable-http,etherscan-mcp,2.4.0,2025-06-18,2026-11-23T16:59:48Z,17,6702,66,17,1.0,1,0,0.0,1,70,9,0.1286,71,9c701d0193fcfcf339282191d9fa7c49f341f344b53dc141b10c06af88826576,
+6593,dm.de,de.dm.mcp/dm-drogerie-markt,,mcp.dm.de,,1.0.0,https://mcp.dm.de/mcp,streamable-http,dm-drogeriemarkt,4.2.3,2025-06-18,2026-11-23T16:59:57Z,5,2719,46,5,1.0,1,0,0.0,1,11,0,0.0,1,6bb1b3503132574fe10f09ff302dbcfb26173a0728b66abb51a648d4a6465e15,
+7335,clutch.co,co.clutch/mcp,Clutch.co,clutch.co,,1.0.3,https://bot.clutch.co/mcp,streamable-http,Clutch,3.4.11,2025-06-18,2026-11-23T17:00:06Z,5,4891,59,5,1.0,1,0,0.0,1,26,2,0.0769,66,60b3fa3698f4726e02b68319e696507e51e0375fa2a77a7b01e38b507d5a3473,
+8259,paytm.com,com.paytm.travel/discovery,Paytm Travel,travel.paytm.com,,3.4.7,https://travel.paytm.com/mcp/mcp,streamable-http,Paytm Travel,3.4.11,2025-06-18,2026-11-23T17:00:17Z,10,16235,89,10,1.0,1,0,0.0,1,81,22,0.2716,83,22b8c9a4c4c035c3815b22e2957373107e3fda63ee9c487feefa055270212995,
+9217,qt.io,io.qt.qt-docs-mcp/qt-documentation,Qt Documentation,qt-docs-mcp.qt.io,,0.4.0,https://qt-docs-mcp.qt.io/mcp,streamable-http,qt-docs-server,0.3.0,2025-11-25,2026-11-23T17:00:23Z,2,809,21,2,1.0,1,0,0.0,1,11,0,0.0,1,f0c2e2b1dacf1771db292a27b37fa88b8b1800e1469d9beeecf9d2f2afa47631,
+11283,trivago.com,com.trivago.mcp/mcp,trivago,mcp.trivago.com,,0.6.0,https://mcp.trivago.com/mcp,streamable-http,trivago Accommodation Search,0.6.0,2025-06-18,2026-11-23T17:00:39Z,3,7154,71,3,1.0,1,0,0.0,1,36,0,0.0,1,581a564a2c4a2c62e250f8b9f3637e328b280a7e4139b7c71294f74e8587e89e,
+11821,zola.com,com.zola/zola,Zola,zola.com,,1.0.57,https://mcp.zola.com/mcp,streamable-http,web-mcp,1.0.57,2025-06-18,2026-11-23T17:00:47Z,32,26035,97,32,1.0,1,0,0.0,1,70,0,0.0,1,7b79a46bcb077c9800fedeedb88d8c1b1865234849b81d31412a14055ddec82a,
+12199,imagekit.io,io.imagekit/devtools,ImageKit DevTools,imagekit.io,,1.0.0,https://devtools-mcp.imagekit.io/mcp,streamable-http,ImageKit,3.3.1,2025-06-18,2026-11-23T17:00:58Z,2,354,5,0,0.0,91,0,0.0,1,5,0,0.0,1,4fe269fb73af8c6d5f8f26ba9d6055fa4e647c7fcdb8f64ea44a06f1cb92d5eb,
+12672,wego.com,com.wego.mcp/mcp,Wego,mcp.wego.com,,1.0.0,https://mcp.wego.com/public-app/v1/mcp,streamable-http,wego,1.0.0,2025-06-18,2026-11-23T17:01:07Z,10,8659,74,10,1.0,1,0,0.0,1,63,0,0.0,1,c74f9a7d21d67e42221093b84bc19788487901730ad3e64210a4e142aba4ca79,
+13840,creativemarket.com,com.creativemarket/creative-market,Creative Market,creativemarket.com,,0.5.0,https://mcp.creativemarket.com/mcp,streamable-http,pointguard-mcp,0.5.0,2025-06-18,2026-11-23T17:01:20Z,9,3751,52,9,1.0,1,0,0.0,1,57,0,0.0,1,5d9612dca55b08b097e80376beeb2aedd779c6a2dcff4a590fbb54e48bf91ba5,
+13959,bestprice.gr,gr.bestprice/mcp,BestPrice,bestprice.gr,,1.9.0,https://mcp.bestprice.gr/mcp,streamable-http,bestprice-agent-commerce,1.9.0,2025-06-18,2026-11-23T17:01:26Z,6,29351,99,6,1.0,1,0,0.0,1,31,0,0.0,1,f61baa151ac26039c8fd4016245d71bc5da444f1e490e8c7744fcfbf74781508,
+13963,ezoic.com,com.ezoic/setup,Ezoic Setup Assistant,ezoic.com,,1.0.0,https://setup-agent.ezoic.com/mcp,streamable-http,Ezoic Setup,1.0.0,2025-06-18,2026-11-23T17:01:32Z,4,651,18,4,1.0,1,0,0.0,1,13,0,0.0,1,6b8305afccd5ad9c60bff904ff41d8dce120e7f6a060f938e5add24042ed07bf,
+15202,plati.market,market.plati.mcp/digimarket,Plati.Market,mcp.plati.market,,1.1.0,https://mcp.plati.market/mcp,streamable-http,digimarket-mcp,1.0.0,2025-06-18,2026-11-23T17:01:46Z,2,469,8,0,0.0,91,0,0.0,1,7,0,0.0,1,77421178ed75d67d8db6de261d3c3eafeafbe53e657c277389f083f8529c62c9,
+15858,mariadb.com,com.mariadb/mariadb-docs,MariaDB Documentation,mariadb.com,,1.0.0,https://mariadb.com/docs/~gitbook/mcp,streamable-http,mariadb.com/docs/~gitbook/mcp,0.28.2,2025-06-18,2026-11-23T17:01:52Z,3,748,20,3,1.0,1,0,0.0,1,5,1,0.2,77,60d3e37a29197928230f455b2e7963468ad2cdf8c2be6e5a390a408432eb681c,
+16659,proz.com,com.proz/remoto,Remoto interpreting (ProZ.com),proz.com,,1.1.3,https://www.proz.com/remoto/api/mcp,streamable-http,remoto,1.1.3,2025-06-18,2026-11-23T17:02:04Z,9,5556,61,9,1.0,1,0,0.0,1,35,4,0.1143,69,5db1221def52f22503f7de3469caa6b28c773b1bfbdd8a2bad3b2c2878d33b98,
+16855,fusionauth.io,io.fusionauth/mcp-docs,,fusionauth.io,,1.0.0,https://ai.fusionauth.dev/mcp/docs,streamable-http,fusionauth-docs-mcp,1.0.0,2025-06-18,2026-11-23T17:02:11Z,2,155,1,0,0.0,91,0,0.0,1,2,0,0.0,1,704c688b2f48250fb55a823ecd4ca1840ee3742d9f656d9cabe576157549fd32,
+16963,lottiefiles.com,com.lottiefiles/generative-icons,Generative Icons,lottiefiles.com,,0.1.1,https://generativeicons.com/mcp,streamable-http,generative-icons,0.1.1,2025-06-18,2026-11-23T17:02:18Z,6,1133,28,6,1.0,1,0,0.0,1,7,1,0.1429,73,efafd622e37647e8960ad89539d6a757c3c1dd02c642f8ff19898b1d6a4b06fe,
+18315,tipranks.com,com.tipranks/tipranks,TipRanks,tipranks.com,,1.2.0,https://mcp.tipranks.com/mcp,streamable-http,TipRanksMCP,,2025-06-18,2026-11-23T17:02:30Z,71,23235,96,71,1.0,1,0,0.0,1,139,87,0.6259,93,6ace4647e5d0daa17350b1681a5ddaf745b3d170094c6298f538d79921fca4d3,
+19323,blockscout.com,com.blockscout/mcp-server,,blockscout.com,,0.19.0,https://mcp.blockscout.com/mcp,streamable-http,blockscout-mcp-server,1.26.0,2025-06-18,2026-11-23T17:02:58Z,16,16624,90,16,1.0,1,0,0.0,1,64,0,0.0,1,564d100f77ef6e45f1302a1b0516da812a23944f679741c040f17696cb90f874,
+19517,exa.ai,ai.exa/exa,Exa,exa.ai,,3.5.1,https://mcp.exa.ai/mcp,streamable-http,exa-search-server,3.5.1,2025-06-18,2026-11-23T17:03:04Z,2,549,12,2,1.0,1,0,0.0,1,5,0,0.0,1,6587e14bd03231057fdb183b6c1317d0e3d2219335b66f07855b4b1e6a7ef48b,
+19568,opensubtitles.com,com.opensubtitles/guessit-js,guessit-js,opensubtitles.com,,5.3.2,https://guessit.opensubtitles.com/mcp,streamable-http,guessit-js,5.3.2,2025-06-18,2026-11-23T17:03:10Z,3,822,22,3,1.0,1,0,0.0,1,4,1,0.25,79,31d7f8f398cefd7c4fe557cb20ef404a3415b201aa7ce609f8e7a6dfc5fac9d8,
+21571,theresanaiforthat.com,com.theresanaiforthat/taaft,There's An AI For That,theresanaiforthat.com,,1.0.0,https://theresanaiforthat.com/mcp-server,streamable-http,There's An AI For That,1.5.0,2025-06-18,2026-11-23T17:03:55Z,37,21129,95,37,1.0,1,0,0.0,1,152,42,0.2763,86,213c084f0a4e19298999f82525d1f3714c3c27719a7d95df73c478e26b347ed5,
+25459,trend.az,az.trend/news,Trend News Agency,trend.az,,0.3.0-M2,https://api.trend.az/mcp,streamable-http,trendaz,0.3.0-M2,2025-06-18,2026-11-23T17:04:11Z,13,3881,53,13,1.0,1,0,0.0,1,43,0,0.0,1,9aedf0b8e6ea34c2cd2b94c7a011e74f4f632a5ffa7b5b47a813c36f71dd1a07,
+26077,schedjoules.com,com.schedjoules/calendars,SchedJoules Calendars,schedjoules.com,,1.0.0,https://www.schedjoules.com/mcp,streamable-http,schedjoules,1.0.0,2025-06-18,2026-11-23T17:04:52Z,3,449,7,3,1.0,1,0,0.0,1,3,0,0.0,1,434ba779fd0c6189539868f6c8aa4e0b797a73ecc337bce0b3785cb73b5a2c41,
+27272,reqres.in,in.reqres/reqres,ReqRes,reqres.in,,1.0.0,https://reqres.in/mcp,streamable-http,reqres,1.0.0,2025-06-18,2026-11-23T17:05:00Z,12,2298,42,12,1.0,1,0,0.0,1,32,8,0.25,79,d47592cfcc45cee16072dd41a29cb01f36f9067ab3f1e09e58d69430de279c7d,
+28533,hankookilbo.com,com.hankookilbo.mcp/hankookilbo-mcp,한국일보 뉴스 (Hankookilbo),mcp.hankookilbo.com,,1.0.1,https://mcp.hankookilbo.com/mcp,streamable-http,한국일보 뉴스 (Hankookilbo),1.30.0,2025-06-18,2026-11-23T17:05:14Z,10,10552,80,10,1.0,1,0,0.0,1,11,0,0.0,1,f7ec4d9b6786f897d4609de10ddffa5066f6e5c195c04698a08e1dc04b28602d,
+28972,talkjs.com,com.talkjs/talkjs,TalkJS,talkjs.com,,0.1.2,https://mcp.talkjs.com/mcp,streamable-http,talkjs,0.1.0,2025-06-18,2026-11-23T17:05:19Z,8,1606,36,8,1.0,1,0,0.0,1,9,0,0.0,1,5082fbc5da3e2c7ecc4da0cce7310e596bc12b9b9f46723252e414844c69b661,
+29542,mintlify.com,com.mintlify/searchmcp,Mintlify Docs,mintlify.com,,1.0.0,https://www.mintlify.com/docs/mcp,streamable-http,Mintlify,1.0.0,2025-06-18,2026-11-23T17:05:28Z,3,1358,32,3,1.0,1,0,0.0,1,5,0,0.0,1,bcb22bc3ef2a6c1fc6c17f7a4408ecaa85fde7c56488e23ab9ac3b55acef027d,
+30069,draw.io,io.draw/mcp,draw.io,draw.io,,1.10.0,https://mcp.draw.io/mcp,streamable-http,drawio-mcp-app,1.10.0,2025-06-18,2026-11-23T17:05:33Z,4,3505,50,4,1.0,1,0,0.0,1,14,3,0.2143,78,1dc7359c174cdde049d138eb8c6fa47a79d1fdc43a18fd0ab4c9507daea5ff0f,
+30630,devexpress.com,com.devexpress/docs,DevExpress Documentation,devexpress.com,,1.2.2,https://api.devexpress.com/mcp/docs,streamable-http,DevExpress Documentation Search,1.2.2,2025-06-18,2026-11-23T17:05:43Z,2,606,14,2,1.0,1,0,0.0,1,3,0,0.0,1,5291c6843cfd4a5acbd45fb4e8da085d4084182d4d0e4552c9c6091575ca427c,
+31778,riddle.com,com.riddle/creator,Riddle,riddle.com,,1.0.2,https://www.riddle.com/creator/api/v3/mcp,streamable-http,Riddle Creator,1.0,2025-06-18,2026-11-23T17:05:51Z,48,27910,98,48,1.0,1,0,0.0,1,157,0,0.0,1,d24630454f65e1f29d19097fb67ababd6142367ebad65f3bf91f2552358c3a5a,
+32041,peek.com,com.peek/mcp,,peek.com,,0.1.0,https://mcp.peek.com,streamable-http,Experiences MCP,1.0.0,2025-03-26,2026-11-23T17:05:59Z,6,712,19,0,0.0,91,0,0.0,1,15,0,0.0,1,30ece8313a73469e03b95157715fe736f547c7a8ad560b8d8355eefac6c3ffb2,
+32141,svelte.dev,dev.svelte/mcp,Svelte MCP,svelte.dev,,0.1.31,https://mcp.svelte.dev/mcp,streamable-http,Svelte MCP,0.0.1,2025-06-18,2026-11-23T17:06:06Z,4,12653,86,4,1.0,1,0,0.0,1,8,1,0.125,70,db6c4c940df1d856801f96ed7461e5b1a9a5a8f9ac5bcc4b372cc9a03a4d3160,
+35303,gamedev.net,net.gamedev/mcp,GameDev.net,gamedev.net,,1.1.0,https://gamedev.net/mcp,streamable-http,gamedev-net,1.1.0,2025-03-26,2026-11-23T17:06:18Z,10,1553,35,0,0.0,91,0,0.0,1,30,9,0.3,87,569d4d0b22d2421b3da11defc650b306efe6a917a836b4fc09ff87f52300aded,
+35549,levels.fyi,fyi.levels/levels-fyi,Levels.fyi,levels.fyi,,1.0.0,https://mcp.levels.fyi,streamable-http,levels-mcp,0.1.0,2025-06-18,2026-11-23T17:06:24Z,30,9277,75,30,1.0,1,0,0.0,1,103,14,0.1359,72,39851073292e9feb36b4ad736706d7645e221e5afb4ee00c5c7369d26ec73a09,
+35938,legendsoflearning.com,com.legendsoflearning.app/catalog,Legends of Learning,app.legendsoflearning.com,,1.0.0,https://app.legendsoflearning.com/mcp,streamable-http,Legends of Learning,0.0.1,2025-06-18,2026-11-23T17:06:32Z,3,1069,27,3,1.0,1,0,0.0,1,12,5,0.4167,91,6ca4f5634328e7cddb14cce788d842144328c14e53dfd7df4ddc1888daffb503,
+36267,aave.com,com.aave/mcp,Aave MCP,aave.com,,1.0.0,https://mcp.aave.com,streamable-http,aave-mcp,1.0.0,2025-06-18,2026-11-23T17:06:39Z,56,19905,94,56,1.0,1,0,0.0,1,232,0,0.0,1,8d38e2d149373a257ca7e565684a966eabc2e1f85761cb881bea9027cf545251,
+36561,pocket.network,network.pocket/agentic-portal-mcp,Pocket Network Agentic Marketplace,pocket.network,,0.1.4,https://agent.pocket.network/mcp,streamable-http,pocket-agentic-portal,1.0.0,2025-06-18,2026-11-23T17:06:46Z,3,607,15,3,1.0,1,0,0.0,1,8,2,0.25,79,76ee836c343af82a7779c8b80f06a97e25958639da25a282b72eec0a3871aec5,
+36770,somon.tj,tj.somon/listings,Somon.tj classifieds,somon.tj,,0.1.0,https://mcp.somon.tj/mcp,streamable-http,Somon.tj listings,0.1.0,2025-06-18,2026-11-23T17:06:52Z,8,5712,63,8,1.0,1,0,0.0,1,29,8,0.2759,84,4d20a4dc35fbe5436e7b3720f71089b50fc79e04f7510abb81acb463225805b0,
+37060,nalpeiron.com,com.nalpeiron.docs/mcp,Nalpeiron Docs,docs.nalpeiron.com,,1.0.0,https://docs.nalpeiron.com/~gitbook/mcp,streamable-http,docs.nalpeiron.com/~gitbook/mcp,0.28.2,2025-06-18,2026-11-23T17:06:58Z,4,961,24,4,1.0,1,0,0.0,1,7,1,0.1429,73,d6824a01c07e941265c73029084a468428133c7efc4def3b348e5a2a969f317e,
+38080,libertycity.net,net.libertycity/mods,LC Mods,libertycity.net,,1.0.1,https://libertycity.net/agent/mcp,streamable-http,lc-mods-discovery,1.0.0,2025-06-18,2026-11-23T17:07:06Z,4,632,17,4,1.0,1,0,0.0,1,17,17,1.0,96,56750ae63d9fcc357d7106ca20682c0005e4b069f89ddb469b1173c1e82c437c,
+38324,elfhosted.com,com.elfhosted/public,ElfHosted,elfhosted.com,,0.2.4,https://mcp.elfhosted.com/mcp,streamable-http,elfhosted,0.2.14,2025-06-18,2026-11-23T17:07:12Z,10,1520,34,10,1.0,1,0,0.0,1,13,2,0.1538,75,94d0d22926ecc4a7065b9a4c5d09a7629f6f09b648a4e525b90f4d0cde474bff,
+38593,101soundboards.com,com.101soundboards/search,101 Soundboards,101soundboards.com,,1.0.1,https://www.101soundboards.com/mcp/search,streamable-http,Search,0.0.1,2025-06-18,2026-11-23T17:07:19Z,4,471,9,4,1.0,1,0,0.0,1,11,0,0.0,1,c18ce479531c1b578b37aee1e0ece2f5e4a483a04b2fae95c1f9c0d7cf5f2745,
+39698,whatjobs.com,com.whatjobs.mcp/job-search,WhatJobs Job Search,mcp.whatjobs.com,,2.3.0,https://mcp.whatjobs.com/mcp,streamable-http,WhatJobs,2.3.0,2025-06-18,2026-11-23T17:07:28Z,8,4885,58,8,1.0,1,0,0.0,1,31,31,1.0,96,91ea6a795f287d6bb442b46d2a8d02c0d265171970bfc0eafaf5e07f812d9eb0,
+41700,kari.com,com.kari/catalog,kari catalog,kari.com,,1.0.1,https://mcp.kari.com/mcp,streamable-http,kari-catalog,1.0.0,2025-06-18,2026-11-23T17:07:49Z,5,2130,41,5,1.0,1,0,0.0,1,23,4,0.1739,76,ab3aca75867276b040770b42a52a9dbaebf7bc1b8449303794479df4dabe4737,
+42594,tech.eu,eu.tech.funding/funding-explorer,Tech.eu Funding Explorer,funding.tech.eu,,1.0.0,https://funding.tech.eu/api/mcp,streamable-http,techeu-funding-explorer,1.0.0,2025-06-18,2026-11-23T17:07:57Z,8,2454,43,8,1.0,1,0,0.0,1,42,3,0.0714,65,77c06a5ff0188868e9ac6a0c54edda070a9969f0dcae04bc29bfb59cdd2ed4a3,
+42976,pga.com,com.pga/pga-golf,PGA Golf,pga.com,,1.0.0,https://mcp.pga.com/mcp,streamable-http,com.pga/pga-golf,1.0.0,2025-06-18,2026-11-23T17:08:04Z,4,5018,60,4,1.0,1,0,0.0,1,11,1,0.0909,68,93ae7bb502bda07bd4d7534a935ccdadcddc75723da5b8a8762b37f89c1b0545,
+45197,bazaraki.com,com.bazaraki/listings,Bazaraki classifieds,bazaraki.com,,0.1.0,https://mcp.bazaraki.com/mcp,streamable-http,Bazaraki listings,0.1.0,2025-06-18,2026-11-23T17:08:16Z,8,5712,63,8,1.0,1,0,0.0,1,29,8,0.2759,84,2081e5b861360d586c009bc75ac7d317e046ebda1af82df8735f93668787217f,
+45275,alphagrowth.io,io.alphagrowth/data,AlphaGrowth,alphagrowth.io,,1.1.0,https://alphagrowth.io/mcp,streamable-http,alphagrowth,0.1.0,2025-06-18,2026-11-23T17:08:22Z,38,9405,76,38,1.0,1,0,0.0,1,106,0,0.0,1,7240a2c057ae69a0999eb84993e8ef584acc704d70453d5860394e91231a8c62,
+46807,taxact.com,com.taxact/taxact-mcp,,taxact.com,,1.0.0,https://mcp.taxact.com/mcp,streamable-http,taxact,1.0.0,2025-06-18,2026-11-23T17:08:33Z,8,2689,45,8,1.0,1,0,0.0,1,32,2,0.0625,64,1e9f49ce40b3792ddde1725d714cca4515c5022944493ce62ad006ac1256871d,
+46865,coinpaprika.com,com.coinpaprika/coinpaprika,CoinPaprika,coinpaprika.com,,1.7.1,https://mcp.coinpaprika.com/streamable-http,streamable-http,CoinPaprika MCP Server,1.7.1,2025-06-18,2026-11-23T17:08:39Z,31,18472,93,31,1.0,1,0,0.0,1,107,37,0.3458,90,a944f4ca53e78a0e30dee6adba5edbca36212ea9d741c3a7ab3165f4b3d1fa0b,
+47500,windowsforum.com,com.windowsforum/mcp-server,WindowsForum MCP Server,windowsforum.com,,3.0.0,https://mcp.windowsforum.com,streamable-http,WindowsForum.com,4.2.4,2025-06-18,2026-11-23T17:08:47Z,29,6229,65,29,1.0,1,0,0.0,1,51,0,0.0,1,2df8b820fd513d70899eddc5db2ea9ce55953834d8c36466ca75f7297da2fffb,
+50096,changenow.io,io.changenow/crypto-swap,ChangeNOW,changenow.io,,2.1.1,https://mcp.changenow.io/mcp,streamable-http,chn-mcp-server,2.1.2,2025-06-18,2026-11-23T17:09:20Z,7,3740,51,7,1.0,1,0,0.0,1,39,0,0.0,1,f184601a4272ac95165a54c43cbaeb1e333d216dcfdd3ba939b71ac85a85b360,
+51813,biletyna.pl,pl.biletyna/events-search,,biletyna.pl,,2.0.0,https://biletyna.pl/mcp,streamable-http,biletyna,2.0.0,2025-11-25,2026-11-23T17:09:28Z,4,1197,29,0,0.0,91,0,0.0,1,18,0,0.0,1,afb14b24a6e3852e51d5b93fbf6d10b3e4b35bfc3ed95cddd902476e9c5621f1,
+54156,cli.im,im.cli/caoliao-scan,草料二维码 · 扫码端 (CaoLiao QR Code Scan-side),cli.im,,0.1.0,https://mcp.objqr.com/mcp,streamable-http,im.cli/qrcode,0.1.0,2025-06-18,2026-11-23T17:09:43Z,5,966,25,0,0.0,91,0,0.0,1,10,0,0.0,1,a582bc4e8d4710b07c19cd751a61dde4bea05c0608ac5374496b799c66977d78,
+54226,1inch.com,com.1inch.business/mcp,1inch MCP,business.1inch.com,,1.0.0,https://api.1inch.com/mcp/protocol,streamable-http,1inch-business,1.0.0,2025-06-18,2026-11-23T17:09:48Z,10,9720,77,10,1.0,1,0,0.0,1,81,0,0.0,1,c3f885f9e89d4900c924c74f409c784852166f2d20c140664d49b49890cc816c,
+54792,wahooart.com,com.wahooart/art-search,WahooArt Art Search & Quotation,wahooart.com,,1.1.0,https://direct.wahooart.com/mcp,streamable-http,wahooart-art-search,1.1.0,2025-06-18,2026-11-23T17:09:54Z,15,6965,69,15,1.0,1,0,0.0,1,72,0,0.0,1,880d5ec3ade7a4140161d8a400f3e54a0b02b4e457cffbafbdd710ee24f29608,
+57320,finn.com,com.finn.www/auto,FINN Auto - Car Subscription,www.finn.com,,1.0.0,https://www.finn.com/api/mcp,streamable-http,FINN Auto,1.0.0,2025-03-26,2026-11-23T17:10:02Z,5,1910,40,5,1.0,1,0,0.0,1,26,0,0.0,1,e5cb8bccc566fae570924bef0bd9bad8b2ad4541a417bf89f7947c696b83ce2e,
+57347,ferienhausmiete.de,de.ferienhausmiete/guest,Ferienhausmiete.de – Ferienwohnungen & Ferienhäuser suchen,ferienhausmiete.de,,1.0.0,https://mcp.ferienhausmiete.de,streamable-http,guest-service,1.0.0,2025-06-18,2026-11-23T17:10:08Z,4,2752,47,4,1.0,1,0,0.0,1,37,10,0.2703,82,8b73cf413481048faa821edbbf0f9dea7d339cfc09c5f50a8d8399202d0bb455,
+57401,evendo.com,com.evendo/places,Evendo Places,evendo.com,,0.2.0,https://mcp.evendo.com/mcp,streamable-http,evendo-places,0.2.0,2025-06-18,2026-11-23T17:10:14Z,6,4450,56,6,1.0,1,0,0.0,1,62,3,0.0484,61,720c8620c65409fbf3b9241665c3a99450417dcef0c9ccec4fa864fc96ed43f8,
+58618,whoppah.com,com.whoppah/commerce,Whoppah,whoppah.com,,1.1.0,https://mcp.whoppah.com/mcp,streamable-http,Whoppah Commerce MCP,1.1.0,2025-06-18,2026-11-23T17:10:24Z,7,1809,37,7,1.0,1,0,0.0,1,30,27,0.9,95,9d8b6e20fa3f3f23134ed9b498d88c5b847697d49508aac3efe6a209fff4ba81,
+62298,skiplagged.com,com.skiplagged/mcp,Skiplagged MCP,skiplagged.com,,0.0.4,https://mcp.skiplagged.com/mcp,streamable-http,@skiplagged/mcp,0.0.4,2025-06-18,2026-11-23T17:10:32Z,11,15036,87,11,1.0,1,0,0.0,1,105,2,0.019,59,9bc584a736ea0030ae0cf537ab0f91cd36f26cb7ef9bca87694c888a8c9d2547,
+62609,idescat.cat,cat.idescat/mcp,Idescat MCP Server,idescat.cat,,1.1.1,https://api.idescat.cat/mcp,streamable-http,cat.idescat/mcp,1.1.1,2025-06-18,2026-11-23T17:10:39Z,7,4111,54,0,0.0,91,0,0.0,1,23,0,0.0,1,a24c31b610886956b1540ed245505fc03326d4a5844c7584d619aa17fc1955d2,
+63005,stockcake.com,com.stockcake/stockcake,StockCake,stockcake.com,,1.6.0,https://stockcake.com/api/mcp,streamable-http,stockcake,1.6.5,2025-06-18,2026-11-23T17:10:46Z,13,10114,78,13,1.0,1,0,0.0,1,83,7,0.0843,67,7f19ee81d3396a97f1e258fe8bbbbb49fc52601470ab014b8b24ec0714fef25e,
+64476,zap-hosting.com,com.zap-hosting/zapx,ZapX by ZAP-Hosting,zap-hosting.com,,1.0.0,https://zap-hosting.com/api/mcp,streamable-http,zapx-services,1.0.0,2025-06-18,2026-11-23T17:10:53Z,233,64713,100,233,1.0,1,0,0.0,1,700,318,0.4543,92,dc314f2f4ad6365179b9339a18a694738b216fbf41497229ba2e9b0b839f972a,
+65596,robtex.com,com.robtex/mcp,,robtex.com,,1.0.0,https://mcp.robtex.com/mcp,streamable-http,Robtex,1.0.0,2025-06-18,2026-11-23T17:11:05Z,46,7288,72,46,1.0,1,0,0.0,1,77,0,0.0,1,751c50f5a2f7a4b9554306d454ae2303a40b8cbc69e4e1f2a568bb79b807f6aa,
+65881,himalayas.app,app.himalayas/mcp,Himalayas Remote Jobs,himalayas.app,,1.0.4,https://mcp.himalayas.app/mcp,streamable-http,Himalayas Remote Jobs MCP Server,1.0.0,2025-06-18,2026-11-23T17:11:11Z,78,17067,92,78,1.0,1,0,0.0,1,267,14,0.0524,62,04f0be14fbda4debde97048de6374b8807511d76ff82b5f7a0c691b0cd313989,
+67169,onlinealarmkur.com,com.onlinealarmkur/date-calculator-mcp,Date Calculator,onlinealarmkur.com,,0.3.0,https://mcp.onlinealarmkur.com,streamable-http,onlinealarmkur-date-calculator,0.3.0,2025-06-18,2026-11-23T17:11:19Z,4,6859,68,4,1.0,1,0,0.0,1,26,0,0.0,1,7dc5a6c8d56870632520ef22213926fbcba2830a37251e47dce45e0ce4ac9e90,
+68030,manofmany.com,com.manofmany/mcp,Man of Many,manofmany.com,,1.0.0,https://mcp.manofmany.com/mcp,streamable-http,Man of Many,1.30.0,2025-06-18,2026-11-23T17:11:25Z,12,2767,48,12,1.0,1,0,0.0,1,28,28,1.0,96,5b1a3cf201c96b567a1fe1dd6154adc554e912646ecac3c564d22402a1cfa29c,
+68633,kapruka.com,com.kapruka/kapruka-mcp,Kapruka MCP,kapruka.com,,0.9.0,https://mcp.kapruka.com/mcp,streamable-http,kapruka_mcp,1.30.0,2025-06-18,2026-11-23T17:11:33Z,10,12043,85,10,1.0,1,0,0.0,1,10,10,1.0,96,ba9e1bcd90ab1b497909cf4dd507de61d3c573a3d280532554c7fbab978051a9,
+69282,moonbeam.network,network.moonbeam.next/paid-calls,Moonbeam agent listings,next.moonbeam.network,,1.1.0,https://next.moonbeam.network/api/acp/x402/mcp,streamable-http,moonbeam-agent-listings,1.1.0,2025-06-18,2026-11-23T17:11:40Z,3,505,11,3,1.0,1,0,0.0,1,6,2,0.3333,89,23d3c9f31eaafd56099dfb76fc164338005c16e5604f5febdbf540ace7fe4f73,
+71692,appcreator24.com,com.appcreator24.www/android-app-builder,AppCreator24 – Android App & APK Builder,www.appcreator24.com,,1.0.0,https://www.appcreator24.com/api_ai/mcp/mcp.php,streamable-http,appcreator24,1.0.0,2025-06-18,2026-11-23T17:11:51Z,1,2793,49,1,1.0,1,0,0.0,1,24,0,0.0,1,ef66243d4b0710863022fb09de4a7fef73f016e295f95fb76e00ff2e935ac835,
+71936,ex2.com,com.ex2/catalogue,Ex2 catalogue,ex2.com,,1.3.0,https://www.ex2.com/mcp,streamable-http,ex2-catalogue,1.3.0,2025-06-18,2026-11-23T17:11:58Z,7,1855,39,7,1.0,1,0,0.0,1,16,0,0.0,1,d4b17618966ec4e56120ab2929c14e1ba1f0f4bbe04c9ac3b2090c8b2936ca7f,
+72721,raiselens.com,com.raiselens/raise-lens,Raise Lens,raiselens.com,,0.5.0,https://mcp.raiselens.com/mcp,streamable-http,Raise Lens,0.6.0,2025-06-18,2026-11-23T17:12:06Z,13,10193,79,13,1.0,1,0,0.0,1,44,0,0.0,1,716c36b99a5b0d324a412183f76571a60433723029acaa2c58f1d011518ca191,
+75330,ivisa.com,com.ivisa.www/mcp,,www.ivisa.com,,0.0.3,https://www.ivisa.com/mcp,streamable-http,iVisa,0.0.3,2025-06-18,2026-11-23T17:12:16Z,1,238,3,1,1.0,1,0,0.0,1,3,0,0.0,1,9d32334507c39b9023974af1773b9cc0605a1b660fb9c2921e973eac4f44c890,
+76854,lmk.today,today.lmk/commerce,,lmk.today,,1.0.0,https://lmk.today/api/ucp/mcp,streamable-http,lmk-today,1.0.0,2025-06-18,2026-11-23T17:12:25Z,13,5680,62,13,1.0,1,0,0.0,1,28,23,0.8214,94,67dfa2ca2a077502d82ff4e2382b1de704c30471c34184141859a2af2a3bb937,
+76860,celo.org,org.celo/docs-mcp,Celo Docs,celo.org,,1.0.0,https://docs.celo.org/mcp,streamable-http,Celo Docs,1.0.0,2025-06-18,2026-11-23T17:12:31Z,3,1254,30,3,1.0,1,0,0.0,1,4,0,0.0,1,bb2d6210072e61dfad3907da07ae2832e5e2b636a5847d9bfbebfeba46cc400c,
+77720,guruwalk.com,com.guruwalk/mcp,GuruWalk,guruwalk.com,,1.0.1,https://back.guruwalk.com/mcp,streamable-http,guruwalk,1.0.0,2025-06-18,2026-11-23T17:12:39Z,6,6736,67,6,1.0,1,0,0.0,1,20,0,0.0,1,163a28b8bd59ac203739610bb946af6d8dde4c10a345e0e33f843e9c289ffeee,
+78663,hitprace.cz,cz.hitprace/jobs,HitPrace,hitprace.cz,,1.0.0,https://www.hitprace.cz/api/v1/mcp,streamable-http,cz.hitprace/jobs,1.0.0,2025-06-18,2026-11-23T17:12:46Z,7,2474,44,0,0.0,91,0,0.0,1,31,0,0.0,1,fc8ea931f1089f7e101f91ef5633ce4d939ad0042b86c20fb3ba2a9329c2c9b2,
+78793,hproxy.com,com.hproxy/mcp,HProxy,hproxy.com,,1.0.2,https://mcp.hproxy.com/mcp,streamable-http,hproxy,1.0.0,2025-06-18,2026-11-23T17:12:52Z,3,568,13,3,1.0,1,0,0.0,1,6,0,0.0,1,7ad1025e00c61780d37c109efb0ab5ac74094cf2d718ba993c78692e87b8ecf1,
+78982,wikioo.org,org.wikioo/art-search,WikiOO Art Encyclopedia,wikioo.org,,1.1.0,https://direct.wikioo.org/mcp,streamable-http,wikioo-art-search,1.1.0,2025-06-18,2026-11-23T17:13:00Z,15,6965,69,15,1.0,1,0,0.0,1,72,0,0.0,1,880d5ec3ade7a4140161d8a400f3e54a0b02b4e457cffbafbdd710ee24f29608,
+80290,youth4work.com,com.youth4work/public,"Youth4work (public, no sign-in)",youth4work.com,,2.4.0,https://mcp.youth4work.com/public/mcp,streamable-http,youth4work,2.4.2,2025-06-18,2026-11-23T17:13:08Z,9,1835,38,9,1.0,1,0,0.0,1,18,1,0.0556,63,3c755b1e6ac8f7baa142944e1eb9ddf9eec0a8083aceab990b9e55a9ab573ddf,
+80571,authorized.by,by.authorized/brands,,authorized.by,,2.0.1,https://app.authorized.by/api/public/mcp,streamable-http,authorized-by-brands,2.0.1,2025-06-18,2026-11-23T17:13:14Z,7,8054,73,7,1.0,1,0,0.0,1,13,0,0.0,1,6ee59be712778538acba6ea81ed521c2f0840d346e730ab7450e48a03ea7a51d,
+84910,redpanda.com,com.redpanda/docs-mcp,,redpanda.com,,2026.907.213,https://docs.redpanda.com/mcp,streamable-http,Redpanda Docs MCP,1.5.0,2025-06-18,2026-11-23T17:13:23Z,12,10885,81,12,1.0,1,0,0.0,1,72,0,0.0,1,c88af5f40f6e036c8966fc2db4be9912a9a16c93126837f538013db5ae55e0c1,
+85722,cheapestinindia.com,com.cheapestinindia/cheapestinindia,CheapestInIndia,cheapestinindia.com,,1.0.0,https://mcp.cheapestinindia.com/mcp,streamable-http,cheapestinindia,1.0.0,2025-06-18,2026-11-23T17:13:30Z,11,11270,83,11,1.0,1,0,0.0,1,34,0,0.0,1,c8be4fbb55f14fbf8a84ca84fb894767d0e437e94ec7e6bf4c7739a1a327b7b0,
+86956,poly.ai,ai.poly/docs-mcp,PolyAI Docs,poly.ai,,1.0.0,https://docs.poly.ai/mcp,streamable-http,PolyAI Platform,1.0.0,2025-06-18,2026-11-23T17:13:39Z,3,1332,31,3,1.0,1,0,0.0,1,4,0,0.0,1,cb39312913843fcd9e85dd89e917fc18c7fffdfc8cd13ed594a1dbddaff3691e,
+8,microsoft.com,com.microsoft.esrp/esrp-oss-mcp-test,,esrp.microsoft.com,,26.226.135743,https://esrp-mcp-server-{env}.azurewebsites.net/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/esrp-oss-mcp-test,,microsoft.com,,26.1012.63948,https://esrp-mcp-server-test-{env}.azurewebsites.net/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/playwright-cloud-browsers,Playwright Cloud Browsers,microsoft.com,,1.0.1,https://{region}.mcp.playwright.microsoft.com/playwrightworkspaces/{workspaceId}/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-admintools,Admin MCP Server,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_AdminTools,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-calendartools,Work IQ Calendar MCP Server,microsoft.com,,1.0.1,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_CalendarTools,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-m365copilot,Work IQ Copilot MCP Server,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_M365Copilot,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-meserver,Work IQ User MCP Server,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_MeServer,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-odspremoteserver,ODSP Remote MCP Server,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_ODSPRemoteServer,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-sharepointliststools,SharePointListsTools,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_SharePointListsTools,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-teamsserver,Work IQ Teams MCP Server,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_TeamsServer,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8,microsoft.com,com.microsoft/workiq-wordserver,Work IQ Word MCP Server,microsoft.com,,1.0.0,https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/mcp_WordServer,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+175,paypal.com,com.paypal.mcp/mcp,,mcp.paypal.com,,1.0.0,https://mcp.paypal.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+222,stripe.com,com.stripe/mcp,,stripe.com,,0.2.4,https://mcp.stripe.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+224,amplitude.com,com.amplitude/mcp-server,Amplitude,amplitude.com,,1.0.0,https://mcp.amplitude.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+277,canva.com,com.canva.mcp/mcp,Canva MCP,mcp.canva.com,,1.0.0,https://mcp.canva.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+351,nvidia.com,com.nvidia.ngc.nsight.copilot.api/cuda-docs,NVIDIA CUDA Docs,api.copilot.nsight.ngc.nvidia.com,,2026.2.1,https://api.copilot.nsight.ngc.nvidia.com/mcp/cuda-docs,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+376,appsflyer.com,com.appsflyer/mcp,,appsflyer.com,,1.0.0,https://mcp.appsflyer.com/auth/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+394,gitlab.com,com.gitlab/mcp,,gitlab.com,,0.0.1,https://gitlab.com/api/v4/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+544,stackoverflow.com,com.stackoverflow.mcp/mcp,Stack Overflow MCP Server,mcp.stackoverflow.com,,1.1.3,https://mcp.stackoverflow.com,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+561,atlassian.com,com.atlassian/atlassian-mcp-server,Atlassian Rovo MCP Server,atlassian.com,,2.0.0,https://mcp.atlassian.com/v2/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+595,wix.com,com.wix/mcp,,wix.com,,1.0.2,https://mcp.wix.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+595,wix.com,com.wix/wixel,Wixel by Wix,wix.com,,1.0.1,https://mcp.wix.com/wixel,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+606,digitalocean.com,com.digitalocean/mcp,DigitalOcean,digitalocean.com,,0.1.1,https://mcp.digitalocean.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+654,jotform.com,com.jotform/mcp,,jotform.com,,1.0.0,https://mcp.jotform.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+722,newrelic.com,com.newrelic/mcp-server,New Relic MCP Server,newrelic.com,,0.1.0,https://mcp.newrelic.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+769,cloudinary.com,com.cloudinary/analysis-mcp,Cloudinary Analysis,cloudinary.com,,0.5.3,https://analysis.mcp.cloudinary.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+769,cloudinary.com,com.cloudinary/asset-management-mcp,Cloudinary Asset Management,cloudinary.com,,0.11.9,https://asset-management.mcp.cloudinary.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+769,cloudinary.com,com.cloudinary/environment-config-mcp,Cloudinary Environment Config,cloudinary.com,,0.6.4,https://environment-config.mcp.cloudinary.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+769,cloudinary.com,com.cloudinary/structured-metadata-mcp,Cloudinary Structured Metadata,cloudinary.com,,0.6.2,https://structured-metadata.mcp.cloudinary.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+769,cloudinary.com,com.cloudinary/video-mcp,Cloudinary Video,cloudinary.com,,0.1.0,https://video.mcp.cloudinary.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+886,porkbun.com,com.porkbun/mcp,Porkbun (official),porkbun.com,,0.65.18,https://mcp.porkbun.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+890,figma.com,com.figma.mcp/mcp,Figma MCP Server,mcp.figma.com,,1.0.3,https://mcp.figma.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+994,huggingface.co,co.huggingface/hf-mcp-server,Hugging Face,huggingface.co,,0.2.33,https://huggingface.co/mcp?login,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+1058,ovhcloud.com,com.ovhcloud.eu.mcp/api,OVHcloud,mcp.eu.ovhcloud.com,,1.0.0,https://mcp.{region}.ovhcloud.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1103,typeform.com,com.typeform/typeform,Typeform,typeform.com,,1.0.0,https://api.typeform.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+1135,posthog.com,com.posthog/mcp,PostHog,posthog.com,,1.0.0,https://mcp.posthog.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+1230,cloud.com,com.cloud.copilot/citrix-daas-mcp-server,Citrix DaaS MCP Server,copilot.cloud.com,,1.0.0,https://copilot.cloud.com/cvad/{customer_id}/mcp/,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1300,oxylabs.io,io.oxylabs/oxylabs-mcp,,oxylabs.io,,0.10.2,https://mcp.oxylabs.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1300,oxylabs.io,io.oxylabs/web-api-mcp,,oxylabs.io,,0.3.2,https://mcp.oxylabs.io/web-api-mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1318,singular.net,net.singular/mcp-server,,singular.net,,1.0.0,https://mcp.singular.net/mcp-server/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+1321,notion.com,com.notion/mcp,,notion.com,,1.0.1,https://mcp.notion.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+1808,sslip.io,io.sslip.2-29-135-242/radar-ecommerce-mcp,E-commerce Data MCP,2-29-135-242.sslip.io,,1.3.202611190635,"https://mcp.apify.com/?tools=martin10291/shopify-store-products,martin10291/shopify-app-store-scraper,martin10291/shopify-app-store-tracker,martin10291/price-drop-monitor,martin10291/cheapest-price-finder,martin10291/app-reviews-scraper",streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.2-29-135-242/radar-jobs-mcp,Jobs Data MCP,2-29-135-242.sslip.io,,1.3.202611190635,"https://mcp.apify.com/?tools=martin10291/remote-jobs-aggregator-pro,martin10291/ats-jobs-aggregator,martin10291/hacker-news-scraper,martin10291/platsbanken-sweden-jobs,martin10291/uk-visa-sponsors-register",streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.2-29-135-242/radar-market-research-mcp,Market Research MCP,2-29-135-242.sslip.io,,1.3.202611190635,"https://mcp.apify.com/?tools=martin10291/google-trends-explorer,martin10291/reddit-posts-comments-extractor,martin10291/github-trending-scraper,martin10291/medium-articles-scraper,martin10291/apple-podcasts-scraper,martin10291/eu-tenders-ted-monitor,martin10291/local-business-leads-osm,martin10291/tiktok-trend-alert-bot,martin10291/sec-edgar-scraper,martin10291/wayback-machine-scraper,martin10291/chrome-web-store-scraper,martin10291/apify-store-trends-niche-finder,martin10291/prediction-markets-kalshi-polymarket,martin10291/airports-flight-distance",streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.2-29-135-242/radar-media-ai-mcp,Media & Document AI Tools MCP,2-29-135-242.sslip.io,,1.3.202611190635,"https://mcp.apify.com/?tools=martin10291/audio-podcast-transcriber,martin10291/image-pdf-ocr,martin10291/video-frame-extractor,martin10291/website-screenshot-api,martin10291/url-to-markdown-llm,martin10291/bulk-image-downloader",streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.2-29-135-242/radar-website-intel-mcp,Website & Company Intel MCP,2-29-135-242.sslip.io,,1.3.202611190635,"https://mcp.apify.com/?tools=martin10291/domain-whois-dns-lookup,martin10291/website-tech-stack-detector,martin10291/website-intelligence,martin10291/lighthouse-pagespeed-audit,martin10291/company-hiring-signals-history",streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.2-29-135-242/radar-youtube-mcp,YouTube Data MCP,2-29-135-242.sslip.io,,1.3.202611190635,"https://mcp.apify.com/?tools=martin10291/youtube-transcript-bulk-extractor,martin10291/youtube-comments-scraper,martin10291/youtube-video-lookup,martin10291/youtube-channel-monitor,martin10291/youtube-shorts-captions,martin10291/youtube-shorts-clip-finder",streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.244.153.73.34.insidermcp/fedsignal-federal-contracts,"FedSignal — Federal Contract Exposure, USAspending to SEC Issuer Resolution",insidermcp.34.73.153.244.sslip.io,,2.1.0,https://insidermcp.34.73.153.244.sslip.io/mcp/federal-contracts,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+1808,sslip.io,io.sslip.244.153.73.34.insidermcp/insider-signal,FedSignal — Federal Contract Exposure for Public Companies,insidermcp.34.73.153.244.sslip.io,,2.0.0,https://insidermcp.34.73.153.244.sslip.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+2020,egnyte.com,com.egnyte/mcp-server,Egnyte Remote MCP Server,egnyte.com,,1.0.0,https://mcp-server.egnyte.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+2120,ahrefs.com,com.ahrefs/mcp,Ahrefs,ahrefs.com,,1.0.0,https://api.ahrefs.com/mcp/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2135,nip.io,io.nip.5-9-107-124/token-risk,,5-9-107-124.nip.io,,0.2.1,https://5-9-107-124.nip.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,does not answer within 30 seconds after one retry
+2135,nip.io,io.nip.64-181-248-211/edgar-odd-lots,EDGAR Odd-Lots Streamable MCP,64-181-248-211.nip.io,,1.0.0,https://64-181-248-211.nip.io/x402/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 405)
+2148,jumpcloud.com,com.jumpcloud/jumpcloud-genai,,jumpcloud.com,,0.0.38,https://mcp.jumpcloud.com/v1,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2164,unity.com,com.unity.mcp.acquire/server,Unity Ads Acquire,acquire.mcp.unity.com,,0.1.0,https://acquire.mcp.unity.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2313,coinmarketcap.com,com.coinmarketcap/coinmarketcap,CoinMarketCap,coinmarketcap.com,,1.0.0,https://mcp.coinmarketcap.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2509,upwork.com,com.upwork.mcp/upwork-mcp,Upwork MCP,mcp.upwork.com,,1.0.0,https://mcp.upwork.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2731,webflow.com,com.webflow/mcp,,webflow.com,,2.0.0,https://mcp.webflow.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2739,cookieyes.com,com.cookieyes/mcp,CookieYes,cookieyes.com,,1.0.2,https://app.cookieyes.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2790,padlet.com,com.padlet/padlet,Padlet,padlet.com,,1.0.1,https://mcp.padlet.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2820,airtable.com,com.airtable/mcp,,airtable.com,,0.1.0,https://mcp.airtable.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2904,visa.com,com.visa.developer/vdp,Visa Developer Center MCP Server,developer.visa.com,,1.0.0,https://developer.visa.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2941,vercel.com,com.vercel/vercel-mcp,,vercel.com,,0.0.3,https://mcp.vercel.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+2964,zapier.com,com.zapier/mcp,Zapier,zapier.com,,1.0.2,https://mcp.zapier.com/api/v1/connect,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+3146,parsely.com,com.parsely.dash/mcp,Parse.ly MCP,dash.parsely.com,,1.0.0,https://dash.parsely.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+3189,elevenlabs.io,io.elevenlabs/mcp,ElevenLabs,elevenlabs.io,,1.0.0,https://api.us.elevenlabs.io/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+3213,monday.com,com.monday/monday.com,,monday.com,,0.0.1,https://mcp.monday.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+3346,postman.com,com.postman/postman-mcp-server,Postman MCP Server,postman.com,,2.15.0,https://mcp.postman.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+3574,mux.com,com.mux/mcp,,mux.com,,12.8.0,https://mcp.mux.com,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+3614,lovable.dev,dev.lovable/mcp,Lovable,lovable.dev,,0.1.3,https://mcp.lovable.dev,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+3641,sanity.io,io.sanity.www/mcp,Sanity,www.sanity.io,,2.46.2,https://mcp.sanity.io,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+3874,bitly.com,com.bitly/mcp,Bitly,bitly.com,,1.0.0,https://api-ssl.bitly.com/v4/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+4170,dmca.com,com.dmca/dmca-cases,DMCA.com Cases,dmca.com,,1.2.1,https://mcp.dmca.com/runtime/webhooks/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+4254,picsart.com,com.picsart.api/gen-ai,Picsart GenAI,api.picsart.com,,2.6.4,https://api.picsart.com/gen-ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+4524,supabase.com,com.supabase/mcp,Supabase,supabase.com,,0.19.0,https://mcp.supabase.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+4916,zomato.com,com.zomato/mcp,,zomato.com,,1.0.0,https://mcp-server.zomato.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+5465,alchemy.com,com.alchemy/mcp,Alchemy MCP Server,alchemy.com,,0.9.7,https://mcp.alchemy.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+5478,nameshift.com,com.nameshift/marketplace,,nameshift.com,,1.0.0,https://api.nameshift.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 404)
+5534,airbridge.io,io.airbridge.go/mcp,Airbridge GO,go.airbridge.io,,1.0.1,https://mcp.go.airbridge.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+5652,cyon.ch,ch.cyon/mcp,cyon,cyon.ch,,1.0.0,https://mcp.cyon.ch/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+5780,beehiiv.com,com.beehiiv/beehiiv,beehiiv,beehiiv.com,,0.1.0,https://mcp.beehiiv.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+5894,statsig.com,com.statsig/statsig-mcp-server,,statsig.com,,1.0.0,https://api.statsig.com/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+6084,basecamp.com,com.basecamp/mcp,Basecamp,basecamp.com,,0.2.26,https://mcp.basecamp.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+6437,icons8.com,com.icons8/icons8,Icons8,icons8.com,,1.0.1,https://mcp.icons8.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+6496,openweathermap.org,org.openweathermap/agents,OpenWeather for agents,openweathermap.org,,0.3.0,https://mcp.openweathermap.org/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+6882,make.com,com.make/mcp-server,Make,make.com,,2.0.0,https://mcp.make.com/v2,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+6900,konghq.com,com.konghq/konnect,Kong Konnect,konghq.com,,1.0.0,https://global.mcp.konghq.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+7132,ngrok.com,com.ngrok/mcp,ngrok,ngrok.com,,0.1.0,https://mcp.ngrok.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+7367,elfsight.com,com.elfsight/ai-chatbot,Elfsight AI Chatbot,elfsight.com,,1.0.1,https://mcp.elfchatbot.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+7367,elfsight.com,com.elfsight/elfsight,Elfsight,elfsight.com,,1.0.0,https://mcp.elfsight.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+7677,linear.app,app.linear/linear,Linear,linear.app,,1.0.2,https://mcp.linear.app/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+7692,opentext.com,com.opentext/sdp-remote-mcp,,opentext.com,,1.0.0,https://almoctane-{region}.saas.microfocus.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+8123,storiesig.info,info.storiesig/instagram-mcp,StoriesIG Instagram MCP Server,storiesig.info,,1.0.3,https://api-wh.storiesig.info/instagram/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+8269,uptimerobot.com,com.uptimerobot/uptimerobot,UptimeRobot,uptimerobot.com,,0.1.0,https://mcp.uptimerobot.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+8671,glean.com,com.glean/mcp,Glean Remote MCP Server,glean.com,,1.2.1,https://{baseUrl}/mcp/{server-name},streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+9412,webshare.io,io.webshare/mcp,Webshare,webshare.io,,1.0.1,https://mcp.webshare.io,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+9556,userpilot.io,io.userpilot/mcp,Userpilot,userpilot.io,,1.0.0,https://mcp.userpilot.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+10289,glance.com,com.glance/glanceai-fashion,GlanceAI Fashion MCP,glance.com,,1.0.0,https://glance.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+10386,altmetric.com,com.altmetric.mcp/altmetric-mcp,,mcp.altmetric.com,,1.2.6,https://mcp.altmetric.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+10485,veed.io,io.veed/fabric-mcp,VEED AI Video Generator,veed.io,,1.0.0,https://www.veed.io/api/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+10636,paddle.com,com.paddle/mcp,Paddle,paddle.com,,0.1.2,https://mcp.paddle.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+10636,paddle.com,com.paddle/mcp-sandbox,Paddle (Sandbox),paddle.com,,0.1.2,https://sandbox-mcp.paddle.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+10649,coralogix.com,com.coralogix/mcp-server,Coralogix,coralogix.com,,2.0.0,https://api.{region}.coralogix.com/mgmt/api/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+10727,ifttt.com,com.ifttt/mcp,IFTTT MCP server,ifttt.com,,1.0.0,https://ifttt.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11065,kajabi.com,com.kajabi/kajabi,Kajabi,kajabi.com,,1.0.0,https://mcp.kajabi.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11179,vidiq.com,com.vidiq/mcp,vidIQ,vidiq.com,,1.0.0,https://mcp.vidiq.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11234,scite.ai,ai.scite/mcp,Scite,scite.ai,,1.0.0,https://api.scite.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11307,telerik.com,com.telerik/agentic-ui-generator-for-angular,Agentic UI Generator for Angular,telerik.com,,1.0.0,https://uiagent.mcp.telerik.com/mcp/angular,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+11329,bitmovin.com,com.bitmovin.mcp.analytics/analytics-mcp,Bitmovin Observability MCP,analytics.mcp.bitmovin.com,,0.0.1,https://analytics.mcp.bitmovin.com,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+11806,unstoppabledomains.com,com.unstoppabledomains/mcp-server,Unstoppable Domains,unstoppabledomains.com,,1.0.0,https://api.unstoppabledomains.com/mcp/v1,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11915,pandadoc.com,com.pandadoc.mcp/mcp,PandaDoc MCP Server,mcp.pandadoc.com,,1.0.0,https://mcp.pandadoc.com/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11984,heygen.com,com.heygen/hyperframes,HyperFrames by HeyGen,heygen.com,,1.0.0,https://mcp.heygen.com/mcp/hyperframes,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+11997,lucid.app,app.lucid.mcp/lucid,Lucid,mcp.lucid.app,,1.0.0,https://mcp.lucid.app/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12105,idealo.com,com.idealo.mcp/mcp,idealo MCP Server,mcp.idealo.com,,1.0.0,https://mcp.idealo.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12199,imagekit.io,io.imagekit/admin,ImageKit Admin,imagekit.io,,1.0.0,https://imagekit.io/mcp/admin,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12199,imagekit.io,io.imagekit/dam,ImageKit DAM,imagekit.io,,1.0.0,https://imagekit.io/mcp/dam,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12300,apify.com,com.apify/apify-mcp-server,Apify,apify.com,,0.22.0,https://mcp.apify.com/,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+12494,gtmetrix.com,com.gtmetrix/gtmetrix,,gtmetrix.com,,1.1.0,https://gtmetrix.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12639,axiom.co,co.axiom/mcp,,axiom.co,,1.0.0,https://mcp.axiom.co/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12712,follow.it,it.follow/mcp,follow.it,follow.it,,1.0.0,https://follow.it/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+12882,sonatype.com,com.sonatype/dependency-management-mcp-server,,sonatype.com,,1.0.2,https://mcp.guide.sonatype.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+13360,playgama.com,com.playgama/developer-cabinet,Playgama MCP - Publish & Manage HTML5 Games,playgama.com,,1.1.0,https://developer.playgama.com/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+13378,smartling.com,com.smartling/smartling-mcp-server,,smartling.com,,1.1.0,https://mcp.smartling.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+13521,devcycle.com,com.devcycle/mcp,,devcycle.com,,6.6.1,https://mcp.devcycle.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+13596,snapwidget.com,com.snapwidget/snapwidget,SnapWidget,snapwidget.com,,1.0.0,https://snapwidget.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+13819,honeycomb.io,io.honeycomb/mcp,Honeycomb,honeycomb.io,,1.0.0,https://mcp.honeycomb.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+13856,sendpulse.com,com.sendpulse.mcp/mcp-server,SendPulse,mcp.sendpulse.com,,1.0.0,https://mcp.sendpulse.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+13954,circleci.com,com.circleci/mcp,CircleCI,circleci.com,,1.0.0,https://mcp.circleci.com/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+14035,fotor.com,com.fotor.mcp/mcp,Fotor MCP,mcp.fotor.com,,1.0.0,https://mcp.fotor.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+14103,openalex.org,org.openalex/openalex,OpenAlex,openalex.org,,0.5.0,https://mcp.openalex.org/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+14447,rocketreach.co,co.rocketreach/mcp,RocketReach,rocketreach.co,,0.0.153,https://mcp.rocketreach.co/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+14563,printfriendly.com,com.printfriendly/printfriendly,PrintFriendly,printfriendly.com,,1.0.1,https://mcp.printfriendly.com,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+14582,exness.com,com.exness/mcp,Exness Official,exness.com,,0.1.0,https://api.exness.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+14883,desktopcommander.app,app.desktopcommander/remote-desktop-commander,Remote Desktop Commander,desktopcommander.app,,1.1.37,https://mcp.desktopcommander.app/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16069,birdie.so,so.birdie/birdie,Birdie,birdie.so,,1.0.1,https://app.birdie.so/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16326,jitsu.com,com.jitsu/mcp,Jitsu,jitsu.com,,1.0.0,https://use.jitsu.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16527,workos.com,com.workos/mcp,WorkOS,workos.com,,1.0.0,https://mcp.workos.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16529,listennotes.com,com.listennotes/mcp,Podcast Search by Listen Notes,listennotes.com,,1.0.0,https://mcp.listennotes.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16566,circle.so,so.circle/circle,Circle,circle.so,,1.0.0,https://app.circle.so/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16647,mindmeister.com,com.mindmeister/mcp,MindMeister,mindmeister.com,,1.0.0,https://mcp.mindmeister.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16672,teamwork.com,com.teamwork/mcp,Teamwork.com,teamwork.com,,1.62.3,https://mcp.ai.teamwork.com,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+16833,gocardless.com,com.gocardless/gc-mcp,GoCardless MCP Server,gocardless.com,,1.0.0,https://mcp.gocardless.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+16963,lottiefiles.com,com.lottiefiles/creator,Creator MCP,lottiefiles.com,,1.0.0,https://creator.mcp.lottiefiles.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+17066,smartbear.com,com.smartbear/smartbear-mcp,SmartBear MCP,smartbear.com,,0.44.0,https://bugsnag.mcp.smartbear.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+17066,smartbear.com,com.smartbear/swagger-mcp,Swagger MCP,smartbear.com,,0.33.0,https://swagger.mcp.smartbear.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+17555,railway.com,com.railway/mcp,Railway MCP,railway.com,,1.0.0,https://mcp.railway.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+17650,fireflies.ai,ai.fireflies/fireflies,Fireflies.ai,fireflies.ai,,1.1.0,https://api.fireflies.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+17687,aftership.com,com.aftership.mcp/tracking-public,Tracking & Returns,mcp.aftership.com,,1.0.1,https://mcp.aftership.com/tracking/public,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 429)
+18046,instatus.com,com.instatus/mcp,Instatus,instatus.com,,1.1.0,https://mcp.instatus.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+18727,ulule.com,com.ulule/mcp-public,Ulule — Crowdfunding,ulule.com,,1.1.0,https://api.ulule.com/mcp/public,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+18894,jam.dev,dev.jam/jam,Jam,jam.dev,,1.36.3,https://mcp.jam.dev/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+18897,epidemicsound.com,com.epidemicsound/mcp-server,,epidemicsound.com,,1.0.1,https://www.epidemicsound.com/a/mcp-service/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+18903,1stdibs.com,com.1stdibs/1stDibs,,1stdibs.com,,1.0.0,https://www.1stdibs.com/soa/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 429)
+18929,open.video,video.open/open-video,Open Video,open.video,,1.6.0,https://mcp.open.video/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+18948,anotepad.com,com.anotepad/notes,aNotepad,anotepad.com,,1.0.0,https://api.anotepad.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+19568,opensubtitles.com,com.opensubtitles/mcp-server,OpenSubtitles,opensubtitles.com,,2.0.3,https://mcp.opensubtitles.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+19570,bugherd.com,com.bugherd/mcp,BugHerd,bugherd.com,,1.5.0,https://mcp.bugherd.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+20337,tenderly.co,co.tenderly/tenderly-mcp,,tenderly.co,,1.0.1,https://mcp.tenderly.co/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+20384,close.com,com.close/close-mcp,,close.com,,1.0.1,https://mcp.close.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+20555,solidrpc.io,io.solidrpc/agent,SolidRPC,solidrpc.io,,0.1.3,https://api.solidrpc.io/agent/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+20708,raindrop.io,io.raindrop/mcp,Raindrop.io,raindrop.io,,1.0.0,https://api.raindrop.io/rest/v2/ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+20870,lnk.bio,bio.lnk/lnkbio,Lnk.Bio Official MCP,lnk.bio,,1.0.1,https://lnk.bio/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+20894,longbridge.com,com.longbridge/mcp,,longbridge.com,,0.9.0,https://mcp.longbridge.com,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+20923,who.is,is.who/whois,who.is,who.is,,1.0.0,https://api.who.is/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+21323,mural.co,co.mural/mural,Mural,mural.co,,1.0.1,https://mcp-canvas.mural.co/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+22526,fark.com,com.fark/mcp,Fark MCP,fark.com,,1.0.0,https://www.fark.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 400)
+22586,mida.so,so.mida/ab-testing,Mida,mida.so,,1.0.2,https://mcp.mida.so/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+23100,todoist.net,net.todoist/mcp,Todoist,todoist.net,,1.0.1,https://ai.todoist.net/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+23123,seranking.com,com.seranking/mcp,SE Ranking,seranking.com,,2.13.0,https://api.seranking.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+23635,chilipiper.com,com.chilipiper/mcp,Chili Piper,chilipiper.com,,1.0.0,https://fire.chilipiper.com/api/fire-edge/v1/org/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+24263,parcellab.com,com.parcellab/order-status-and-returns,parcelLab Order Status and Returns,parcellab.com,,3.4.11,https://agents.parcellab.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+24263,parcellab.com,com.parcellab/parcellab,parcelLab,parcellab.com,,3.4.11,https://agents.parcellab.com/admin/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+24299,cello.so,so.cello/mcp,Cello,cello.so,,1.0.2,https://mcp.cello.so/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+24760,fly.io,io.fly/fly-mcp,Fly MCP,fly.io,,0.1.0,https://mcp.fly.io,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+24795,prisma.io,io.prisma/mcp,Prisma Postgres and Prisma Compute,prisma.io,,1.1.0,https://mcp.prisma.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+25183,spartoo.com,com.spartoo/spartoo,Spartoo,spartoo.com,,1.1.1,https://www.spartoo.{tld}/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+25229,packetstream.io,io.packetstream/mcp,PacketStream,packetstream.io,,1.5.0,https://api.packetstream.io/v1/mcp/oauth,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+25308,chatbase.co,co.chatbase/chatbase,,chatbase.co,,1.0.0,https://mcp.chatbase.co/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+25503,bird.com,com.bird/mcp,Bird,bird.com,,0.181.0,https://mcp.bird.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+25519,educaplay.com,com.educaplay/educaplay,Educaplay,educaplay.com,,1.0.0,https://api.educaplay.com/v1/agent/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+25533,mailsuite.com,com.mailsuite/mcp,Mailsuite,mailsuite.com,,0.1.0,https://mcp.mailsuite.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+25554,enuygun.com,com.enuygun/weg-mcp,Wingie Enuygun MCP,enuygun.com,,1.0.0,https://mcp.enuygun.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+25603,assemblyai.com,com.assemblyai/mcp,AssemblyAI,assemblyai.com,,1.0.0,https://mcp.assemblyai.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+25721,carto.com,com.carto/carto,CARTO,carto.com,,1.0.1,https://{region}.api.carto.com/mcp/{account_id},streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+26039,macroaxis.com,com.macroaxis/macroaxis-api,Macroaxis Financial Data,macroaxis.com,,0.3.2,https://www.macroaxis.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+26075,avalara.com,com.avalara/atc,Avalara Tax Content,avalara.com,,1.0.1,https://mcp.avalara.com/atc,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/avatax,Avalara AvaTax,avalara.com,,1.0.1,https://mcp.avalara.com/avatax,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/bl,Avalara Tax Registrations and Business Licenses,avalara.com,,1.0.0,https://mcp.avalara.com/bl,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/classification,Avalara Classification,avalara.com,,1.0.0,https://mcp.avalara.com/classification,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/cross-border,Avalara Cross-Border,avalara.com,,1.0.0,https://mcp.avalara.com/cross-border,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/docs,Avalara Developer Documentation,avalara.com,,1.0.1,https://mcp.avalara.com/docs,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/elr,Avalara E-Invoicing & Live Reporting,avalara.com,,1.0.0,https://mcp.avalara.com/elr,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26075,avalara.com,com.avalara/returns,Avalara Returns,avalara.com,,1.0.1,https://mcp.avalara.com/returns,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26157,rechargeapps.com,com.rechargeapps/mcp,Recharge Merchant MCP,rechargeapps.com,,1.0.0,https://mcp.rechargeapps.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+26290,scandit.com,com.scandit/mcp,Scandit,scandit.com,,1.0.1,https://ssl.scandit.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+27677,coschedule.com,com.coschedule/coschedule,CoSchedule,coschedule.com,,1.1.0,https://platform.coschedule.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+27798,lusha.com,com.lusha.mcp/mcp,,mcp.lusha.com,,1.0.0,https://mcp.lusha.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+28172,zigpoll.com,com.zigpoll/zigpoll-mcp,Zigpoll,zigpoll.com,,2.0.0,https://mcp.zigpoll.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+28275,daily.dev,dev.daily/mcp,daily.dev,daily.dev,,1.0.0,https://api.daily.dev/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+28399,polaranalytics.com,com.polaranalytics/polar,Polar Analytics,polaranalytics.com,,1.0.0,https://api.polaranalytics.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+28499,globalping.io,io.globalping/mcp,,globalping.io,,1.0.0,https://mcp.globalping.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,does not answer within 30 seconds after one retry
+28548,icecat.biz,biz.icecat/mcp,Icecat,icecat.biz,,1.0.6,https://mcp.icecat.biz,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+28990,braincloudservers.com,com.braincloudservers/braincloud-mcp,brainCloud MCP,braincloudservers.com,,6.0.1,https://mcp.braincloudservers.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+29090,geonode.io,io.geonode/scraper,Geonode Scraper API,geonode.io,,1.0.0,https://scraper.geonode.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+29518,roboflow.com,com.roboflow/roboflow-mcp,Roboflow (Official),roboflow.com,,1.0.3,https://mcp.roboflow.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+29542,mintlify.com,com.mintlify/adminmcp,Mintlify Admin,mintlify.com,,1.0.0,https://mcp.mintlify.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+30303,keywordseverywhere.com,com.keywordseverywhere/keywords-everywhere,Keywords Everywhere,keywordseverywhere.com,,2.0.0,https://mcp.keywordseverywhere.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+30306,tapcart.com,com.tapcart/mcp,Tapcart,tapcart.com,,1.5.0,https://mcp.tapcart.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+30388,agentio.com,com.agentio/brand-connector,Agentio,agentio.com,,1.0.1,https://mcp.agentio.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+31337,goodtherapy.org,org.goodtherapy/directory,GoodTherapy,goodtherapy.org,,1.0.1,https://www.goodtherapy.org/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+31738,craft.do,do.craft.mcp/server,Craft,mcp.craft.do,,1.0.2,https://mcp.craft.do/my/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+31825,liner.com,com.liner/search,Liner Search & Research,liner.com,,1.0.0,https://platform.liner.com/api/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+31831,chainstack.com,com.chainstack/chainstack,Chainstack,chainstack.com,,1.12.0,https://mcp.chainstack.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+32025,arkm.com,com.arkm/mcp,Arkham,arkm.com,,1.0.4,https://mcp.arkm.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+32058,zype.com,com.zype.mcp/server,,mcp.zype.com,,0.5.3,https://mcp.zype.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+32905,churnkey.co,co.churnkey/churnkey,,churnkey.co,,2.5.0,https://mcp.churnkey.co/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+33523,feeder.co,co.feeder/feeder,Feeder,feeder.co,,1.1.0,https://feeder.co/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+33691,snitcher.com,com.snitcher/snitcher,Snitcher,snitcher.com,,1.6.0,https://app.snitcher.com/mcp/snitcher,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+34003,viddler.com,com.viddler/viddler-mcp,Viddler,viddler.com,,1.0.0,https://mcp.viddler.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+34006,wordlift.io,io.wordlift/mcp-server,,wordlift.io,,1.0.7,https://mcp.wordlift.io/sse,sse,,,,,,,,,,,,,,,,,,,needs sign-in
+34812,everlit.audio,audio.everlit/mcp,Everlit,everlit.audio,,1.19.1,https://api.everlit.audio/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+35243,agentmail.to,to.agentmail/agentmail,AgentMail,agentmail.to,,1.0.0,https://mcp.agentmail.to/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+35705,proxyempire.io,io.proxyempire/mcp,ProxyEmpire,proxyempire.io,,1.0.0,https://panel.proxyempire.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+35774,games.gg,gg.games/games-gg,GAMES.GG,games.gg,,2.0.1,https://mcp.games.gg/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+36008,dune.com,com.dune/mcp,Dune,dune.com,,1.0.0,https://api.dune.com/mcp/v1,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+36313,pachca.com,com.pachca/mcp,Pachca,pachca.com,,1.11.0,https://mcp.pachca.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+37106,chrome-stats.com,com.chrome-stats/chrome-stats,Chrome-Stats,chrome-stats.com,,1.0.0,https://chrome-stats.com/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+37385,honeybadger.io,io.honeybadger/mcp,Honeybadger,honeybadger.io,,1.5.1,https://{host}.honeybadger.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+37688,caspio.com,com.caspio/caspio,Caspio,caspio.com,,1.2.2,https://mcp.caspio.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+38026,webeyez.com,com.webeyez/webeyez,Webeyez,webeyez.com,,1.0.12,https://api.app.webeyez.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+38324,elfhosted.com,com.elfhosted/my-stack,ElfHosted: my stack,elfhosted.com,,1.0.1,https://{username}-elfbot.{domain}/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+38508,limewire.com,com.limewire/agent-files,LimeWire Agent Files,limewire.com,,0.2.0,https://mcp.limewire.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+38519,getguru.com,com.getguru/mcp-server,Guru Remote MCP Server,getguru.com,,1.0.2,https://mcp.api.getguru.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+38621,frase.io,io.frase/mcp-server,Frase SEO,frase.io,,0.12.0,https://next.frase.io/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+38846,cypress.io,io.cypress.mcp/cypress-cloud,Cypress Cloud MCP,mcp.cypress.io,,1.0.0,https://mcp.cypress.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+39396,shortpixel.com,com.shortpixel.mcp/optimize,ShortPixel Image Optimizer,mcp.shortpixel.com,,0.3.0,https://mcp.shortpixel.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+39681,leadpages.com,com.leadpages/leadpages-mcp,,leadpages.com,,1.0.0,https://mcp.leadpages.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+39700,ekiten.jp,jp.ekiten.eapi/ekiten-reservation,エキテン ネット予約,eapi.ekiten.jp,,0.1.1,https://eapi.ekiten.jp/mcp/reservation,streamable-http,,,,,,,,,,,,,,,,,,,two different tool lists in two readings
+39706,happyscribe.com,com.happyscribe/happyscribe,HappyScribe,happyscribe.com,,1.0.0,https://www.happyscribe.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+39836,hoptodesk.com,com.hoptodesk/dashboard,HopToDesk,hoptodesk.com,,1.0.0,https://dashboard.hoptodesk.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+40178,logo.dev,dev.logo/mcp,Official Logo.dev MCP,logo.dev,,0.1.0,https://mcp.logo.dev/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+40379,wavespeed.ai,ai.wavespeed/mcp,WaveSpeed,wavespeed.ai,,1.3.1,https://api.wavespeed.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+40877,helloretail.com,com.helloretail/hello-retail,Hello Retail,helloretail.com,,1.3.0,https://core.helloretail.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+41362,any.do,do.any/anydo,Any.do,any.do,,1.0.0,https://mcp.any.do/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+41439,whimsical.com,com.whimsical/mcp,Whimsical,whimsical.com,,1.1.0,https://mcp.whimsical.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+41617,wavebrook.com,com.wavebrook/dashboard,Wavebrook,wavebrook.com,,1.0.0,https://mcp.wavebrook.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+41899,localtonet.com,com.localtonet/mcp,,localtonet.com,,1.0.0,https://localtonet.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+42355,sprintray.com,com.sprintray/mcp,SprintRay MCP,sprintray.com,,1.0.0,https://mcp.sprintray.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+42444,notify-me.io,io.notify-me/preorder-back-in-stock-wishlist,"Notify Me! Back in Stock, Pre-Order & Wishlist",notify-me.io,,1.0.0,https://mcp.notify-me.app/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+42910,ibkr.com,com.ibkr/interactive-brokers-ibkr,Interactive Brokers (IBKR),ibkr.com,,1.1.6,https://api.ibkr.com/v1/api/mcp-public,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+43435,serpstat.com,com.serpstat/mcp,Serpstat,serpstat.com,,1.1.5,https://mcp.serpstat.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+43718,mage.space,space.mage/mage,Mage,mage.space,,1.0.0,https://mcp.mage.space/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+43852,thezebra.com,com.thezebra/insurance,The Zebra,thezebra.com,,0.3.0,https://api.thezebra.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+44166,unlayer.com,com.unlayer/mcp,"Unlayer: Email, Page & Document Templates for Developers",unlayer.com,,1.0.1,https://api.unlayer.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+44301,userjot.com,com.userjot/userjot,UserJot,userjot.com,,1.0.1,https://api.userjot.com/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+44308,twelvedata.com,com.twelvedata/mcp,Twelve Data,twelvedata.com,,2.0.1,https://mcp.twelvedata.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+44423,sentio.xyz,xyz.sentio/connect,Sentio Connect,sentio.xyz,,0.1.1,https://connect.sentio.xyz/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+45288,fcapp.run,run.fcapp.cn-hangzhou.legal-api-legal-m-service-nubqrvluix/legal-compliance-api,GoldLegal Legal Compliance API,legal-api-legal-m-service-nubqrvluix.cn-hangzhou.fcapp.run,,4.2.0,https://legal-api-legal-m-service-nubqrvluix.cn-hangzhou.fcapp.run/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+45288,fcapp.run,run.fcapp.cn-shanghai.x-api-zhiji-signal-fblfayyeas/zhiji-signal,,x-api-zhiji-signal-fblfayyeas.cn-shanghai.fcapp.run,,3.20.1,https://x-api-zhiji-signal-fblfayyeas.cn-shanghai.fcapp.run/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 403)
+45350,vidalytics.com,com.vidalytics/mcp,,vidalytics.com,,0.4.1,https://api.vidalytics.com/public/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+45383,aeroleads.com,com.aeroleads/mcp,AeroLeads,aeroleads.com,,1.0.0,https://aeroleads.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+46467,muz.li,li.muz/muzli,Muzli,muz.li,,0.4.1,https://mcp.muz.li/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+46973,pandavideo.com,com.pandavideo/mcp,Panda Video,pandavideo.com,,2.1.0,https://mcp.pandavideo.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+46996,locize.app,app.locize.mcp/server,Locize,mcp.locize.app,,2.1.1,https://mcp.locize.app,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+47232,enhancv.com,com.enhancv/mcp,Enhancv,enhancv.com,,1.0.0,https://api.enhancv.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+47545,geckoboard.com,com.geckoboard.gateway/metrics,Geckoboard Metrics,gateway.geckoboard.com,,1.0.0,https://gateway.geckoboard.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+48379,snov.io,io.snov/snov-mcp-server,,snov.io,,1.0.0,https://mcp.snov.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+48436,involve.me,me.involve/mcp,involve.me,involve.me,,0.4.1,https://app.involve.me/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+49528,rejestr.io,io.rejestr/mcp,Rejestr.io,rejestr.io,,0.11.0,https://mcp.rejestr.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+49694,capgo.app,app.capgo/capgo,Capgo,capgo.app,,1.0.0,https://api.capgo.app/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+49752,string-db.org,org.string-db/string-mcp,STRING Database MCP Server,string-db.org,,1.13.1,https://mcp.string-db.org,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 522)
+49782,salla.dev,dev.salla/merchant,Salla,salla.dev,,1.0.0,https://mcp.salla.dev/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+49894,mobbin.com,com.mobbin/mobbin,Mobbin,mobbin.com,,1.0.1,https://api.mobbin.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+50242,singularity-app.com,com.singularity-app/mcp,,singularity-app.com,,1.0.0,https://mcp.singularity-app.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+51956,geekflare.com,com.geekflare/mcp,Geekflare,geekflare.com,,0.5.0,https://mcp.geekflare.com/{API_KEY}/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+52061,landbot.io,io.landbot/mcp,Landbot,landbot.io,,1.0.0,https://mcp.landbot.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+52661,horizonmedia.com,com.horizonmedia/brand-authority,Horizon Brand Authority MCP,horizonmedia.com,,1.0.0,https://mcp.prod.bap.horizonmedia.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+52715,neon.com,com.neon/mcp,Neon,neon.com,,2.0.0,https://mcp.neon.tech/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+52862,tradetron.tech,tech.tradetron.mcp/tradetron,Tradetron,mcp.tradetron.tech,,0.4.1,https://mcp.tradetron.tech/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+53946,zerobounce.net,net.zerobounce/mcp,ZeroBounce,zerobounce.net,,0.1.0,https://mcp.zerobounce.net/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+54156,cli.im,im.cli/caoliao-admin,草料二维码 · 管理端 (CaoLiao QR Code Admin),cli.im,,0.1.0,https://open.cli.im/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+55563,21st.dev,dev.21st/mcp,21st.dev,21st.dev,,1.0.1,https://21st.dev/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+56065,appfigures.com,com.appfigures/mcp,Appfigures,appfigures.com,,4.0.0,https://mcp.appfigures.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+57130,calil.jp,jp.calil/library,カーリル for AI,calil.jp,,2026.4,https://mcp-beta.calil.jp/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+57472,barcodereport.com,com.barcodereport/barcode-lookup,Barcode Report,barcodereport.com,,1.1.0,https://barcodereport.com/api/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+57521,aitopia.ai,ai.aitopia/aitopia,AITOPIA,aitopia.ai,,1.0.0,https://mcp.aitopia.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+58292,sleekplan.com,com.sleekplan/sleekplan,Sleekplan,sleekplan.com,,1.0.0,https://mcp.sleekplan.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+58432,webuycars.co.za,za.co.webuycars/website,WeBuyCars,webuycars.co.za,,2.2.0,https://ai.webuycars.co.za/website,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+58540,sellfy.com,com.sellfy/mcp,Sellfy MCP Server,sellfy.com,,1.0.0,https://api.sellfy.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+58914,jumpseller.com,com.jumpseller/admin-mcp,Jumpseller,jumpseller.com,,1.0.0,https://mcp.jumpseller.com/,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+60047,cdata.com,com.cdata/cdata-connect-ai,CData Connect AI,cdata.com,,1.0.0,https://mcp.cloud.cdata.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+60409,makeupar.com,com.makeupar/beauty,YouCam for Beauty & Personal Care,makeupar.com,,1.0.1,https://mcp-api-01.makeupar.com/mcp/beauty,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+60409,makeupar.com,com.makeupar/creators,YouCam for Creators,makeupar.com,,1.0.1,https://mcp-api-01.makeupar.com/mcp/creators,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+60409,makeupar.com,com.makeupar/fashion,YouCam for Fashion & Retail,makeupar.com,,1.0.1,https://mcp-api-01.makeupar.com/mcp/fashion,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+61986,sisense.com,com.sisense/mcp,Sisense,sisense.com,,1.0.0,https://mcp.sisense.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+62161,browser-use.com,com.browser-use/browser-use,,browser-use.com,,0.13.11,https://api.browser-use.com/v3/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+62408,cryptoquant.com,com.cryptoquant/mcp-server,CryptoQuant,cryptoquant.com,,1.0.0,https://mcp.cryptoquant.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+63418,supermetrics.com,com.supermetrics/supermetrics,,supermetrics.com,,1.14.20,https://mcp.supermetrics.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+63589,edge.network,network.edge/mcp,Edge Network,edge.network,,1.0.0,https://edge.network/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+64564,aigei.com,com.aigei/mcp,爱给 AI MCP,aigei.com,,1.0.1,https://www.aigei.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+64948,tinyfish.ai,ai.tinyfish.agent/web-agent,TinyFish AI Web Agent,agent.tinyfish.ai,,1.0.1,https://agent.tinyfish.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+64960,productboard.com,com.productboard/productboard,Productboard,productboard.com,,1.0.0,https://mcp.productboard.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+65292,temp-mail.io,io.temp-mail/temp-mail,Temp Mail,temp-mail.io,,1.0.1,https://api.temp-mail.io/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+65585,chatfuel.com,com.chatfuel/chatfuel,Chatfuel,chatfuel.com,,1.0.0,https://mcp.chatfuel.com/panel,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+65585,chatfuel.com,com.chatfuel/chatfuel-api,Chatfuel API,chatfuel.com,,1.0.0,https://mcp.chatfuel.com/panel/api,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+66280,cup24.it,it.cup24/availability,Cup24.it Availability,cup24.it,,1.0.0,https://mcpserver.cup24.it/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 404)
+66464,sapling.ai,ai.sapling/sapling,Sapling,sapling.ai,,0.1.12,https://mcp.sapling.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+68406,leadboxer.com,com.leadboxer.mcp/leadboxer,"LeadBoxer: company and contact enrichment, IP to company",mcp.leadboxer.com,,0.2.3,https://mcp.leadboxer.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+69282,moonbeam.network,network.moonbeam.next/ax1-vc,ax1.vc,next.moonbeam.network,,1.0.0,https://next.moonbeam.network/api/acp/x402/seller/ax1-vc/mcp,streamable-http,,,,,,,,,,,,,,,,,,,answers with an error (HTTP 404)
+69801,rayon.design,design.rayon/mcp,Rayon,rayon.design,,0.1.0,https://mcp.rayon.design/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+69989,parallel.ai,ai.parallel/search-mcp,Parallel Search MCP,parallel.ai,,1.0.0,https://search-mcp.parallel.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+69989,parallel.ai,ai.parallel/task-mcp,Parallel Task MCP,parallel.ai,,1.0.0,https://task-mcp.parallel.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+70719,ecourtsindia.com,com.ecourtsindia/mcp,eCourtsIndia,ecourtsindia.com,,4.51.0,https://mcp.ecourtsindia.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+70849,openagenda.com,com.openagenda/mcp,OpenAgenda,openagenda.com,,1.6.1,https://mcp.openagenda.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+71936,ex2.com,com.ex2/account,Ex2 account,ex2.com,,1.7.0,https://api.ex2.com/mcp/account,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+72356,meistertask.com,com.meistertask/mcp,MeisterTask,meistertask.com,,1.0.0,https://mcp.meistertask.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+72484,neilpatelapi.com,com.neilpatelapi/ubersuggest,Ubersuggest,neilpatelapi.com,,0.1.0,https://ubersuggest-mcp.neilpatelapi.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+73261,suprsend.com,com.suprsend/mcp,SuprSend,suprsend.com,,0.5.17,https://mcp.suprsend.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+73962,fathom.ai,ai.fathom.api/mcp,,api.fathom.ai,,1.0.0,https://api.fathom.ai/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+74623,freehire.me,me.freehire/freehire,freehire,freehire.me,,0.8.0,https://freehire.me/api/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+74666,aiven.io,io.aiven/mcp,Aiven MCP,aiven.io,,1.21.0,https://mcp.aiven.live/mcp?read_only={read_only}&services_scope={services_scope}&allow_secrets={allow_secrets},streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+74673,nomads.com,com.nomads/mcp,Nomads.com,nomads.com,,1.0.0,https://nomads.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+75122,deliverect.com,com.deliverect/deliverect,Deliverect,deliverect.com,,1.0.1,https://mcp.deliverect.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+75549,engine.com,com.engine/mcp,Engine Travel Platform,engine.com,,1.0.1,https://mcp.engine.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+75644,zyte.com,com.zyte/mcp,Zyte MCP,zyte.com,,1.0.0,https://mcp.zyte.com/v1/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+76077,streamlinehq.com,com.streamlinehq/mcp,Streamline Icons,streamlinehq.com,,2.0.2,https://public-api.streamlinehq.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+76774,mocoapp.com,com.mocoapp.api/mcp,MOCO,api.mocoapp.com,,1.0.1,https://api.mocoapp.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+77332,growsurf.com,com.growsurf/growsurf,GrowSurf,growsurf.com,,0.19.34,https://mcp.growsurf.com,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+77566,remote.it,it.remote/mcp,Remote.It,remote.it,,1.0.0,https://cloud.remote.it/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+77720,guruwalk.com,com.guruwalk/affiliates-mcp,GuruWalk Affiliates,guruwalk.com,,1.0.0,https://back.guruwalk.com/mcp/affiliates,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+78472,nolt.io,io.nolt/nolt,Nolt,nolt.io,,2.0.0,https://nolt.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+78874,brandfetch.io,io.brandfetch/brandfetch,Brandfetch,brandfetch.io,,1.7.0,https://mcp.brandfetch.io/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+78883,goodwatch.app,app.goodwatch/mcp,GoodWatch,goodwatch.app,,1.0.0,https://goodwatch.app/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+79600,govtribe.com,com.govtribe/mcp,GovTribe,govtribe.com,,1.0.0,https://govtribe.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+80290,youth4work.com,com.youth4work/mcp,Youth4work,youth4work.com,,2.4.0,https://mcp.youth4work.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+82034,xweather.com,com.xweather/weather,Xweather Weather MCP,xweather.com,,1.2.2,https://mcp.api.xweather.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+83203,lpmotor.ru,ru.lpmotor/mottor,Mottor,lpmotor.ru,,1.831.6,https://api.lpmotor.ru/v3/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+83426,chatcut.io,io.chatcut/chatcut,ChatCut,chatcut.io,,1.0.0,https://api.chatcut.io/api/external-mcp/mcp?chatcutInstallSource=mcp_registry,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+84745,mubert.com,com.mubert/cast,Mubert Cast,mubert.com,,0.1.0,https://cast-mcp.mubert.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+84745,mubert.com,com.mubert/music,Mubert Music,mubert.com,,0.1.0,https://mcp.mubert.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+85013,redirect.pizza,pizza.redirect/mcp,redirect.pizza,redirect.pizza,,1.0.0,https://redirect.pizza/mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header
+85172,xcloud.host,host.xcloud/mcp,xCloud,xcloud.host,,1.0.0,https://app.xcloud.host/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+86714,angelcam.com,com.angelcam/mcp,Angelcam (read-only),angelcam.com,,1.0.0,https://mcp.angelcam.com/readonly,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+86921,nestjs.com,com.nestjs/observe,NestJS Observe,nestjs.com,,1.0.0,https://observe-api.nestjs.com/mcp,streamable-http,,,,,,,,,,,,,,,,,,,needs sign-in
+86956,poly.ai,ai.poly/builder-mcp,PolyAI Builder MCP,poly.ai,,1.0.0,https://api.{region}.poly.ai/builder-mcp,streamable-http,,,,,,,,,,,,,,,,,,,URL needs account-specific values or a sign-in header

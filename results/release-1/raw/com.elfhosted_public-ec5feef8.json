@@ -1,0 +1,280 @@
+{
+  "registry_name": "com.elfhosted/public",
+  "url": "https://mcp.elfhosted.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:07:12Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "elfhosted",
+      "version": "0.2.14"
+    },
+    "instructions": "ElfHosted hosts open-source apps for you, so there's no server to run: your own private AIOStreams for Stremio, Immich for photos, your own AI agent with OpenClaw or Hermes, Plex, Emby or Jellyfin streaming from your own debrid and Usenet accounts, and a wide catalogue of everyday apps such as Mealie, Audiobookshelf and Vaultwarden. These public tools need no account: browse and compare apps, check prices and savings, see how the trial works, search the docs, check platform status, find a setup that fits how someone watches (find_my_setup), and find apps that pair with ones they already run (second_breakfast). They can't see anyone's own apps. Someone without an account can start with the $1 trial that runs until 1 January 2027 if started by 30 November (how_the_trial_works). Existing customers can switch to their own private MCP server, which sees their apps and can ask for changes: see connect_my_account. These tools cover hosting, setup and accounts for lawful use. They don't suggest content sources, indexers or addons, say where to get titles, or help with adult content: decline those and link https://docs.elfhosted.com/legal/acceptable-use/."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "how_the_trial_works",
+          "title": "How the trial works",
+          "description": "How ElfHosted's $1 trial works: how long it runs, what you get, which products are not on trial, what happens when it ends, and how to cancel. Read from the trial page of the docs, with its link.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "How the trial works",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "save_me_money",
+          "title": "Save me money",
+          "description": "Ways to pay less for an ElfHosted app: prepaying 3, 6 or 12 months, and paying with ElfBuckz bought with Bitcoin, which stacks with prepaying. Give a product (a name, search words or a store product id) to get its live monthly price and what each term costs; without one, it explains the savings with a worked example.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "product": {
+                "type": "string",
+                "description": "Optional: an app or bundle name, search words, or a store product id."
+              }
+            },
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Save me money",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "browse_apps",
+          "title": "Browse apps",
+          "description": "Search ElfHosted's catalogue of apps and bundles by name or by what you want done, such as \"photos\" or \"password manager\". Returns each match's name, a short description, its live price and its store link. With no search words, AIOStreams, Immich, OpenClaw and Hermes come first.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "An app name, such as \"aiostreams\", \"immich\" or \"plex\", or what it should do, such as \"photos\", \"recipes\" or \"media server\". Leave out to list the featured apps, then the first page of the catalogue."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20,
+                "description": "How many to return (1 to 20, default 10)."
+              }
+            },
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Browse apps",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "compare_apps",
+          "title": "Compare apps",
+          "description": "Compare 2 to 5 ElfHosted apps or bundles side by side: name, description, live price and store link for each. Give store product ids or names.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 2,
+                "maxItems": 5,
+                "description": "Product names, search words or store product ids."
+              }
+            },
+            "required": [
+              "products"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Compare apps",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "search_docs",
+          "title": "Search the docs",
+          "description": "Search ElfHosted's public documentation. Returns the best matching pages and sections, each with its title, link and a short snippet. get_doc reads a whole page.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "What to look for."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "description": "How many matches (1 to 10, default 5)."
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Search the docs",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_doc",
+          "title": "Read a docs page",
+          "description": "Read one page of the public ElfHosted docs as markdown. Give its path (\"app/plex\", \"ai-agents\") or its docs.elfhosted.com link, as search_docs returns. Long pages are cut short.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "The page path, such as \"app/plex\", or its link."
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Read a docs page",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "platform_status",
+          "title": "Platform status",
+          "description": "Whether ElfHosted's public services are up right now, from the status page, naming any that are down.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Platform status",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "connect_my_account",
+          "title": "Connect my account",
+          "description": "How an ElfHosted customer connects their agent to their own private MCP server, which sees their apps and can ask for changes, with the steps for claude.ai, ChatGPT, Claude Code and Cursor. Read from the docs, with the link.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Connect my account",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "find_my_setup",
+          "title": "Find my setup",
+          "description": "Suggests which ElfHosted path fits how someone watches and what they want: Stremio with their own private AIOStreams, a Plex, Emby or Jellyfin library, or Flex for everyday apps such as photos, recipes and notes. Rules-based, with live store links and prices.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "watch_on": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Where they watch: Apple TV, Android TV or Google TV, Fire TV, Roku, LG or Samsung TV, phone, browser, Stremio."
+              },
+              "already_use": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "What they use today: Plex, Emby, Jellyfin, Stremio, or none."
+              },
+              "wants": {
+                "type": "string",
+                "enum": [
+                  "library",
+                  "addons",
+                  "apps"
+                ],
+                "description": "addons: Stremio with their own private AIOStreams and other addons; library: Plex, Emby or Jellyfin with the *arrs and their own provider accounts; apps: everyday apps such as notes, photos and recipes."
+              },
+              "household_size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              },
+              "budget_monthly_usd": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Find my setup",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "second_breakfast",
+          "title": "Second breakfast: apps that pair well",
+          "description": "For someone happy with their stack who wants more: suggests up to 5 ElfHosted apps that pair with the apps they list, never one they already run, each with why and a live store link. Rules-based.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "my_apps": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 60
+                },
+                "maxItems": 30,
+                "description": "The apps they already run, such as Plex, Radarr, AIOStreams or Immich."
+              }
+            },
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Second breakfast: apps that pair well",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        }
+      ]
+    }
+  ]
+}

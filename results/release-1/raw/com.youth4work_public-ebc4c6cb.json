@@ -1,0 +1,333 @@
+{
+  "registry_name": "com.youth4work/public",
+  "url": "https://mcp.youth4work.com/public/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:13:08Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "youth4work",
+      "title": "Youth4work",
+      "version": "2.4.2"
+    },
+    "instructions": "Youth4work (https://www.youth4work.com) is an Indian careers platform: assessed talent profiles,\njobs and internships, exam mock tests that start free (SSC, banking, railways, state PSC, placement papers) and college profiles.\n\nThese tools are READ-ONLY and return PUBLIC data only. Contact details (e-mail, phone, address) are never returned.\nEvery result carries a \"url\" on youth4work.com: always give the user that link. To apply, message people, edit a profile\nor post jobs through an AI agent, connect the signed-in server https://mcp.youth4work.com/mcp instead (OAuth sign-in).\n\nTips:\n- search_talent needs one skill (e.g. \"Python\", \"Digital Marketing\"); use list_talent_categories to find skill names.\n  City must be an Indian city name (e.g. \"Pune\").\n- search_jobs lists LIVE openings only, government jobs included (government=true); get_job gives the full description.\n- search_mock_tests returns exams with their top mock tests; get_mock_test gives sections, duration and the start link.\n- search_colleges needs at least one of name, course (e.g. \"B.Tech\", \"MBA\") or city.\n- Pages hold 20 results; use page=2,3... while hasMore is true."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "search_talent",
+          "title": "Search talent",
+          "description": "Find people on Youth4work who hold a skill, ranked by their assessed talent score, optionally in one Indian city. Returns public profile cards (name, headline, city, college, course, score, profile url); never contact details. Private and deactivated profiles are excluded.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "skill": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "description": "One skill or talent, e.g. \"Python\", \"Digital Marketing\", \"Aptitude\""
+              },
+              "city": {
+                "description": "Indian city name, e.g. \"Pune\"",
+                "type": "string",
+                "maxLength": 100
+              },
+              "page": {
+                "description": "Result page, 20 per page (default 1)",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            },
+            "required": [
+              "skill"
+            ]
+          },
+          "annotations": {
+            "title": "Search talent",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_profile",
+          "title": "Get public profile",
+          "description": "Public profile of one Youth4work member by username (the part after /y/ in https://www.youth4work.com/y/{username}): a short factual summary (the same \"About\" text the profile page shows), skill test ranks (rank N of M, top X%), headline, about, city, education, top assessed talents with scores, work experience and the canonical profile url. No contact details.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50,
+                "description": "Youth4work username"
+              }
+            },
+            "required": [
+              "username"
+            ]
+          },
+          "annotations": {
+            "title": "Get public profile",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "list_talent_categories",
+          "title": "List talent categories",
+          "description": "Talent categories on Youth4work (e.g. Software and Programming, Finance, Sales and Marketing) with their most popular skills. Use the skill names with search_talent.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "title": "List talent categories",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "search_jobs",
+          "title": "Search jobs",
+          "description": "Live job and internship openings on Youth4work (www.cos.youth4work.com), newest first, including government jobs (sarkari naukri: PSUs, banks, institutes; flagged government=true). Matches the keyword against job title, summary and required skills. Returns title, company, city, type, experience, salary (lakhs per year), government and the job url where the user can apply.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "query": {
+                "description": "Keyword or skill, e.g. \"python\", \"sales\"",
+                "type": "string",
+                "maxLength": 100
+              },
+              "city": {
+                "description": "Indian city, e.g. \"Bangalore\"",
+                "type": "string",
+                "maxLength": 100
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "full-time",
+                  "part-time",
+                  "internship",
+                  "work-from-home"
+                ]
+              },
+              "page": {
+                "description": "Result page, 20 per page (default 1)",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            }
+          },
+          "annotations": {
+            "title": "Search jobs",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_job",
+          "title": "Get job",
+          "description": "Full details of one live job by id (from search_jobs): description, skills, courses, salary, experience, company page and the apply url. Government jobs (government=true) carry the notice details such as eligibility and last date; the person applies on the job page. Recruiter contact details are not shared.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "Job id"
+              }
+            },
+            "required": [
+              "job_id"
+            ]
+          },
+          "annotations": {
+            "title": "Get job",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "search_mock_tests",
+          "title": "Search mock tests",
+          "description": "Exam preparation on Youth4work Prep (start free: a free account gets 50 practice questions per exam category and a free sample mock test where available; a paid pack unlocks every test, see the result note): finds exams (e.g. \"SSC CGL\", \"IBPS PO\", \"RRB NTPC\", \"CAT\") by name and/or category (e.g. \"Government Jobs\", \"Bank\", \"Placement Papers\"), most popular first, each with its exam page url and up to 5 mock tests (questions, minutes, url).",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "exam": {
+                "description": "Exam name or part of it, e.g. \"SSC\", \"IBPS PO\"",
+                "type": "string",
+                "maxLength": 100
+              },
+              "category": {
+                "description": "Category, e.g. \"Government Jobs\"",
+                "type": "string",
+                "maxLength": 100
+              },
+              "page": {
+                "description": "Result page, 20 per page (default 1)",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            }
+          },
+          "annotations": {
+            "title": "Search mock tests",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_mock_test",
+          "title": "Get mock test",
+          "description": "Details of one mock test by id (from search_mock_tests): exam, sections, number of questions, duration, marking, the instructions page url and the url that starts the test (needs a free Youth4work sign-in; the note says what is free and what needs a Prep pack).",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "mock_test_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "Mock test id"
+              }
+            },
+            "required": [
+              "mock_test_id"
+            ]
+          },
+          "annotations": {
+            "title": "Get mock test",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "search_colleges",
+          "title": "Search colleges",
+          "description": "Indian colleges and universities on Youth4work University. Give at least one of: name (part of the college name), course (e.g. \"B.Tech\", \"MBA\", \"B.Com\") and city (e.g. \"Pune\"). Most active on Youth4work first. Returns name, university, city, state, website and profile url.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Part of the college name",
+                "type": "string",
+                "maxLength": 100
+              },
+              "course": {
+                "description": "Course offered, e.g. \"B.Tech\", \"MBA\"",
+                "type": "string",
+                "maxLength": 100
+              },
+              "city": {
+                "description": "City name",
+                "type": "string",
+                "maxLength": 100
+              },
+              "page": {
+                "description": "Result page, 20 per page (default 1)",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            }
+          },
+          "annotations": {
+            "title": "Search colleges",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_college",
+          "title": "Get college",
+          "description": "Public profile of one college by id (from search_colleges): university, city, address, website, about, highlights, courses offered with fees where known, student and faculty counts, profile url.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "college_id": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "College id"
+              }
+            },
+            "required": [
+              "college_id"
+            ]
+          },
+          "annotations": {
+            "title": "Get college",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    }
+  ]
+}

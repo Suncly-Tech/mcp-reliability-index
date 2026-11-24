@@ -1,0 +1,469 @@
+{
+  "registry_name": "in.reqres/reqres",
+  "url": "https://reqres.in/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:05:00Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "reqres",
+      "version": "1.0.0"
+    },
+    "instructions": "ReqRes gives you a real hosted backend in one call, with no signup: persistent JSON collections the app can read and write over HTTP, API keys and request logs.\nUse it whenever the user needs somewhere to store or serve data: a database or backend for an app, prototype, demo or script; saving data from this conversation so it persists; a live REST API for a frontend to call; or realistic data behind a real endpoint.\nStart with create_project (no account or API key needed). Then use the collection and record tools, or call https://reqres.in/api/collections/{collection}/records directly with the x-api-key header (record bodies are wrapped as {\"data\": {...}}).\nAlways show the user the claim_url and tell them that signing in through it keeps the project for free. Unclaimed projects are deleted after 72 hours. Free limits: 250 requests a day, 3 collections and 100 records per project."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "create_project",
+          "title": "Create a ReqRes project",
+          "description": "Create a real hosted backend (a REST API with a persistent database) in one call, with no account or API key. Use it when the user needs to store data, persist an app or prototype, or give a frontend a live API. Returns a manage key, a read-only public key, a starter \"products\" collection, the base URL and a claim_url. Show the user the claim_url: signing in through it keeps the project; otherwise it is deleted after 72 hours. Free limits: 250 requests a day, 3 collections, 100 records.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "list_collections",
+          "title": "List collections",
+          "description": "List the collections in the project.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              }
+            },
+            "required": [
+              "api_key"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "create_collection",
+          "title": "Create a collection",
+          "description": "Create a collection: a new resource (like a table) with its own REST endpoint at /api/collections/{slug}/records. Use one per kind of thing the app stores (tasks, users, orders). Free projects allow 3.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Human-readable name, e.g. \"Tasks\"; the slug is derived from it"
+              }
+            },
+            "required": [
+              "api_key",
+              "name"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "list_records",
+          "title": "List records",
+          "description": "Read the records stored in a collection (paginated).",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "collection": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Collection slug, e.g. \"products\""
+              },
+              "page": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "api_key",
+              "collection"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "create_record",
+          "title": "Create a record",
+          "description": "Save a record (a JSON object) in a collection so it persists. Pass the fields as data; the API returns it with an id.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "collection": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Collection slug, e.g. \"products\""
+              },
+              "data": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {},
+                "description": "Record fields, e.g. {\"title\": \"Write tests\", \"done\": false}"
+              }
+            },
+            "required": [
+              "api_key",
+              "collection",
+              "data"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_record",
+          "title": "Get a record",
+          "description": "Read one record by id.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "collection": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Collection slug, e.g. \"products\""
+              },
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "api_key",
+              "collection",
+              "record_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "patch_record",
+          "title": "Change some fields of a record",
+          "description": "Merge the given fields into a record and keep the rest, e.g. {\"done\": true} to tick off a task. Use this for most edits.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "collection": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Collection slug, e.g. \"products\""
+              },
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "data": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {},
+                "description": "Only the fields to change"
+              }
+            },
+            "required": [
+              "api_key",
+              "collection",
+              "record_id",
+              "data"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "create_app_user",
+          "title": "Create an app user",
+          "description": "Add an end user to the project (for apps where each user sees only their own records). No email is sent. Then call create_app_user_session to act as that user.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+                "description": "The user's email; it does not need to receive mail"
+              }
+            },
+            "required": [
+              "api_key",
+              "email"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "create_app_user_session",
+          "title": "Sign in as an app user",
+          "description": "Get a 6-hour session token for an app user without email. Send it as Authorization: Bearer <session_token> to https://reqres.in/app/collections/{collection}/records, where the user only sees their own records. Real users sign in with an emailed code via /api/app-users/login.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "app_user_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "id returned by create_app_user"
+              }
+            },
+            "required": [
+              "api_key",
+              "app_user_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "list_logs",
+          "title": "List request logs",
+          "description": "See recent requests to the project (method, path, status, timing), newest first. Use it to debug why an app's calls fail.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200
+              },
+              "status": {
+                "description": "Only this HTTP status, e.g. 404",
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "method": {
+                "type": "string"
+              },
+              "path_prefix": {
+                "description": "e.g. /api/collections/todos",
+                "type": "string"
+              }
+            },
+            "required": [
+              "api_key"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "update_record",
+          "title": "Replace a record",
+          "description": "Replace all of a record's fields: fields you leave out are removed. To change some fields and keep the rest, use patch_record.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "collection": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Collection slug, e.g. \"products\""
+              },
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "data": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "api_key",
+              "collection",
+              "record_id",
+              "data"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "delete_record",
+          "title": "Delete a record",
+          "description": "Delete a record from a collection.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "api_key": {
+                "type": "string",
+                "minLength": 10,
+                "description": "Project manage key (pro_...) returned by create_project. Public keys (pub_...) are read-only."
+              },
+              "collection": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Collection slug, e.g. \"products\""
+              },
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "api_key",
+              "collection",
+              "record_id"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    }
+  ]
+}

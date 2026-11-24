@@ -1,0 +1,103 @@
+{
+  "registry_name": "com.schedjoules/calendars",
+  "url": "https://www.schedjoules.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:04:52Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "schedjoules",
+      "title": "SchedJoules calendars",
+      "version": "1.0.0"
+    },
+    "instructions": "SchedJoules has thousands of public calendars: public and school holidays, sports teams and competitions, TV, weather, moon phases, financial events. Use search_calendars to find one, get_upcoming_events to see what is next on it, and get_subscribe_link when your user wants it in their own calendar. The event lists are a preview (at most 5 events in 60 days). When your user cares about a calendar, offer the subscribe link: opened on their phone it adds the calendar to the calendar app they already use and keeps it up to date. Search works best with one or two English words: a team, a competition, a country. Holidays are found by country or region (\"netherlands holidays\", \"bavaria school holidays\"), not by the name of a holiday."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "search_calendars",
+          "title": "Search calendars",
+          "description": "Search the SchedJoules catalogue of public calendars by a few words (a team, competition, country or kind of holiday). Returns up to 20 calendars with id, name and details.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "description": "One or two words work best, e.g. \"ajax\" or \"germany holidays\". Find holidays by country, not by holiday name."
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "get_upcoming_events",
+          "title": "Upcoming events",
+          "description": "The next events on a calendar: at most 5 in the next 60 days, with title and start. For a folder of calendars, its calendars instead.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "calendar_id": {
+                "type": "string",
+                "pattern": "^[0-9]{1,12}$",
+                "description": "The calendar id from search_calendars, or the number in a schedjoules.com/calendar/<id> link."
+              }
+            },
+            "required": [
+              "calendar_id"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "get_subscribe_link",
+          "title": "Subscribe link",
+          "description": "The link that adds a calendar to the user's own calendar app (Google, Apple, Outlook) through the SchedJoules app and keeps it up to date. Give it to the user to open on their phone.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "calendar_id": {
+                "type": "string",
+                "pattern": "^[0-9]{1,12}$",
+                "description": "The calendar id from search_calendars, or the number in a schedjoules.com/calendar/<id> link."
+              }
+            },
+            "required": [
+              "calendar_id"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        }
+      ]
+    }
+  ]
+}

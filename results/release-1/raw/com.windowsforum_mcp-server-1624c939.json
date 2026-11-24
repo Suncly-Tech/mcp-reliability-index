@@ -1,0 +1,1304 @@
+{
+  "registry_name": "com.windowsforum/mcp-server",
+  "url": "https://mcp.windowsforum.com",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:08:47Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "logging": {},
+      "prompts": {
+        "listChanged": true
+      },
+      "resources": {
+        "subscribe": false,
+        "listChanged": true
+      },
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "WindowsForum.com",
+      "version": "4.2.4"
+    },
+    "instructions": "\nWindowsForum.com provides search and document retrieval over the public\nWindowsForum.com community and Microsoft Knowledge Base articles. It's designed to\nwork with ChatGPT's chat, agent mode, and deep research features.\n\nWindowsForum.com is an independent community run by Fara Technologies LLC. It is\nnot affiliated with, endorsed by, or sponsored by Microsoft.\n\nAvailable capabilities:\n- Search WindowsForum threads and posts via BM25 (Elasticsearch) and semantic vector search\n- Fetch documents with citations and explicit continuation for long threads\n- Access public member profiles, thread, and forum information\n- Get real-time updates and analytics\n- Look up Microsoft KB articles directly from support.microsoft.com\n\nUse the search tool with source=\"auto\" (default) for best results — it combines\nkeyword (BM25) and semantic (vector) search. Use source=\"semantic\" for pure\nvector similarity search, or source=\"windowsforum\" for keyword-only search.\nThen use fetch to retrieve document content with citations. Threads include up\nto 50 posts; when metadata.pagination.has_more is true, call get_thread_posts\nwith that thread_id and metadata.pagination.next_offset to continue.\n\nWhen a user asks about a specific KB number (e.g. \"KB5044284\"), use the\nget_kb_article tool to fetch the official Microsoft article directly.\nUse search_kb to search for KB articles by topic.\n\nShowing results as cards:\n- A topic or question: search (keep section=\"all\" unless the user asks for\n  only threads, news or tutorials), then render_search_results with the ids.\n- The latest/newest tutorials, news or threads: list_threads with that\n  section (or search with sort=\"newest\"), then render_search_results.\n- One thread by id or URL: render_thread. One KB number: render_kb_article.\n- An OS build number (e.g. 26100.2033): search_kb, then answer with the KB,\n  release date and support.microsoft.com link.\n- Community size or activity: render_community_overview.\nThe server is read-only: it cannot post, reply, edit or delete.\n"
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Search WindowsForum"
+          },
+          "description": "Search all WindowsForum content (community threads, Windows news, tutorials) with combined keyword and semantic ranking — the best first call for any question or topic. Keep section 'all' unless the user asks for one kind of content. For the latest/newest items set sort='newest' (a query with no topic, such as 'latest tutorials', returns the newest items). Pass the result ids to render_search_results to show them as a card.\n\nReturns a list of search results with basic information. Use the fetch tool\nfor document content and continuation details for long threads.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query string. Natural language queries work best for semantic search."
+              },
+              "source": {
+                "default": "auto",
+                "type": "string",
+                "description": "Search mode — \"auto\" (BM25 + semantic, best results), \"windowsforum\" (BM25 only), or \"semantic\" (vector only)"
+              },
+              "limit": {
+                "default": 10,
+                "type": "integer",
+                "description": "Maximum number of results to return (default: 10)"
+              },
+              "section": {
+                "default": "all",
+                "description": "Part of the site to cover. Keep the default 'all' for questions and troubleshooting, so threads, news and tutorials all come back. Use 'threads', 'news' or 'tutorials' only when the user asks for that one kind of content, e.g. 'tutorials' for 'show tutorials'.",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              },
+              "sort": {
+                "default": "relevance",
+                "description": "'relevance' (default) ranks by match. Use 'newest' when the user asks for the latest, newest or most recent items; queries containing those words sort newest automatically.",
+                "enum": [
+                  "relevance",
+                  "newest"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "title": "Search WindowsForum"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "entity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Fetch document"
+          },
+          "description": "Retrieve a WindowsForum document by ID for analysis and citation.\n\nPosts are returned in full. Threads include their first 50 visible posts.\nCheck metadata.truncated and metadata.pagination; continue long threads\nwith get_thread_posts(thread_id, offset=next_offset).",
+          "inputSchema": {
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Document ID — accepts \"thread-XXX\", \"post-XXX\", or a plain number\n(plain numbers are looked up as thread first, then post)"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "fetch",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Fetch document"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Semantic search"
+          },
+          "description": "Find WindowsForum discussions by meaning rather than exact words — embedding-based semantic search that excels at natural-language questions and paraphrased topics.\n\nUses kNN vector similarity to find content that is semantically related\nto the query, even if it doesn't share exact keywords. Best for natural\nlanguage questions and conceptual searches.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Natural language search query"
+              },
+              "limit": {
+                "default": 10,
+                "type": "integer",
+                "description": "Maximum number of results (default: 10)"
+              },
+              "section": {
+                "default": "all",
+                "description": "Part of the site to cover. Keep the default 'all' for questions and troubleshooting, so threads, news and tutorials all come back. Use 'threads', 'news' or 'tutorials' only when the user asks for that one kind of content, e.g. 'tutorials' for 'show tutorials'.",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_semantic",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "title": "Semantic search"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Search threads (sortable)"
+          },
+          "description": "Search WindowsForum threads with structured controls — sort by relevance, date, views or replies, in either order, with pagination; use when result ordering or paging matters. Latest/newest requests replace the default relevance sort with date order; a query such as 'latest tutorials' lists that section without requiring those words in the content. Views/replies sort the complete indexed matching corpus inside a frozen snapshot; they require a complete, fresh popularity index. Counts shown for these sorts come from that index snapshot, with a conservative counts_as_of freshness watermark. Ranking metadata identifies an applied database transaction barrier or a rolling metadata sweep. Native view totals are source-aggregated on approximately a 15-minute cadence, so recent visits and subsequent source changes may not yet be reflected. For popularity continuation pass next_cursor as cursor, leaving from_=0; cursors are short-lived (well under two minutes), so page promptly and start again from the first page if one has expired. The total is exact when total_relation is 'eq', otherwise a verified public lower bound ('gte'); use has_more and next_from to continue. If pagination_limited is true, narrow the query or section instead of paging further.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query string"
+              },
+              "sortby": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": "relevance",
+                "description": "Sort field (relevance, date, views, replies)"
+              },
+              "order": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": "desc",
+                "description": "Sort order (asc, desc)"
+              },
+              "from_": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": 0,
+                "description": "Continuation offset: the number of results already shown. Pass next_from from the previous page."
+              },
+              "size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": 10,
+                "description": "Number of results to return"
+              },
+              "section": {
+                "default": "all",
+                "description": "Part of the site to cover. Keep the default 'all' for questions and troubleshooting, so threads, news and tutorials all come back. Use 'threads', 'news' or 'tutorials' only when the user asks for that one kind of content, e.g. 'tutorials' for 'show tutorials'.",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              },
+              "cursor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Popularity-only continuation token from next_cursor; reuse the same query, section and sort"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_threads",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Search threads (sortable)"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "utility"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Current server time"
+          },
+          "description": "Get the current server date and time — use to anchor time-sensitive queries like 'latest' or 'this week' before searching recent content.",
+          "inputSchema": {
+            "properties": {},
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_time",
+          "outputSchema": {
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "type": "object",
+            "x-fastmcp-wrap-result": true
+          },
+          "title": "Current server time"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "supplements"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Key-Facts supplement status"
+          },
+          "description": "Get the Key-Facts supplement state for one article thread — lifecycle status (approved/held/validated/draft), whether it is the live 'current' revision, and whether the sidebar card is actually rendering, dark because the article was edited after approval (drifted), or absent.\n\nUse to answer 'why is there no Key-Facts card on thread N?'.",
+          "inputSchema": {
+            "properties": {
+              "thread_id": {
+                "description": "XenForo thread ID",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "thread_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "supplement_status",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Key-Facts supplement status"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "supplements"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Key-Facts corpus stats"
+          },
+          "description": "Get aggregate health of the Key-Facts supplement corpus — status histogram, how many eligible articles still have no supplement, how many approved cards went dark from article edits (drifted), and the latest generation run summary.",
+          "inputSchema": {
+            "properties": {},
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "corpus_stats",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Key-Facts corpus stats"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "supplements"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "List drifted Key-Facts threads"
+          },
+          "description": "List article threads whose approved Key-Facts card is dark because the opening post was edited after approval (content-hash drift). These are exactly what the hourly fill driver repairs next.",
+          "inputSchema": {
+            "properties": {
+              "limit": {
+                "default": 20,
+                "description": "Max threads to return (1-100)",
+                "type": "integer"
+              }
+            },
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "list_drifted",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "List drifted Key-Facts threads"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "kb",
+                "microsoft"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": true,
+            "readOnlyHint": true,
+            "title": "Get Microsoft KB article"
+          },
+          "description": "Retrieve an official Microsoft Knowledge Base article from support.microsoft.com by KB number (e.g. KB5063878) — returns the update's title, summary, and affected builds.\nUse this tool when a user asks about a specific KB number.\nFetches the full article content including title, summary, known issues,\nand resolution steps.",
+          "inputSchema": {
+            "properties": {
+              "kb_id": {
+                "description": "The KB article number, e.g. '5034441' or 'KB5034441'",
+                "type": "string"
+              }
+            },
+            "required": [
+              "kb_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_kb_article",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Get Microsoft KB article"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "kb",
+                "microsoft"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": true,
+            "readOnlyHint": true,
+            "title": "Search Microsoft KB"
+          },
+          "description": "Search official Microsoft Knowledge Base articles for Windows 10, Windows 11, and Windows Server updates by topic, keyword, build, or KB number — use for Windows update, patch, and known-issue lookups when you lack a KB number.\nReturns matching KB article titles, release dates, and support.microsoft.com\nURLs, newest first. Use get_kb_article to fetch the full content of a specific article.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "description": "Search query, e.g. 'blue screen 24H2' or 'KB5034441'",
+                "type": "string"
+              },
+              "limit": {
+                "default": 5,
+                "description": "Maximum number of results (default: 5, max: 10)",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_kb",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "title": "Search Microsoft KB"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "entity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Get thread posts"
+          },
+          "description": "Read a page of visible posts in a WindowsForum thread, oldest first.\nFollow pagination.next_offset while pagination.has_more to read the\nfull conversation, including later replies and accepted solutions.",
+          "inputSchema": {
+            "properties": {
+              "thread_id": {
+                "type": "integer",
+                "description": "The thread ID to get posts for"
+              },
+              "limit": {
+                "default": 50,
+                "type": "integer",
+                "description": "Maximum number of posts to return (default: 50, maximum: 100)"
+              },
+              "offset": {
+                "default": 0,
+                "type": "integer",
+                "description": "Number of visible posts to skip (default: 0)"
+              }
+            },
+            "required": [
+              "thread_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_thread_posts",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Get thread posts"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Exact title/author lookup"
+          },
+          "description": "Exact substring lookup over thread titles and author usernames, ordered by view count — use for literal title or author matching rather than relevance-ranked full-text search.\n\nComplements the main `search` tool: use this for literal title or author\nmatching rather than relevance-ranked full-text search.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Literal text to match against thread titles and author usernames"
+              },
+              "limit": {
+                "default": 10,
+                "type": "integer",
+                "description": "Maximum number of results to return"
+              },
+              "section": {
+                "default": "all",
+                "description": "Part of the site to cover. Keep the default 'all' for questions and troubleshooting, so threads, news and tutorials all come back. Use 'threads', 'news' or 'tutorials' only when the user asks for that one kind of content, e.g. 'tutorials' for 'show tutorials'.",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_mysql",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Exact title/author lookup"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Paginated thread search"
+          },
+          "description": "Relevance-ranked full-text thread search with explicit offset pagination — use to page through a large result set beyond what the main search tool returns. The total is exact when total_relation is 'eq', otherwise a verified public lower bound ('gte'); use has_more and next_from to continue. If pagination_limited is true, narrow the query or section instead of paging further.\n\nComplements the main `search` tool: use this to page through a large result\nset with an explicit offset.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query string"
+              },
+              "size": {
+                "default": 10,
+                "type": "integer",
+                "description": "Number of results to return (alias: limit)"
+              },
+              "from_": {
+                "default": 0,
+                "type": "integer",
+                "description": "Continuation offset: the number of results already shown. Pass next_from from the previous page"
+              },
+              "limit": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Alias for size"
+              },
+              "section": {
+                "default": "all",
+                "description": "Part of the site to cover. Keep the default 'all' for questions and troubleshooting, so threads, news and tutorials all come back. Use 'threads', 'news' or 'tutorials' only when the user asks for that one kind of content, e.g. 'tutorials' for 'show tutorials'.",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_elastic",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Paginated thread search"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "entity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Get thread info"
+          },
+          "description": "Get a WindowsForum thread's metadata by id — title, author, reply and view counts, dates, and canonical URL; use fetch or get_thread_posts to read its content.",
+          "inputSchema": {
+            "properties": {
+              "thread_id": {
+                "type": "integer",
+                "description": "The thread ID to retrieve"
+              }
+            },
+            "required": [
+              "thread_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_thread",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Get thread info"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "activity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "List newest threads"
+          },
+          "description": "List the newest WindowsForum threads, news articles or tutorials, newest first, with no search query — use when the user asks for the latest, newest or most recent tutorials, news or threads. Pass each item's `id` to render_search_results to show them as a card.",
+          "inputSchema": {
+            "properties": {
+              "limit": {
+                "default": 10,
+                "type": "integer",
+                "description": "Maximum number of threads to return"
+              },
+              "offset": {
+                "default": 0,
+                "type": "integer",
+                "description": "Offset for pagination"
+              },
+              "section": {
+                "default": "all",
+                "description": "'tutorials' for the latest tutorials, 'news' for the latest news, 'threads' for the latest community threads, or 'all' (default).",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "list_threads",
+          "outputSchema": {
+            "properties": {
+              "result": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "type": "object",
+            "x-fastmcp-wrap-result": true
+          },
+          "title": "List newest threads"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "entity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Get post"
+          },
+          "description": "Get a single WindowsForum post by post id — returns the post's text, author, thread context, and URL; use when you have a specific post reference to verify or quote.",
+          "inputSchema": {
+            "properties": {
+              "post_id": {
+                "type": "integer",
+                "description": "The post ID to retrieve"
+              }
+            },
+            "required": [
+              "post_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_post",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Get post"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "entity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Get user profile"
+          },
+          "description": "Look up a WindowsForum member's public profile by username or user id — registration date, message count, reaction score, last seen, and profile URL.\n\nOnly what a signed-out visitor could see on the member's profile page is\nreturned: members who limit their profile get a username-only result,\nand last seen is omitted for members who hide their online status.",
+          "inputSchema": {
+            "properties": {
+              "identifier": {
+                "type": "string",
+                "description": "Username or user ID"
+              }
+            },
+            "required": [
+              "identifier"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_user",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Get user profile"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "entity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Get forum info"
+          },
+          "description": "Get a WindowsForum forum section's details by node id — title, description, and thread/message counts; pair with list_threads or get_forum_updates to see its activity.",
+          "inputSchema": {
+            "properties": {
+              "forum_id": {
+                "type": "integer",
+                "description": "The forum ID to retrieve"
+              }
+            },
+            "required": [
+              "forum_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_forum",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Get forum info"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "activity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Recent forum activity"
+          },
+          "description": "Summarize recent WindowsForum activity over the last N hours (default 24) — new threads and posts across the community; use for \"what's new\" questions.",
+          "inputSchema": {
+            "properties": {
+              "hours": {
+                "default": 24,
+                "type": "integer",
+                "description": "Number of hours to look back (default: 24)"
+              }
+            },
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_forum_updates",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Recent forum activity"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "activity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Who's online"
+          },
+          "description": "See who is on WindowsForum right now — counts of members, guests, and robots active in the last 15 minutes, with the names of online members who show their online status.",
+          "inputSchema": {
+            "properties": {},
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_online_users",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Who's online"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "activity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Latest registrations"
+          },
+          "description": "List the newest WindowsForum member registrations — use for community-growth questions or to identify recent joiners.\n\nOnly confirmed, non-banned accounts are listed, as on the forum's own\n\"New members\" list.",
+          "inputSchema": {
+            "properties": {
+              "limit": {
+                "default": 5,
+                "type": "integer",
+                "description": "Number of users to return (default: 5)"
+              }
+            },
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_latest_registered_users",
+          "outputSchema": {
+            "properties": {
+              "result": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "type": "object",
+            "x-fastmcp-wrap-result": true
+          },
+          "title": "Latest registrations"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "stats"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Forum statistics"
+          },
+          "description": "Get sitewide WindowsForum statistics — total threads, posts, and members, plus threads and posts created today; use for questions about the community's size and activity.",
+          "inputSchema": {
+            "properties": {},
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_forum_statistics",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Forum statistics"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Search posts"
+          },
+          "description": "Search individual WindowsForum posts (not just thread titles) for a keyword or phrase — use to find specific answers, error messages, or fixes buried inside long threads.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query string"
+              },
+              "limit": {
+                "default": 10,
+                "type": "integer",
+                "description": "Maximum number of results"
+              },
+              "section": {
+                "default": "all",
+                "description": "Part of the site to cover. Keep the default 'all' for questions and troubleshooting, so threads, news and tutorials all come back. Use 'threads', 'news' or 'tutorials' only when the user asks for that one kind of content, e.g. 'tutorials' for 'show tutorials'.",
+                "enum": [
+                  "all",
+                  "threads",
+                  "news",
+                  "tutorials"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_posts",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Search posts"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "search"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Search members"
+          },
+          "description": "Find WindowsForum members whose usernames match a query — use to locate a member before calling get_user for their full profile.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query string"
+              },
+              "limit": {
+                "default": 10,
+                "type": "integer",
+                "description": "Maximum number of results"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "search_users",
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "title": "Search members"
+        },
+        {
+          "_meta": {
+            "fastmcp": {
+              "tags": [
+                "activity"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Recent Windows news"
+          },
+          "description": "Get WindowsForum's recent Windows news coverage from the last N days (default 7) — curated news threads on updates, security patches, and Microsoft announcements.",
+          "inputSchema": {
+            "properties": {
+              "days": {
+                "default": 7,
+                "type": "integer",
+                "description": "Number of days to look back (default: 7)"
+              }
+            },
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "get_windows_news_posts",
+          "outputSchema": {
+            "properties": {
+              "result": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "type": "object",
+            "x-fastmcp-wrap-result": true
+          },
+          "title": "Recent Windows news"
+        },
+        {
+          "_meta": {
+            "openai/outputTemplate": "ui://windowsforum/render_search_results-v8.html",
+            "openai/toolInvocation/invoking": "Preparing results…",
+            "openai/toolInvocation/invoked": "Results ready",
+            "ui": {
+              "resourceUri": "ui://windowsforum/render_search_results-v8.html"
+            },
+            "fastmcp": {
+              "tags": [
+                "render"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Show search results"
+          },
+          "description": "Show WindowsForum threads, news articles, tutorials or posts to the user as a result card, grouped by section. Call search or list_threads first, pick the results that answer the request (keep their order), then pass their ids here; the card displays each item's title, snippet, author, date, and link.",
+          "inputSchema": {
+            "properties": {
+              "ids": {
+                "description": "Document ids to show, in display order, e.g. ['thread-430404', 'post-991595'] — the `id` values returned by search, list_threads, search_semantic, search_threads, search_posts, or search_elastic.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "query": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The user's request, shown as the card's heading, e.g. 'BitLocker recovery key after update' or 'Latest tutorials'."
+              }
+            },
+            "required": [
+              "ids"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "render_search_results",
+          "title": "Show search results"
+        },
+        {
+          "_meta": {
+            "openai/outputTemplate": "ui://windowsforum/render_thread-v8.html",
+            "openai/toolInvocation/invoking": "Opening thread…",
+            "openai/toolInvocation/invoked": "Thread ready",
+            "ui": {
+              "resourceUri": "ui://windowsforum/render_thread-v8.html"
+            },
+            "fastmcp": {
+              "tags": [
+                "render"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Show a thread"
+          },
+          "description": "Show a WindowsForum thread to the user as a readable card with its opening post and replies. Use after search or fetch when the user wants to see or open a specific discussion.",
+          "inputSchema": {
+            "properties": {
+              "thread_id": {
+                "description": "WindowsForum thread id, e.g. 430404.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "thread_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "render_thread",
+          "title": "Show a thread"
+        },
+        {
+          "_meta": {
+            "openai/outputTemplate": "ui://windowsforum/render_kb_article-v8.html",
+            "openai/toolInvocation/invoking": "Fetching KB article…",
+            "openai/toolInvocation/invoked": "KB article ready",
+            "ui": {
+              "resourceUri": "ui://windowsforum/render_kb_article-v8.html"
+            },
+            "fastmcp": {
+              "tags": [
+                "render"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": true,
+            "readOnlyHint": true,
+            "title": "Show a Microsoft KB article"
+          },
+          "description": "Show an official Microsoft Knowledge Base article to the user as a card with its title, highlights, and link to support.microsoft.com. Use when the user asks to see a specific KB article.",
+          "inputSchema": {
+            "properties": {
+              "kb_id": {
+                "description": "KB number, e.g. 'KB5044284' or '5044284'.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "kb_id"
+            ],
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "render_kb_article",
+          "title": "Show a Microsoft KB article"
+        },
+        {
+          "_meta": {
+            "openai/outputTemplate": "ui://windowsforum/render_community_overview-v8.html",
+            "openai/toolInvocation/invoking": "Loading community overview…",
+            "openai/toolInvocation/invoked": "Community overview ready",
+            "ui": {
+              "resourceUri": "ui://windowsforum/render_community_overview-v8.html"
+            },
+            "fastmcp": {
+              "tags": [
+                "render"
+              ]
+            }
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": true,
+            "title": "Show community overview"
+          },
+          "description": "Show a WindowsForum.com community overview card: total threads, posts, and members, who is online now, and the latest threads. Use for questions about the community's size or current activity.",
+          "inputSchema": {
+            "properties": {},
+            "type": "object",
+            "additionalProperties": false
+          },
+          "name": "render_community_overview",
+          "title": "Show community overview"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "registry_name": "com.infobip/mcp",
+  "url": "https://mcp.infobip.com/search",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T16:59:40Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "prompts": {
+        "listChanged": false
+      },
+      "resources": {
+        "subscribe": false,
+        "listChanged": false
+      },
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "Infobip Search MCP server",
+      "version": "1.9.3"
+    },
+    "instructions": "Explore the Infobip API documentation using the Search API. This tool is designed to enhance your experience by making it easier to locate the information you need efficiently."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "explore",
+          "title": "Explore Infobip Documentation",
+          "description": "# Explore Infobip Documentation\n\nUse semantic search to explore the [Infobip documentation hub](https://www.infobip.com/docs), a comprehensive collection of product documentation, practical use cases, and general platform information designed to help both new and advanced users find resources and inspiration for interacting with end-users.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Text query to search through Infobip documentation pages.",
+                "example": "How to send an SMS?",
+                "maxLength": 500,
+                "minLength": 1
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "title": "SearchRequest"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        }
+      ]
+    }
+  ]
+}

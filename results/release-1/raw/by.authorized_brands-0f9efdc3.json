@@ -1,0 +1,1736 @@
+{
+  "registry_name": "by.authorized/brands",
+  "url": "https://app.authorized.by/api/public/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:13:14Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "authorized-by-brands",
+      "version": "2.0.1"
+    },
+    "instructions": "authorized.by is the registry of retailers that brands (manufacturers) have explicitly authorized to sell their products. All tools are read-only. Typical flow: resolve a name or domain with get_brands or get_retailers, then call get_brand_retailers (brand → authorized shops) or get_retailer_brands (shop → authorized brands). To check one shop by its domain or URL (e.g. a seller in a shopping result), call verify_retailer_authorization with the brand or a product GTIN. Results only cover authorizations registered and confirmed on authorized.by; a missing record does not prove that no authorization exists elsewhere. certificate_url fields link to public proof pages."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "get_brands",
+          "title": "Search brands",
+          "description": "Search brands (manufacturers) registered on authorized.by, or list them all. Read-only. 'search' matches the brand name, alias or website domain (partial match). Returns for each brand: id, name, slug, logo and the number of retailers it has authorized. Omit 'search' to retrieve the full index; use 'page' and 'size' to paginate. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "search": {
+                "type": "string",
+                "description": "Filter by brand name, alias or website domain/URL, e.g. 'deuter' or 'deuter.com'. Optional."
+              },
+              "page": {
+                "type": "integer",
+                "description": "Zero-based page number (default 0)."
+              },
+              "size": {
+                "type": "integer",
+                "description": "Page size (default and maximum 500)."
+              }
+            },
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "A page of brands plus network-wide totals and pagination.",
+            "properties": {
+              "brands": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Display name."
+                    },
+                    "slug": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "logo": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Logo image URL, or null."
+                    },
+                    "retailer_count": {
+                      "type": "integer",
+                      "description": "Number of retailers with a public, approved profile that this brand currently authorizes on authorized.by. Only authorizations confirmed by both the brand and the retailer count; pending requests and ended authorizations do not."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "logo",
+                    "retailer_count"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "meta": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "total_brands": {
+                    "type": "integer",
+                    "description": "Total number of public brands on authorized.by."
+                  },
+                  "total_retailers": {
+                    "type": "integer",
+                    "description": "Total number of public retailers on authorized.by."
+                  },
+                  "total_connections": {
+                    "type": "integer",
+                    "description": "Total number of active brand-retailer authorizations on authorized.by."
+                  },
+                  "generated_at": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Timestamp (ISO 8601) the index was generated."
+                  }
+                },
+                "required": [
+                  "total_brands",
+                  "total_retailers",
+                  "total_connections",
+                  "generated_at"
+                ],
+                "additionalProperties": false,
+                "description": "Network-wide totals."
+              },
+              "pagination": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "description": "Zero-based page number of this response."
+                  },
+                  "size": {
+                    "type": "integer",
+                    "description": "Page size used for this response."
+                  },
+                  "total_items": {
+                    "type": "integer",
+                    "description": "Total number of matching entries across all pages."
+                  },
+                  "total_pages": {
+                    "type": "integer",
+                    "description": "Total number of pages."
+                  }
+                },
+                "required": [
+                  "page",
+                  "size",
+                  "total_items",
+                  "total_pages"
+                ],
+                "additionalProperties": false,
+                "description": "Pagination of this response."
+              }
+            },
+            "required": [
+              "brands",
+              "meta",
+              "pagination"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Search brands",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_brand",
+          "title": "Get brand profile",
+          "description": "Get the public profile of one brand (manufacturer) on authorized.by. Read-only. Returns categories, website, headquarters country, description and the number of authorized retailers. Use get_brands first if you only know an approximate name. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id_or_alias": {
+                "type": "string",
+                "description": "Brand numeric ID, slug or alias, e.g. 'deuter' or '16709'."
+              }
+            },
+            "required": [
+              "id_or_alias"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "The public profile of one brand.",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Display name."
+              },
+              "slug": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+              },
+              "website_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Brand website URL, or null."
+              },
+              "logo": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Logo image URL, or null."
+              },
+              "categories": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "name_de": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "German category name."
+                    },
+                    "name_en": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "English category name."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name_de",
+                    "name_en"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Product categories."
+              },
+              "retailer_count": {
+                "type": "integer",
+                "description": "Number of retailers with a public, approved profile that this brand currently authorizes on authorized.by. Only authorizations confirmed by both the brand and the retailer count; pending requests and ended authorizations do not."
+              },
+              "details": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "description": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "de": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "German text, or null."
+                      },
+                      "en": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "English text, or null."
+                      }
+                    },
+                    "required": [
+                      "de",
+                      "en"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Description text in German (de) and English (en); each may be null."
+                  },
+                  "hq_country": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Country code of the brand's headquarters (its company address), or null. Not a manufacturing country and not the countries its authorizations cover."
+                  },
+                  "social": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "instagram": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "facebook": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "linkedin": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "youtube": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "instagram",
+                      "facebook",
+                      "linkedin",
+                      "youtube"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Social media profile URLs; each may be null."
+                  }
+                },
+                "required": [
+                  "description",
+                  "hq_country",
+                  "social"
+                ],
+                "additionalProperties": false,
+                "description": "Extended profile details."
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "slug",
+              "website_url",
+              "logo",
+              "categories",
+              "retailer_count",
+              "details"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Get brand profile",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_brand_retailers",
+          "title": "List a brand's authorized retailers",
+          "description": "List all retailers (shops) currently authorized by a brand on authorized.by. Read-only. Use this to list a brand's authorized shops; to check one shop by its domain or URL, use verify_retailer_authorization. Sorted by brand_count (the number of brands that authorize the retailer) descending, then by name. Each retailer includes shop_url, official_shop (the brand's own online shop, as opposed to an independent authorized retailer), partnership_date, tuv_certified (shop identity verified in the TÜV Saarland ShopIdent procedure), and certificate_url / certificate_url_de: links to the public authorized.by certificate page (English / German) proving this specific brand-retailer authorization. Share the certificate link when a user needs verifiable proof. Only active partnerships are returned: confirmed by both the brand and the retailer, with both profiles public and both companies approved by authorized.by. Revoked or pending partnerships are never listed. Responses are cached and refreshed when the underlying profile or partnership changes, so a revocation may take a short time to disappear. partnership_date is the date the authorization STARTED, not the date it was last verified; a partnership listed here is currently active as of the response time. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id_or_alias": {
+                "type": "string",
+                "description": "Brand numeric ID, slug or alias."
+              }
+            },
+            "required": [
+              "id_or_alias"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "All retailers currently authorized by the brand, with per-retailer certificate links.",
+            "properties": {
+              "brand_id": {
+                "type": "integer",
+                "description": "Numeric ID of the brand the list belongs to."
+              },
+              "total": {
+                "type": "integer",
+                "description": "Number of entries in the list."
+              },
+              "tuv_certified_count": {
+                "type": "integer",
+                "description": "Number of listed retailers whose identity has been verified in the TÜV Saarland ShopIdent procedure."
+              },
+              "retailers": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Display name."
+                    },
+                    "slug": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "shop_url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Retailer online-shop URL, or null."
+                    },
+                    "logo": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Logo image URL, or null."
+                    },
+                    "tuv_certified": {
+                      "type": "boolean",
+                      "description": "Whether the identity of the shop has been verified in the TÜV Saarland ShopIdent procedure, arranged through authorized.by. It is an identity check of the shop operator, not a certification of the retailer's business, service or products."
+                    },
+                    "official_shop": {
+                      "type": "boolean",
+                      "description": "true when this shop is the brand's own official online shop, false when it is an independent authorized retailer. In verify_retailer_authorization it is null unless the status is AUTHORIZED."
+                    },
+                    "certificate_url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Public authorized.by certificate page (English) that proves the authorization: of this brand and retailer where the entry is about both, otherwise the retailer's page listing all brands that authorize it. Null when there is no active authorization."
+                    },
+                    "certificate_url_de": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Same certificate page in German; null when there is no active authorization."
+                    },
+                    "brand_count": {
+                      "type": "integer",
+                      "description": "Number of brands with a public, approved profile that currently authorize this retailer on authorized.by. Only authorizations confirmed by both the brand and the retailer count; pending requests and ended authorizations do not."
+                    },
+                    "partnership_date": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Date (YYYY-MM-DD) this brand's authorization of this retailer STARTED on authorized.by. Not the date either company joined authorized.by and not a last-verified date: every listed partnership is active as of the response."
+                    },
+                    "details": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "address": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "phone": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "email": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "opening_hours": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "day_of_week": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Day of the week."
+                              },
+                              "opening_hour": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Opening time."
+                              },
+                              "closing_hour": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Closing time."
+                              }
+                            },
+                            "required": [
+                              "day_of_week",
+                              "opening_hour",
+                              "closing_hour"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "description": "Weekly opening hours of the physical store; empty or null when unknown."
+                        },
+                        "payment_methods": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Accepted payment methods; null when unknown."
+                        },
+                        "description": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "de": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "German text, or null."
+                            },
+                            "en": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "English text, or null."
+                            }
+                          },
+                          "required": [
+                            "de",
+                            "en"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Description text in German (de) and English (en); each may be null."
+                        },
+                        "categories": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "de": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "German text, or null."
+                              },
+                              "en": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "English text, or null."
+                              }
+                            },
+                            "required": [
+                              "de",
+                              "en"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "description": "Product categories."
+                        },
+                        "tuv_certification_date": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Date (YYYY-MM-DD) the TÜV Saarland ShopIdent verification of the shop's identity was approved; null when there is none. It does not say how long the verification remains valid."
+                        },
+                        "registration_date": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Date (YYYY-MM-DD) the retailer registered on authorized.by."
+                        },
+                        "social": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "instagram": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "facebook": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "linkedin": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "youtube": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "instagram",
+                            "facebook",
+                            "linkedin",
+                            "youtube"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Social media profile URLs; each may be null."
+                        }
+                      },
+                      "required": [
+                        "address",
+                        "phone",
+                        "email",
+                        "opening_hours",
+                        "payment_methods",
+                        "description",
+                        "categories",
+                        "tuv_certification_date",
+                        "registration_date",
+                        "social"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Extended profile details."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "shop_url",
+                    "logo",
+                    "tuv_certified",
+                    "official_shop",
+                    "certificate_url",
+                    "certificate_url_de",
+                    "brand_count",
+                    "partnership_date",
+                    "details"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "brand_id",
+              "total",
+              "tuv_certified_count",
+              "retailers"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "List a brand's authorized retailers",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_retailers",
+          "title": "Search retailers",
+          "description": "Search retailers (shops) registered on authorized.by, or list them all. Read-only. 'search' matches the company name, alias or shop domain (partial match): a URL is reduced to its domain, except on marketplace hosts such as amazon.de or ebay.de, where the store path is kept and the bare host lists every seller. A partial match can find other shops (shop.de also finds myshop.de), so compare shop_url with the domain you are checking; to verify one shop against a brand, use verify_retailer_authorization. Returns for each retailer: id, name, slug, shop URL, logo, the number of brands that authorized it, and certificate_url / certificate_url_de: links to the retailer's public authorized.by certificate page (English / German) listing all brands that authorized it; null when the retailer has no active authorization. Omit 'search' to retrieve the full index; use 'page' and 'size' to paginate. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "search": {
+                "type": "string",
+                "description": "Filter by retailer company name, alias or shop domain/URL, e.g. 'best-shop' or 'best-shop.de'. Optional."
+              },
+              "page": {
+                "type": "integer",
+                "description": "Zero-based page number (default 0)."
+              },
+              "size": {
+                "type": "integer",
+                "description": "Page size (default and maximum 500)."
+              }
+            },
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "A page of retailers plus network-wide totals and pagination.",
+            "properties": {
+              "retailers": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Display name."
+                    },
+                    "slug": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "shop_url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Retailer online-shop URL, or null."
+                    },
+                    "logo": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Logo image URL, or null."
+                    },
+                    "certificate_url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Public authorized.by certificate page (English) that proves the authorization: of this brand and retailer where the entry is about both, otherwise the retailer's page listing all brands that authorize it. Null when there is no active authorization."
+                    },
+                    "certificate_url_de": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Same certificate page in German; null when there is no active authorization."
+                    },
+                    "brand_count": {
+                      "type": "integer",
+                      "description": "Number of brands with a public, approved profile that currently authorize this retailer on authorized.by. Only authorizations confirmed by both the brand and the retailer count; pending requests and ended authorizations do not."
+                    },
+                    "details": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "address": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "phone": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "email": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "opening_hours": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "day_of_week": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Day of the week."
+                              },
+                              "opening_hour": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Opening time."
+                              },
+                              "closing_hour": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Closing time."
+                              }
+                            },
+                            "required": [
+                              "day_of_week",
+                              "opening_hour",
+                              "closing_hour"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "description": "Weekly opening hours of the physical store; empty or null when unknown."
+                        },
+                        "payment_methods": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Accepted payment methods; null when unknown."
+                        },
+                        "description": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "de": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "German text, or null."
+                            },
+                            "en": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "English text, or null."
+                            }
+                          },
+                          "required": [
+                            "de",
+                            "en"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Description text in German (de) and English (en); each may be null."
+                        },
+                        "categories": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "de": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "German text, or null."
+                              },
+                              "en": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "English text, or null."
+                              }
+                            },
+                            "required": [
+                              "de",
+                              "en"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "description": "Product categories."
+                        },
+                        "tuv_certification_date": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Date (YYYY-MM-DD) the TÜV Saarland ShopIdent verification of the shop's identity was approved; null when there is none. It does not say how long the verification remains valid."
+                        },
+                        "registration_date": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Date (YYYY-MM-DD) the retailer registered on authorized.by."
+                        },
+                        "social": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "instagram": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "facebook": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "linkedin": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "youtube": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "instagram",
+                            "facebook",
+                            "linkedin",
+                            "youtube"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Social media profile URLs; each may be null."
+                        }
+                      },
+                      "required": [
+                        "address",
+                        "phone",
+                        "email",
+                        "opening_hours",
+                        "payment_methods",
+                        "description",
+                        "categories",
+                        "tuv_certification_date",
+                        "registration_date",
+                        "social"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Extended profile details."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "shop_url",
+                    "logo",
+                    "certificate_url",
+                    "certificate_url_de",
+                    "brand_count",
+                    "details"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "meta": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "total_brands": {
+                    "type": "integer",
+                    "description": "Total number of public brands on authorized.by."
+                  },
+                  "total_retailers": {
+                    "type": "integer",
+                    "description": "Total number of public retailers on authorized.by."
+                  },
+                  "total_connections": {
+                    "type": "integer",
+                    "description": "Total number of active brand-retailer authorizations on authorized.by."
+                  },
+                  "generated_at": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Timestamp (ISO 8601) the index was generated."
+                  }
+                },
+                "required": [
+                  "total_brands",
+                  "total_retailers",
+                  "total_connections",
+                  "generated_at"
+                ],
+                "additionalProperties": false,
+                "description": "Network-wide totals."
+              },
+              "pagination": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "description": "Zero-based page number of this response."
+                  },
+                  "size": {
+                    "type": "integer",
+                    "description": "Page size used for this response."
+                  },
+                  "total_items": {
+                    "type": "integer",
+                    "description": "Total number of matching entries across all pages."
+                  },
+                  "total_pages": {
+                    "type": "integer",
+                    "description": "Total number of pages."
+                  }
+                },
+                "required": [
+                  "page",
+                  "size",
+                  "total_items",
+                  "total_pages"
+                ],
+                "additionalProperties": false,
+                "description": "Pagination of this response."
+              }
+            },
+            "required": [
+              "retailers",
+              "meta",
+              "pagination"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Search retailers",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_retailer",
+          "title": "Get retailer profile",
+          "description": "Get the public profile of one retailer (shop) on authorized.by. Read-only. Returns address, contact details, opening hours, categories, registration date, tuv_certified (shop identity verified in the TÜV Saarland ShopIdent procedure: an identity check, not a certification of the retailer's business), the number of brands that authorized it, and certificate_url / certificate_url_de: links to the retailer's public authorized.by certificate page (English / German) listing all brands that authorized it. These links are null when the retailer has no active authorization. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id_or_alias": {
+                "type": "string",
+                "description": "Retailer numeric ID, slug or alias."
+              }
+            },
+            "required": [
+              "id_or_alias"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "The public profile of one retailer.",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Display name."
+              },
+              "slug": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+              },
+              "shop_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Retailer online-shop URL, or null."
+              },
+              "logo": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Logo image URL, or null."
+              },
+              "certificate_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Public authorized.by certificate page (English) that proves the authorization: of this brand and retailer where the entry is about both, otherwise the retailer's page listing all brands that authorize it. Null when there is no active authorization."
+              },
+              "certificate_url_de": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Same certificate page in German; null when there is no active authorization."
+              },
+              "tuv_certified": {
+                "type": "boolean",
+                "description": "Whether the identity of the shop has been verified in the TÜV Saarland ShopIdent procedure, arranged through authorized.by. It is an identity check of the shop operator, not a certification of the retailer's business, service or products."
+              },
+              "brand_count": {
+                "type": "integer",
+                "description": "Number of brands with a public, approved profile that currently authorize this retailer on authorized.by. Only authorizations confirmed by both the brand and the retailer count; pending requests and ended authorizations do not."
+              },
+              "details": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "address": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "opening_hours": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "day_of_week": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Day of the week."
+                        },
+                        "opening_hour": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Opening time."
+                        },
+                        "closing_hour": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Closing time."
+                        }
+                      },
+                      "required": [
+                        "day_of_week",
+                        "opening_hour",
+                        "closing_hour"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Weekly opening hours of the physical store; empty or null when unknown."
+                  },
+                  "payment_methods": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Accepted payment methods; null when unknown."
+                  },
+                  "description": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "de": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "German text, or null."
+                      },
+                      "en": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "English text, or null."
+                      }
+                    },
+                    "required": [
+                      "de",
+                      "en"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Description text in German (de) and English (en); each may be null."
+                  },
+                  "categories": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "de": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "German text, or null."
+                        },
+                        "en": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "English text, or null."
+                        }
+                      },
+                      "required": [
+                        "de",
+                        "en"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Product categories."
+                  },
+                  "tuv_certification_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Date (YYYY-MM-DD) the TÜV Saarland ShopIdent verification of the shop's identity was approved; null when there is none. It does not say how long the verification remains valid."
+                  },
+                  "registration_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Date (YYYY-MM-DD) the retailer registered on authorized.by."
+                  },
+                  "social": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "instagram": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "facebook": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "linkedin": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "youtube": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "instagram",
+                      "facebook",
+                      "linkedin",
+                      "youtube"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Social media profile URLs; each may be null."
+                  }
+                },
+                "required": [
+                  "address",
+                  "phone",
+                  "email",
+                  "opening_hours",
+                  "payment_methods",
+                  "description",
+                  "categories",
+                  "tuv_certification_date",
+                  "registration_date",
+                  "social"
+                ],
+                "additionalProperties": false,
+                "description": "Extended profile details."
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "slug",
+              "shop_url",
+              "logo",
+              "certificate_url",
+              "certificate_url_de",
+              "tuv_certified",
+              "brand_count",
+              "details"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Get retailer profile",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "get_retailer_brands",
+          "title": "List a retailer's authorized brands",
+          "description": "List all brands a retailer (shop) is currently authorized to sell, according to authorized.by. Read-only. Use this to answer 'which brands has shop X been authorized for?'. Sorted by brand name. Each entry includes official_shop, partnership_date, and certificate_url / certificate_url_de: links to the public authorized.by certificate page (English / German) proving this specific brand-retailer authorization. Share the certificate link when a user needs verifiable proof. Only active partnerships are returned: confirmed by both the brand and the retailer, with both profiles public and both companies approved by authorized.by. Revoked or pending partnerships are never listed. Responses are cached and refreshed when the underlying profile or partnership changes, so a revocation may take a short time to disappear. partnership_date is the date the authorization STARTED, not the date it was last verified; a partnership listed here is currently active as of the response time. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id_or_alias": {
+                "type": "string",
+                "description": "Retailer numeric ID, slug or alias."
+              }
+            },
+            "required": [
+              "id_or_alias"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "All brands that currently authorize the retailer, with per-brand certificate links.",
+            "properties": {
+              "retailer_id": {
+                "type": "integer",
+                "description": "Numeric ID of the retailer the list belongs to."
+              },
+              "total": {
+                "type": "integer",
+                "description": "Number of entries in the list."
+              },
+              "brands": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Display name."
+                    },
+                    "slug": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+                    },
+                    "website_url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Brand website URL, or null."
+                    },
+                    "logo": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Logo image URL, or null."
+                    },
+                    "official_shop": {
+                      "type": "boolean",
+                      "description": "true when this shop is the brand's own official online shop, false when it is an independent authorized retailer. In verify_retailer_authorization it is null unless the status is AUTHORIZED."
+                    },
+                    "certificate_url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Public authorized.by certificate page (English) that proves the authorization: of this brand and retailer where the entry is about both, otherwise the retailer's page listing all brands that authorize it. Null when there is no active authorization."
+                    },
+                    "certificate_url_de": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Same certificate page in German; null when there is no active authorization."
+                    },
+                    "partnership_date": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Date (YYYY-MM-DD) this brand's authorization of this retailer STARTED on authorized.by. Not the date either company joined authorized.by and not a last-verified date: every listed partnership is active as of the response."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "website_url",
+                    "logo",
+                    "official_shop",
+                    "certificate_url",
+                    "certificate_url_de",
+                    "partnership_date"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "retailer_id",
+              "total",
+              "brands"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "List a retailer's authorized brands",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "verify_retailer_authorization",
+          "title": "Verify a retailer's authorization",
+          "description": "Check whether a shop is an authorized retailer of a brand, from the shop's domain or URL plus the brand or one of its products' GTIN (EAN). Read-only. Use this when you know the seller's domain, e.g. from a shopping or UCP catalog result. Pass exactly one of 'brand' or 'gtin'; a GTIN resolves the product's brand and the check stays brand-level. status: AUTHORIZED = authorization active: the brand has confirmed this shop on authorized.by; official_shop, partnership_date and certificate_url / certificate_url_de prove it, share the certificate link when a user needs proof; 'brand' in the answer is the brand that was checked. NO_RECORD_FOR_BRAND = the shop and the brand are on authorized.by, but this brand has not confirmed this shop there (also when a GTIN belongs to several brands and not exactly one confirmed it; brand is then null). RETAILER_NOT_REGISTERED = no public shop on authorized.by at this domain. BRAND_NOT_REGISTERED = 'brand' does not identify exactly one public brand (the brand is not on authorized.by, or the value is a name shared by several brands or only part of a brand's name), or no product matches 'gtin'; before telling a user that a brand is not on authorized.by, search get_brands with the name and call again with the slug of the brand that was meant. None of these statuses means that the shop is unauthorized. Domains match exactly, never a parent domain or another subdomain (www. and m. count as the same shop); marketplace hosts such as amazon.de or ebay.de only match the exact store URL. The answer is computed live, never cached. Data scope: results only cover relationships registered and confirmed on authorized.by. An empty result or a not-found error does NOT prove that no authorization exists outside authorized.by. Distinguish outcomes: an empty list means no matching record on authorized.by; an error result whose text starts with 'Brand not found' or 'Retailer not found' means the given id/alias is unknown; an error result whose text starts with 'Tool execution failed' is a technical error and says nothing about the data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "retailer_domain": {
+                "type": "string",
+                "description": "Shop domain or URL, e.g. 'best-shop.de' or 'https://www.best-shop.de/de/grills'."
+              },
+              "brand": {
+                "type": "string",
+                "description": "Brand numeric ID, slug, alias, website domain or name, e.g. 'deuter', 'deuter.com' or 'Napoleon'. A number is always read as an ID. A name is only accepted when it identifies exactly one brand; otherwise use get_brands to find the slug. Omit when passing 'gtin'."
+              },
+              "gtin": {
+                "type": "string",
+                "description": "GTIN / EAN of a product of the brand, 8 to 14 or 18 digits. Omit when passing 'brand'."
+              }
+            },
+            "required": [
+              "retailer_domain"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "description": "Outcome of the authorization check, with certificate links when AUTHORIZED.",
+            "properties": {
+              "status": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "AUTHORIZED",
+                  "NO_RECORD_FOR_BRAND",
+                  "RETAILER_NOT_REGISTERED",
+                  "BRAND_NOT_REGISTERED",
+                  null
+                ],
+                "description": "Outcome of the check: AUTHORIZED (authorization active), NO_RECORD_FOR_BRAND, RETAILER_NOT_REGISTERED or BRAND_NOT_REGISTERED. None of them means that the shop is unauthorized."
+              },
+              "retailer_domain": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The checked shop domain and path, as parsed from the request."
+              },
+              "gtin": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The checked GTIN, normalized to 14 digits (18 for GTIN-18); null when checked by brand."
+              },
+              "retailer": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Display name."
+                  },
+                  "slug": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+                  },
+                  "shop_url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Retailer online-shop URL, or null."
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "slug",
+                  "shop_url"
+                ],
+                "additionalProperties": false,
+                "description": "The authorized.by shop registered at this domain; null when there is none."
+              },
+              "brand": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "Numeric authorized.by ID. Accepted by the id_or_alias argument of the detail tools."
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Display name."
+                  },
+                  "slug": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "URL-safe identifier. Accepted by the id_or_alias argument of the detail tools."
+                  },
+                  "website_url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Brand website URL, or null."
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "slug",
+                  "website_url"
+                ],
+                "additionalProperties": false,
+                "description": "The checked brand, also when it was given by its name; null when the shop or the brand is not registered, or when a GTIN matches several brands and not exactly one of them confirmed the shop."
+              },
+              "official_shop": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "true when this shop is the brand's own official online shop, false when it is an independent authorized retailer. In verify_retailer_authorization it is null unless the status is AUTHORIZED."
+              },
+              "partnership_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Date (YYYY-MM-DD) this brand's authorization of this retailer STARTED on authorized.by. Not the date either company joined authorized.by and not a last-verified date: every listed partnership is active as of the response."
+              },
+              "certificate_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Public authorized.by certificate page (English) that proves the authorization: of this brand and retailer where the entry is about both, otherwise the retailer's page listing all brands that authorize it. Null when there is no active authorization."
+              },
+              "certificate_url_de": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Same certificate page in German; null when there is no active authorization."
+              },
+              "checked_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Timestamp (ISO 8601) the check was made; answers are never cached."
+              }
+            },
+            "required": [
+              "status",
+              "retailer_domain",
+              "gtin",
+              "retailer",
+              "brand",
+              "official_shop",
+              "partnership_date",
+              "certificate_url",
+              "certificate_url_de",
+              "checked_at"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "title": "Verify a retailer's authorization",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        }
+      ]
+    }
+  ]
+}

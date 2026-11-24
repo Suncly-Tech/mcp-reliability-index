@@ -1,0 +1,302 @@
+{
+  "registry_name": "com.talkjs/talkjs",
+  "url": "https://mcp.talkjs.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:05:19Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "capabilities": {
+      "tools": {}
+    },
+    "instructions": "When disconnected or authentication is required, show the concrete login steps\nfor the user's current client. If unknown, show the client choices below.\nConnect your TalkJS account using the steps for your client:\n- Codex CLI: type `/mcp login talkjs` in the active Codex session.\n- Claude Code: type `/mcp`, select the TalkJS server, and follow the authentication prompts.\n- ChatGPT web: use the Connect/Sign in prompt shown for the TalkJS tool. If no prompt appears, open the TalkJS plugin's connection settings and connect your account.\n- Claude web: open Customize > Connectors, find TalkJS, and click Connect.\n- Cursor: open Customize > MCP, select TalkJS, and follow the sign-in prompt.\n- Other MCP clients: open the TalkJS server's connection settings and choose Authenticate, Sign in, or Connect.\n\n`talkjs` in these commands is the configured MCP server name. Substitute the actual name if it was registered differently.\nComplete browser authorization, choose the TalkJS project's test app, then retry the requested operation.\n\nTerminal alternatives: run `codex mcp login talkjs` for Codex or `claude mcp login talkjs` for Claude Code.\nAfter terminal login, reconnect the MCP server in the active client if it still reports disconnected; start a new agent session if necessary.\n\nUse get_connection_status to check the current TalkJS connection.\nAsk the user to complete login; do not assume a browser flow has started.\nAfter login, retry the requested tool. Do not claim they are connected until\nget_connection_status returns connected: true.\nSecret-key tools return IDs and metadata only, never secret values.\nIf the user needs a secret value, tell them to view the key in the TalkJS\ndashboard or manually run `talkjs secret-keys get <id>` in their terminal\nwith the same project selected. Leave secret retrieval to the user; do not\nrun that command yourself or ask them to paste the secret into the chat.\n",
+    "protocolVersion": "2025-06-18",
+    "serverInfo": {
+      "name": "talkjs",
+      "version": "0.1.0"
+    }
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "secret_keys:write"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Create a new active secret key for the connected test app and return its ID and metadata only. Never returns the secret value. Ask the user to view it in the TalkJS dashboard or manually run `talkjs secret-keys get <id>` in their terminal. Creates a new key on every call; at most 10 keys are allowed. Does not change webhook selection.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {},
+            "type": "object"
+          },
+          "name": "create_secret_key",
+          "title": "create_secret_key"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "secret_keys:write"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Permanently delete an inactive secret key that is not selected for webhooks, from the connected test app. Deactivate it first; select a replacement if it is the current webhook key.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "id": {
+                "description": "The full 12-character ID returned by list_secret_keys.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          },
+          "name": "delete_secret_key",
+          "title": "delete_secret_key"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": []
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Check whether this request is connected to a TalkJS test app. No login is required. When disconnected, returns concrete login instructions to show the user for their client.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {},
+            "type": "object"
+          },
+          "name": "get_connection_status",
+          "title": "get_connection_status"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "secret_keys:read"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Get a secret key's ID and metadata for the connected test app. Never returns the secret value. To view it, ask the user to open the key in the TalkJS dashboard or manually run `talkjs secret-keys get <id>` in their terminal.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "id": {
+                "description": "The full 12-character ID returned by list_secret_keys.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          },
+          "name": "get_secret_key",
+          "title": "get_secret_key"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "settings:read"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "Read basic settings for the connected TalkJS test app. Requires login and settings:read.\nIf authentication is required, show the user the concrete steps for their client:\nConnect your TalkJS account using the steps for your client:\n- Codex CLI: type `/mcp login talkjs` in the active Codex session.\n- Claude Code: type `/mcp`, select the TalkJS server, and follow the authentication prompts.\n- ChatGPT web: use the Connect/Sign in prompt shown for the TalkJS tool. If no prompt appears, open the TalkJS plugin's connection settings and connect your account.\n- Claude web: open Customize > Connectors, find TalkJS, and click Connect.\n- Cursor: open Customize > MCP, select TalkJS, and follow the sign-in prompt.\n- Other MCP clients: open the TalkJS server's connection settings and choose Authenticate, Sign in, or Connect.\n\n`talkjs` in these commands is the configured MCP server name. Substitute the actual name if it was registered differently.\nComplete browser authorization, choose the TalkJS project's test app, then retry the requested operation.\n\nTerminal alternatives: run `codex mcp login talkjs` for Codex or `claude mcp login talkjs` for Claude Code.\nAfter terminal login, reconnect the MCP server in the active client if it still reports disconnected; start a new agent session if necessary.\n",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {},
+            "type": "object"
+          },
+          "name": "get_settings",
+          "title": "get_settings"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "secret_keys:read"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": true
+          },
+          "description": "List the connected test app's secret-key IDs, creation times, active status and webhook selection. Returns metadata only.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {},
+            "type": "object"
+          },
+          "name": "list_secret_keys",
+          "title": "list_secret_keys"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "secret_keys:write"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Activate/deactivate a test app secret key or select it for webhooks. Supply active and/or usedForWebhooks as booleans. Select an active replacement before unselecting or deactivating the current webhook key. Returns metadata only.",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "active": {
+                "description": "Whether the key is valid for authentication.",
+                "type": "boolean"
+              },
+              "id": {
+                "description": "The full 12-character ID returned by list_secret_keys.",
+                "type": "string"
+              },
+              "usedForWebhooks": {
+                "description": "Select an active key for webhook signing, replacing the current selection.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          },
+          "name": "update_secret_key",
+          "title": "update_secret_key"
+        },
+        {
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "settings:write"
+                ]
+              }
+            ]
+          },
+          "annotations": {
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false,
+            "readOnlyHint": false
+          },
+          "description": "Update the connected TalkJS test app's settings. Supply one or more fields.\nCustom fields merge; a null entry deletes that field, and custom: null clears all custom fields.\nRequiring authentication needs backend-generated user tokens; making it optional permits impersonation.\n",
+          "inputSchema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "properties": {
+              "authentication": {
+                "description": "Whether users must supply backend-generated authentication tokens.",
+                "enum": [
+                  "required",
+                  "optional"
+                ]
+              },
+              "custom": {
+                "description": "Custom fields to merge. Values are strings or null to delete; null for the whole field clears all custom fields.",
+                "oneOf": [
+                  {
+                    "additionalProperties": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "const": null
+                        }
+                      ]
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "const": null
+                  }
+                ]
+              },
+              "defaultLocale": {
+                "description": "Locale, for example en-US or pl; normalized by TalkJS.",
+                "type": "string"
+              },
+              "name": {
+                "description": "App name; trimmed and must not be empty.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "name": "update_settings",
+          "title": "update_settings"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "registry_name": "com.thousandeyes/mcp",
+  "url": "https://api.thousandeyes.com/mcp-public",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T16:58:04Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "experimental": {},
+      "logging": {},
+      "prompts": {
+        "listChanged": true
+      },
+      "resources": {
+        "subscribe": false,
+        "listChanged": true
+      },
+      "tools": {
+        "listChanged": true
+      },
+      "extensions": {
+        "io.modelcontextprotocol/ui": {}
+      }
+    },
+    "serverInfo": {
+      "name": "thousandeyes-mcp-open",
+      "version": "0.0.17"
+    }
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "get_public_network_outages",
+          "title": "Get Public Network Outages",
+          "description": "Get Open Network Outages (No Authentication Required).\n\nReturns a list of publicly available network and/or application outages from ThousandEyes Internet Insights.\nThis endpoint does not require authentication and provides visibility into global Internet infrastructure outages.\n\nUse this to:\n- Monitor current Internet outages affecting ISPs, DNS providers, CDNs, and SaaS providers\n- Track macro-level impact of Internet events\n- Get real-time visibility into infrastructure issues\n\nArgs:\n----\n    latest_seconds: Time window in seconds to look back (default: 86400 = 24 hours)\n    minimum_outage_duration_seconds: Minimum duration filter (default: 200 seconds)\n\nReturns:\n-------\n    List of outage events with details about affected infrastructure",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "latest_seconds": {
+                "default": 86400,
+                "description": "Time window in seconds to look back for outages. Default is 86400 (24 hours). Common values: 3600 (1h), 86400 (24h), 604800 (7d).",
+                "type": "integer"
+              },
+              "minimum_outage_duration_seconds": {
+                "default": 200,
+                "description": "Minimum outage duration in seconds to filter results. Default is 200 seconds.",
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get Public Network Outages",
+            "readOnlyHint": true,
+            "openWorldHint": true
+          },
+          "_meta": {
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        },
+        {
+          "name": "get_public_application_outages",
+          "title": "Get Public Application Outages",
+          "description": "Get Open Application Outages (No Authentication Required).\n\nReturns a list of publicly available application outages from ThousandEyes Internet Insights.\nThis endpoint does not require authentication and provides visibility into global application infrastructure outages.\n\nUse this to:\n- Monitor current application outages affecting SaaS providers, cloud services, and web applications\n- Track macro-level impact of application-layer Internet events\n- Get real-time visibility into application infrastructure issues\n\nArgs:\n----\n    latest_seconds: Time window in seconds to look back (default: 86400 = 24 hours)\n    minimum_outage_duration_seconds: Minimum duration filter (default: 200 seconds)\n\nReturns:\n-------\n    List of application outage events with details about affected infrastructure",
+          "inputSchema": {
+            "additionalProperties": false,
+            "properties": {
+              "latest_seconds": {
+                "default": 86400,
+                "description": "Time window in seconds to look back for outages. Default is 86400 (24 hours). Common values: 3600 (1h), 86400 (24h), 604800 (7d).",
+                "type": "integer"
+              },
+              "minimum_outage_duration_seconds": {
+                "default": 200,
+                "description": "Minimum outage duration in seconds to filter results. Default is 200 seconds.",
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "annotations": {
+            "title": "Get Public Application Outages",
+            "readOnlyHint": true,
+            "openWorldHint": true
+          },
+          "_meta": {
+            "fastmcp": {
+              "tags": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

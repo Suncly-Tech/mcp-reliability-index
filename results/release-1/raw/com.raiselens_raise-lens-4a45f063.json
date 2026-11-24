@@ -1,0 +1,3475 @@
+{
+  "registry_name": "com.raiselens/raise-lens",
+  "url": "https://mcp.raiselens.com/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:12:06Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {}
+    },
+    "serverInfo": {
+      "name": "Raise Lens",
+      "title": "Raise Lens",
+      "version": "0.6.0"
+    }
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "about_raise_lens",
+          "title": "About Raise Lens",
+          "description": "Call this first. Returns what Raise Lens covers (sustainability grants, tenders, programmes and funders), which tools return summaries and which return full records, the daily result limits, and the links to raiselens.com to get started.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "coverage": {
+                "type": "string"
+              },
+              "caller": {
+                "type": "string",
+                "description": "Who is calling: anonymous, or the level of access of the connected user."
+              },
+              "open_tools": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "what"
+                  ]
+                }
+              },
+              "pro_tools": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "what"
+                  ]
+                }
+              },
+              "limits": {
+                "type": "object",
+                "properties": {
+                  "free_daily_rows": {
+                    "type": "integer"
+                  },
+                  "free_rows_per_answer": {
+                    "type": "integer"
+                  },
+                  "pro_daily_tool_calls": {
+                    "type": "integer"
+                  },
+                  "pro_daily_full_records": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "free_daily_rows",
+                  "free_rows_per_answer",
+                  "pro_daily_tool_calls",
+                  "pro_daily_full_records"
+                ]
+              },
+              "signup_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "plans_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "connect_url": {
+                "type": "string"
+              },
+              "website_url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "coverage",
+              "caller",
+              "open_tools",
+              "pro_tools",
+              "limits",
+              "signup_url",
+              "plans_url",
+              "connect_url",
+              "website_url"
+            ]
+          },
+          "annotations": {
+            "title": "About Raise Lens",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "search_opportunities",
+          "title": "Search funding opportunities",
+          "description": "Search Raise Lens for sustainability funding opportunities (grants and tenders) by topic, sector, country and deadline. Returns up to 10 matches, each with title, summary, sectors, geography, deadline, amount and a link to the opportunity page on raiselens.com. New listings enter these results at once with full access; otherwise tenders and subcontracts 7 days and grants 30 days after Raise Lens lists them, or 7 days before they close if sooner. Public notices are named in full at once; other listings 14 days after Raise Lens lists them, or at once with full access.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search terms: what the project needs funding for."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "grant",
+                  "tender",
+                  "any"
+                ],
+                "default": "any",
+                "description": "grant, tender, or any (both)."
+              },
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Raise Lens sector slugs, such as renewable-energy. Only the first is used as a filter; put the rest in `query`."
+              },
+              "geography": {
+                "type": "string",
+                "description": "Country or region: ISO-2 (\"DE\"), English name (\"Germany\"), or an aggregate (\"EU\", \"Global South\")."
+              },
+              "deadline_before": {
+                "type": "string",
+                "format": "date",
+                "description": "Only opportunities closing on or before this date (YYYY-MM-DD)."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "default": 5,
+                "description": "Number of matches to return."
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Raise Lens opportunity id."
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "geography": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Countries or regions, comma separated."
+                    },
+                    "deadline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Closing date, YYYY-MM-DD, when published."
+                    },
+                    "amount_display": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Funding amount as published, or null when none is given."
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The opportunity page on raiselens.com."
+                    },
+                    "access": {
+                      "type": "string",
+                      "description": "Level of detail in this record."
+                    },
+                    "cta": {
+                      "type": "string",
+                      "description": "Link to the Raise Lens page that lists what each option includes."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "summary",
+                    "sectors",
+                    "geography",
+                    "deadline",
+                    "amount_display",
+                    "url",
+                    "access",
+                    "cta"
+                  ]
+                }
+              },
+              "note": {
+                "type": "string",
+                "description": "Match count and what the records include."
+              },
+              "signup_url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "results",
+              "note",
+              "signup_url"
+            ]
+          },
+          "annotations": {
+            "title": "Search funding opportunities",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "count_matching_opportunities",
+          "title": "Count matching funding opportunities",
+          "description": "Count the open Raise Lens grants and tenders that match a search by topic, sector, country and deadline. Returns only the number and a link to the same search on raiselens.com; no records. New listings enter these results at once with full access; otherwise tenders and subcontracts 7 days and grants 30 days after Raise Lens lists them, or 7 days before they close if sooner.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search terms: what the project needs funding for."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "grant",
+                  "tender",
+                  "any"
+                ],
+                "default": "any",
+                "description": "grant, tender, or any (both)."
+              },
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Raise Lens sector slugs, such as renewable-energy. Only the first is used as a filter; put the rest in `query`."
+              },
+              "geography": {
+                "type": "string",
+                "description": "Country or region: ISO-2 (\"DE\"), English name (\"Germany\"), or an aggregate (\"EU\", \"Global South\")."
+              },
+              "deadline_before": {
+                "type": "string",
+                "format": "date",
+                "description": "Only opportunities closing on or before this date (YYYY-MM-DD)."
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "integer",
+                "description": "Open opportunities matching the search."
+              },
+              "total": {
+                "type": "integer"
+              },
+              "search_url": {
+                "type": "string",
+                "description": "The same search on raiselens.com."
+              },
+              "query": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "sector": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "geography": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "deadline_before": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "query",
+                  "type",
+                  "sector",
+                  "geography",
+                  "deadline_before"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "count",
+              "total",
+              "search_url",
+              "query",
+              "note"
+            ]
+          },
+          "annotations": {
+            "title": "Count matching funding opportunities",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "match_organisation",
+          "title": "Match an organisation to funding",
+          "description": "Match an organisation to open Raise Lens grants and tenders, from its website address or from a short profile (sectors, country, organisation type, stage). With a website address, Raise Lens reads the public homepage and up to three of its pages (robots.txt obeyed) and extracts the profile; a profile skips the reading. Returns the profile used, the number of strong matches and the best matches ranked by relevance, each with a one-line reason and its raiselens.com page. Website reading has a daily limit per caller; a profile has none.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "The organisation's website (example.org), its name without the domain ending, or its LinkedIn company page."
+              },
+              "profile": {
+                "type": "object",
+                "description": "Use instead of url when the organisation is already known.",
+                "properties": {
+                  "sectors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Raise Lens sector slugs or plain words (\"solar\", \"water\"); up to 4."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Where it works: ISO-2 (\"KE\"), English name (\"Kenya\") or \"global\"."
+                  },
+                  "org_type": {
+                    "type": "string",
+                    "enum": [
+                      "startup",
+                      "sme",
+                      "large-company",
+                      "nonprofit",
+                      "charity",
+                      "social-enterprise",
+                      "cooperative",
+                      "university",
+                      "research-institution",
+                      "local-authority",
+                      "individual",
+                      "community-group",
+                      "indigenous-community",
+                      "consortium",
+                      "consultancy",
+                      "engineering-contractor",
+                      "fund-manager"
+                    ],
+                    "description": "Organisation type."
+                  },
+                  "stage": {
+                    "type": "string",
+                    "enum": [
+                      "idea-rd",
+                      "prototype-pilot",
+                      "pre-seed",
+                      "seed",
+                      "series-a",
+                      "series-b-growth",
+                      "scale-mature",
+                      "any"
+                    ],
+                    "description": "Stage."
+                  },
+                  "check_size_band": {
+                    "type": "string",
+                    "description": "Funding size band, as the Raise Lens matching questions use it (xs, small, medium-small, medium, medium-large, large, xl, mega)."
+                  },
+                  "activities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Up to 6 short phrases for what it does (\"mangrove restoration\")."
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "One or two sentences on what it does."
+                  }
+                }
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "ok, or why there are no matches (rate_limited, cap_reached, unreadable, ...)."
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "website or profile."
+              },
+              "website": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "summary": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "What the organisation does, as read from its website."
+              },
+              "business_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "profile": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "sectors": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "sector_labels": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "country": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "description": "ISO-2 code, or GLOBAL."
+                      },
+                      "country_label": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "org_type": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "check_size_band": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "activities": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "sectors",
+                      "country",
+                      "org_type",
+                      "stage"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The profile the matches are ranked against."
+              },
+              "mode": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "matches, need_sector or out_of_scope."
+              },
+              "count": {
+                "type": "integer",
+                "description": "Strong matches in total."
+              },
+              "exact": {
+                "type": "boolean",
+                "description": "false when the count is a lower bound."
+              },
+              "results": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "grant, tender or subcontract."
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "deadline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "geography": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "match_score": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Relevance to the profile, 0 to 100."
+                    },
+                    "reason": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Why it matches, in one line."
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The opportunity page on raiselens.com."
+                    },
+                    "funder": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Funder or buyer; null where withheld."
+                    },
+                    "source_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The official listing; null where withheld."
+                    },
+                    "apply_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The application link; null where withheld."
+                    },
+                    "access": {
+                      "type": "string",
+                      "description": "Level of detail in this record."
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "deadline",
+                    "sectors",
+                    "geography",
+                    "match_score",
+                    "reason",
+                    "url",
+                    "funder",
+                    "source_url",
+                    "apply_url",
+                    "access"
+                  ]
+                }
+              },
+              "note": {
+                "type": "string"
+              },
+              "wizard_url": {
+                "type": "string",
+                "description": "The matching questions on raiselens.com."
+              }
+            },
+            "required": [
+              "status",
+              "count",
+              "results",
+              "note",
+              "wizard_url"
+            ]
+          },
+          "annotations": {
+            "title": "Match an organisation to funding",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "get_opportunity",
+          "title": "Get a funding opportunity",
+          "description": "Fetch one Raise Lens grant or tender by its raiselens.com URL or id. Returns its title, summary, sectors, geography, deadline, amount, a link to the opportunity page and, where the opportunity page shows them, the funder, description, eligibility and key requirements. Public notices are named in full at once; other listings 14 days after Raise Lens lists them, or at once with full access.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "url_or_id": {
+                "type": "string",
+                "description": "A raiselens.com opportunity URL, or the opportunity id."
+              }
+            },
+            "required": [
+              "url_or_id"
+            ]
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "found": {
+                "type": "boolean"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Raise Lens opportunity id."
+              },
+              "type": {
+                "type": "string",
+                "description": "grant, tender or subcontract."
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "summary": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Full description, cut at 4,000 characters."
+              },
+              "funder": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Funder or contracting authority."
+              },
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "geography": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Countries or regions, comma separated."
+              },
+              "deadline": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Closing date, YYYY-MM-DD, when published."
+              },
+              "amount_display": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Funding amount as published, or null when none is given."
+              },
+              "eligibility": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "key_requirements": {
+                "anyOf": [
+                  {
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Publishing source."
+              },
+              "source_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The original listing at the source."
+              },
+              "apply_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The opportunity page on raiselens.com."
+              },
+              "date_added": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "When Raise Lens added the record."
+              },
+              "access": {
+                "type": "string",
+                "description": "Level of detail in this record."
+              },
+              "cta": {
+                "type": "string",
+                "description": "Link to the Raise Lens page that lists what each option includes."
+              }
+            },
+            "required": [
+              "found"
+            ]
+          },
+          "annotations": {
+            "title": "Get a funding opportunity",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "list_sectors",
+          "title": "List sectors",
+          "description": "List the sector slugs Raise Lens classifies opportunities against, each with a readable label. These slugs are the values the sector filters on this server accept.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "slug": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "slug",
+                    "label"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "sectors"
+            ]
+          },
+          "annotations": {
+            "title": "List sectors",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "search_funders",
+          "title": "Search funders and investors",
+          "description": "Search the Raise Lens directory of sustainability funders and investors (foundations, climate VCs, corporate investors, development finance institutions, government funders) by topic, funder type, funding type and geography. Returns up to 20 funders ranked by relevance to the query, then by how many open opportunities each has on Raise Lens. Each has name, type, funding types, sectors, geographic focus, cheque size, next deadline, how to apply, open opportunity count and its raiselens.com page.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "What the funder backs, e.g. \"green hydrogen\", \"mangrove restoration\", or a funder name."
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "foundation",
+                  "uk-community-foundation",
+                  "dfi-sovereign",
+                  "mdb",
+                  "government-department",
+                  "accelerator",
+                  "climate-consultancy",
+                  "public-buyer",
+                  "climate-vc",
+                  "venture-capital",
+                  "corporate-vc",
+                  "corporate-strategic",
+                  "growth-equity",
+                  "private-equity",
+                  "infrastructure-fund",
+                  "private-credit-debt",
+                  "blended-finance",
+                  "asset-manager",
+                  "fund-of-funds",
+                  "family-office",
+                  "institutional-investor",
+                  "other"
+                ],
+                "description": "Funder type."
+              },
+              "funding_type": {
+                "type": "string",
+                "enum": [
+                  "grant",
+                  "equity",
+                  "debt",
+                  "guarantee",
+                  "any"
+                ],
+                "default": "any",
+                "description": "grant, equity, debt, guarantee or any. Matches what the funder states, or what its type implies when it states nothing."
+              },
+              "geography": {
+                "type": "string",
+                "description": "Country or region: ISO-2 (\"KE\"), English name (\"Kenya\") or a region (\"East Africa\"). Matches funders based there or naming it in their focus."
+              },
+              "open_now": {
+                "type": "boolean",
+                "default": false,
+                "description": "true: only funders open to applications or with open opportunities listed."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20,
+                "default": 10,
+                "description": "Number of funders to return."
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "slug": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Funder id (slug) on Raise Lens."
+                    },
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "category": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Funder type slug (foundation, climate-vc, dfi-sovereign...)."
+                    },
+                    "category_label": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "hq_country": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Headquarters country, ISO-2."
+                    },
+                    "hq_location": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "funding_types": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "stages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "geographic_focus": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Countries and regions the funder states it covers."
+                    },
+                    "cheque_size": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Usual and largest ticket, in words (USD)."
+                    },
+                    "open_to_applications": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "yes, no or unknown, as the funder states it."
+                    },
+                    "next_deadline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "application_note": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "How to approach or apply, as the funder describes it."
+                    },
+                    "open_opportunity_count": {
+                      "type": "integer",
+                      "description": "Open grants and calls from this funder listed on Raise Lens."
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The funder page on raiselens.com."
+                    },
+                    "access": {
+                      "type": "string",
+                      "description": "Level of detail in this record: summary or full."
+                    },
+                    "website": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "application_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "linkedin_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The organisation page."
+                    },
+                    "aum_fund_size": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "typical_grant_size_min_usd": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "typical_grant_size_max_usd": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "submission_window": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "programmes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "sectors": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "geography": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "window": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "url": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "typical_size_usd_min": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "typical_size_usd_max": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      }
+                    },
+                    "recent_grants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "year": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "grantee": {
+                            "type": "string"
+                          },
+                          "purpose": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "amount_usd": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "grantee"
+                        ]
+                      },
+                      "description": "Recent grants or investments to organisations."
+                    }
+                  },
+                  "required": [
+                    "slug",
+                    "name",
+                    "category",
+                    "category_label",
+                    "hq_country",
+                    "hq_location",
+                    "funding_types",
+                    "sectors",
+                    "stages",
+                    "geographic_focus",
+                    "cheque_size",
+                    "open_to_applications",
+                    "next_deadline",
+                    "application_note",
+                    "open_opportunity_count",
+                    "url",
+                    "access"
+                  ]
+                }
+              },
+              "total": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Funders matched before the limit."
+              },
+              "note": {
+                "type": "string"
+              },
+              "plans_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Raise Lens page that lists what each option includes; null when every record is full."
+              }
+            },
+            "required": [
+              "results",
+              "total",
+              "note",
+              "plans_url"
+            ]
+          },
+          "annotations": {
+            "title": "Search funders and investors",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "funder_rhythm",
+          "title": "Funder call rhythm",
+          "description": "When one funder's calls usually open and close, and the typical window from opening to deadline, from its past calls listed on Raise Lens. Shown only when there are at least 3 past calls with both dates; a pattern from past calls, not a forecast. Includes the decision time when the funder states one.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "url_or_slug": {
+                "type": "string",
+                "description": "A Raise Lens funder slug, or its raiselens.com/funders URL."
+              }
+            },
+            "required": [
+              "url_or_slug"
+            ]
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "found": {
+                "type": "boolean"
+              },
+              "slug": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The funder page on raiselens.com."
+              },
+              "rhythm": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "past_calls": {
+                        "type": "integer"
+                      },
+                      "opening_months": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "opening_pattern": {
+                        "type": "string",
+                        "description": "usual (months that repeat) or spread (no month repeats)."
+                      },
+                      "closing_months": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "closing_pattern": {
+                        "type": "string"
+                      },
+                      "typical_window_days": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "typical_window": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "decision_time": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "description": "As the funder states it; never estimated."
+                      }
+                    },
+                    "required": [
+                      "past_calls",
+                      "opening_months",
+                      "opening_pattern",
+                      "closing_months",
+                      "closing_pattern",
+                      "typical_window_days",
+                      "typical_window",
+                      "decision_time"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "null with fewer than 3 past calls."
+              },
+              "basis": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "note": {
+                "type": "string"
+              },
+              "plans_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "found",
+              "slug",
+              "name",
+              "url",
+              "rhythm",
+              "basis",
+              "note",
+              "plans_url"
+            ]
+          },
+          "annotations": {
+            "title": "Funder call rhythm",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "search_opportunities_full",
+          "title": "Search funding opportunities with full details",
+          "description": "Search Raise Lens grants and tenders and return full records: funder, description, eligibility, key requirements, source, apply link and the raiselens.com page. Up to 50 results a page; pass next_cursor back as cursor for the next page (first 1000 matches). New listings enter these results at once with full access; otherwise tenders and subcontracts 7 days and grants 30 days after Raise Lens lists them, or 7 days before they close if sooner. Public notices are named in full at once; other listings 14 days after Raise Lens lists them, or at once with full access.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search terms: what the project needs funding for."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "grant",
+                  "tender",
+                  "any"
+                ],
+                "default": "any",
+                "description": "grant, tender, or any (both)."
+              },
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Raise Lens sector slugs, such as renewable-energy. The first is used as a filter."
+              },
+              "geography": {
+                "type": "string",
+                "description": "ISO-2 (\"DE\"), English name (\"Germany\") or aggregate (\"EU\")."
+              },
+              "deadline_before": {
+                "type": "string",
+                "format": "date",
+                "description": "Only opportunities closing on or before this date (YYYY-MM-DD)."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50,
+                "default": 20,
+                "description": "Results per page."
+              },
+              "cursor": {
+                "type": "string",
+                "description": "The next_cursor value from the previous page."
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "grant, tender or subcontract."
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "description": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Full description, cut at 4,000 characters."
+                    },
+                    "funder": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Funder or contracting authority."
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "geography": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "deadline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "amount_display": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "eligibility": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "key_requirements": {
+                      "anyOf": [
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "source": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Publishing source."
+                    },
+                    "source_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The original listing at the source."
+                    },
+                    "apply_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The opportunity page on raiselens.com."
+                    },
+                    "date_added": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "When Raise Lens added the record."
+                    },
+                    "access": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "type",
+                    "title",
+                    "summary",
+                    "description",
+                    "funder",
+                    "sectors",
+                    "geography",
+                    "deadline",
+                    "amount_display",
+                    "eligibility",
+                    "key_requirements",
+                    "source",
+                    "source_url",
+                    "apply_url",
+                    "url",
+                    "date_added",
+                    "access"
+                  ]
+                }
+              },
+              "total": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Matches in total."
+              },
+              "page": {
+                "type": "integer"
+              },
+              "next_cursor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Pass back as cursor for the next page; null on the last page."
+              },
+              "note": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "results",
+              "total",
+              "page",
+              "next_cursor",
+              "note"
+            ]
+          },
+          "annotations": {
+            "title": "Search funding opportunities with full details",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "get_opportunity_full",
+          "title": "Get a funding opportunity with full details",
+          "description": "Fetch one Raise Lens grant or tender by URL or id as a full record: funder, description, eligibility, key requirements, source, apply link and the raiselens.com page. Public notices are named in full at once; other listings 14 days after Raise Lens lists them, or at once with full access.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "url_or_id": {
+                "type": "string",
+                "description": "A raiselens.com opportunity URL, or its id."
+              }
+            },
+            "required": [
+              "url_or_id"
+            ]
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "found": {
+                "type": "boolean"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "description": "grant, tender or subcontract."
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "summary": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Full description, cut at 4,000 characters."
+              },
+              "funder": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Funder or contracting authority."
+              },
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "geography": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "deadline": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "amount_display": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "eligibility": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "key_requirements": {
+                "anyOf": [
+                  {
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Publishing source."
+              },
+              "source_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The original listing at the source."
+              },
+              "apply_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The opportunity page on raiselens.com."
+              },
+              "date_added": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "When Raise Lens added the record."
+              },
+              "access": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "found"
+            ]
+          },
+          "annotations": {
+            "title": "Get a funding opportunity with full details",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "list_new_opportunities",
+          "title": "List new funding opportunities",
+          "description": "Grants and tenders added to Raise Lens since a date (up to 90 days back), newest first, as full records (funder, description, eligibility, source, apply link). Optional filters: sector slug, country, type. Paged: pass next_cursor back as cursor. New listings enter these results at once with full access; otherwise tenders and subcontracts 7 days and grants 30 days after Raise Lens lists them, or 7 days before they close if sooner. Public notices are named in full at once; other listings 14 days after Raise Lens lists them, or at once with full access.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "since": {
+                "type": "string",
+                "format": "date",
+                "description": "YYYY-MM-DD. Defaults to 7 days ago."
+              },
+              "sector": {
+                "type": "string",
+                "description": "One Raise Lens sector slug, such as renewable-energy."
+              },
+              "country": {
+                "type": "string",
+                "description": "ISO-2, English name or aggregate."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "grant",
+                  "tender",
+                  "any"
+                ],
+                "default": "any",
+                "description": "grant, tender, or any (both)."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50,
+                "default": 20,
+                "description": "Results per page."
+              },
+              "cursor": {
+                "type": "string",
+                "description": "The next_cursor value from the previous page."
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "grant, tender or subcontract."
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "description": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Full description, cut at 4,000 characters."
+                    },
+                    "funder": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Funder or contracting authority."
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "geography": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "deadline": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "amount_display": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "eligibility": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "key_requirements": {
+                      "anyOf": [
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "source": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Publishing source."
+                    },
+                    "source_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The original listing at the source."
+                    },
+                    "apply_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The opportunity page on raiselens.com."
+                    },
+                    "date_added": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "When Raise Lens added the record."
+                    },
+                    "access": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "type",
+                    "title",
+                    "summary",
+                    "description",
+                    "funder",
+                    "sectors",
+                    "geography",
+                    "deadline",
+                    "amount_display",
+                    "eligibility",
+                    "key_requirements",
+                    "source",
+                    "source_url",
+                    "apply_url",
+                    "url",
+                    "date_added",
+                    "access"
+                  ]
+                }
+              },
+              "total": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Matches in total."
+              },
+              "page": {
+                "type": "integer"
+              },
+              "next_cursor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Pass back as cursor for the next page; null on the last page."
+              },
+              "note": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "results",
+              "total",
+              "page",
+              "next_cursor",
+              "note"
+            ]
+          },
+          "annotations": {
+            "title": "List new funding opportunities",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "list_recent_raises",
+          "title": "List recent funding rounds",
+          "description": "Climate and sustainability companies that closed a funding round in the last N days (up to 90), newest first. Each raise has company, amount, currency, amount_usd, round, round_date, detected_date, sectors, countries, investors, source_url (the primary source; null when only a feed is known) and raiselens_url. Also returns totals by sector, country and round. By default only checked company rounds: no funder pages or fund news, no off-sector rows, a source article that names the company, and a round date within 60 days. Each raise also carries hiring (open roles, roles in business development and partnerships, and the careers page) when the company has open roles on file. Optional filters: Raise Lens sector slug, country (ISO-2 or aggregate such as EU, AFRICA, GLOBAL), hiring_only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "days": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 90,
+                "default": 7,
+                "description": "Look-back window in days."
+              },
+              "sector": {
+                "type": "string",
+                "description": "One Raise Lens sector slug, such as renewable-energy."
+              },
+              "country": {
+                "type": "string",
+                "description": "ISO-2 code or aggregate (EU, AFRICA, ASIA, LATAM, GLOBAL)."
+              },
+              "deals_only": {
+                "type": "boolean",
+                "default": true,
+                "description": "false also returns funder-page context the classifier filed as investment (programmes, portfolio pages)."
+              },
+              "checked_only": {
+                "type": "boolean",
+                "default": true,
+                "description": "false also returns deals that fail the checks (no article URL naming the company, off-sector, fund news, round older than 60 days)."
+              },
+              "date_basis": {
+                "type": "string",
+                "enum": [
+                  "announced",
+                  "detected"
+                ],
+                "default": "announced",
+                "description": "announced: round date when the source gives one; detected: when Raise Lens picked it up."
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 50,
+                "description": "Number of raises to return."
+              },
+              "hiring_only": {
+                "type": "boolean",
+                "default": false,
+                "description": "true returns only companies that raised and are now hiring (open roles on file)."
+              }
+            },
+            "required": []
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "raises": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "company": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "amount": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Amount in the stated currency."
+                    },
+                    "currency": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "ISO currency code."
+                    },
+                    "amount_usd": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "round": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "round_date": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "detected_date": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "countries": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "investors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "source_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The primary source; null when only a feed is known."
+                    },
+                    "raiselens_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "kind": {
+                      "type": "string",
+                      "description": "deal, or context for funder-page items."
+                    },
+                    "hiring": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "open_roles": {
+                              "type": "integer"
+                            },
+                            "bd_roles": {
+                              "type": "integer",
+                              "description": "Open roles in business development, partnerships or fundraising."
+                            },
+                            "careers_url": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "description": "The employer's own careers page or job board."
+                            }
+                          },
+                          "required": [
+                            "open_roles",
+                            "bd_roles",
+                            "careers_url"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Raised and now hiring: open roles read from the company's own job board; null when none are on file."
+                    }
+                  },
+                  "required": [
+                    "company",
+                    "amount",
+                    "currency",
+                    "amount_usd",
+                    "round",
+                    "round_date",
+                    "detected_date",
+                    "sectors",
+                    "countries",
+                    "investors",
+                    "source_url",
+                    "raiselens_url",
+                    "title",
+                    "summary",
+                    "kind",
+                    "hiring"
+                  ]
+                }
+              },
+              "summary": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "disclosed_usd_count": {
+                    "type": "integer"
+                  },
+                  "disclosed_usd_total": {
+                    "type": "number"
+                  },
+                  "by_sector": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
+                  },
+                  "by_country": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
+                  },
+                  "by_round": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
+                  },
+                  "now_hiring": {
+                    "type": "integer",
+                    "description": "Raises whose company has open roles on file."
+                  }
+                },
+                "required": [
+                  "count",
+                  "disclosed_usd_count",
+                  "disclosed_usd_total",
+                  "by_sector",
+                  "by_country",
+                  "by_round"
+                ]
+              },
+              "query": {
+                "type": "object",
+                "properties": {
+                  "days": {
+                    "type": "integer"
+                  },
+                  "since": {
+                    "type": "string"
+                  },
+                  "sector": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "country": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "deals_only": {
+                    "type": "boolean"
+                  },
+                  "checked_only": {
+                    "type": "boolean"
+                  },
+                  "date_basis": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "hiring_only": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "excluded_unchecked": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer"
+                }
+              },
+              "scanned": {
+                "type": "integer"
+              },
+              "excluded_older_rounds": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "raises",
+              "summary",
+              "query",
+              "excluded_unchecked",
+              "scanned",
+              "excluded_older_rounds"
+            ]
+          },
+          "annotations": {
+            "title": "List recent funding rounds",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "get_funder_full",
+          "title": "Get a funder with full details",
+          "description": "Fetch one Raise Lens funder by slug or raiselens.com/funders URL with full details: website and apply links, AUM or fund size, typical grant size, submission window, programmes and recent grants or investments, plus its name, type, sectors, geographic focus and cheque size. Never includes personal contact details.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "url_or_slug": {
+                "type": "string",
+                "description": "A Raise Lens funder slug, or its raiselens.com/funders URL."
+              }
+            },
+            "required": [
+              "url_or_slug"
+            ]
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "found": {
+                "type": "boolean"
+              },
+              "slug": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Funder id (slug) on Raise Lens."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "category": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Funder type slug (foundation, climate-vc, dfi-sovereign...)."
+              },
+              "category_label": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "hq_country": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Headquarters country, ISO-2."
+              },
+              "hq_location": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "funding_types": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "stages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "geographic_focus": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Countries and regions the funder states it covers."
+              },
+              "cheque_size": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Usual and largest ticket, in words (USD)."
+              },
+              "open_to_applications": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "yes, no or unknown, as the funder states it."
+              },
+              "next_deadline": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "application_note": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "How to approach or apply, as the funder describes it."
+              },
+              "open_opportunity_count": {
+                "type": "integer",
+                "description": "Open grants and calls from this funder listed on Raise Lens."
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The funder page on raiselens.com."
+              },
+              "access": {
+                "type": "string",
+                "description": "Level of detail in this record: summary or full."
+              },
+              "website": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "application_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "linkedin_url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The organisation page."
+              },
+              "aum_fund_size": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "typical_grant_size_min_usd": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "typical_grant_size_max_usd": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "submission_window": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "programmes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "geography": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "window": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "typical_size_usd_min": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "typical_size_usd_max": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                }
+              },
+              "recent_grants": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "year": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "grantee": {
+                      "type": "string"
+                    },
+                    "purpose": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "amount_usd": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "grantee"
+                  ]
+                },
+                "description": "Recent grants or investments to organisations."
+              }
+            },
+            "required": [
+              "found"
+            ]
+          },
+          "annotations": {
+            "title": "Get a funder with full details",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "openid"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

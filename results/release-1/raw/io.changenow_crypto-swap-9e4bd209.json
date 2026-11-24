@@ -1,0 +1,1030 @@
+{
+  "registry_name": "io.changenow/crypto-swap",
+  "url": "https://mcp.changenow.io/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:09:20Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "serverInfo": {
+      "name": "chn-mcp-server",
+      "title": "ChangeNOW crypto exchange",
+      "version": "2.1.2",
+      "websiteUrl": "https://changenow.io"
+    },
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      },
+      "resources": {},
+      "prompts": {}
+    },
+    "instructions": "ChangeNOW is a non-custodial crypto exchange: the user sends one asset to a deposit address and receives another asset at an address they control. No account, no API key and no KYC for standard swaps. Nothing here takes custody of user funds and no tool moves money on its own.\n\nAssets are identified by a canonical id \"ticker.network\", for example btc.btc, usdt.trx, usdc.sol. The same ticker exists on several networks, and sending to the wrong network loses the funds, so always resolve what the user named with list_assets before quoting anything.\n\nNormal flow:\n  1. list_assets       resolve the user's words into canonical ids\n  2. quote_swap        rate, amount out, pair minimum, and whether the rate can be fixed\n  3. validate_address  check the recipient address, and the memo when the asset needs one\n  4. swap_link         hand the user a page to review and confirm themselves (default, safest)\n     create_swap       only when the user has explicitly approved this amount and this address\n\nAmounts are decimal strings. Minimums and maximums belong to the pair, not to the asset, so they come from quote_swap. A float rate is final when the deposit arrives. A fixed rate requires passing the rate_id from quote_swap into create_swap, and whether a pair can hold one is decided by the quote, not by any flag in the catalogue.\n\nTwo different deadlines carry the name valid_until, and they are not the same thing. The one in a quote is the life of its rate_id: about two minutes. The one in a created order is how long the user has to send the deposit at the locked rate: ten to twenty minutes, set by whoever executes the order. Read the field, never assume a number, and if the user needed time to think, call quote_swap again before create_swap instead of reusing an old rate_id.\n\nAfter create_swap the user must send exactly amount_from to payin_address before valid_until. Track the order with check_swap_status. Some orders are executed by a partner aggregator instead of ChangeNOW; the provider field of quote_swap and create_swap says which, and it must be relayed to the user rather than hidden.\n\nNever invent a deposit address, never edit one, and never tell the user to send funds anywhere other than the payin_address this server returned."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "list_assets",
+          "title": "List exchangeable assets",
+          "description": "Find the assets ChangeNOW can exchange and turn what the user said into a canonical asset id. Search by ticker, name or network, filter by network, by fiat or crypto, and by whether a fixed rate is possible. Always call this before quoting: the same ticker exists on several networks and only the canonical id \"ticker.network\" identifies one of them. When has_more is false the response is the complete answer and no paging is needed.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "description": "Substring search over canonical id, legacy ticker, name and network. Case insensitive. Example: \"usdt\", \"bitcoin\", \"tron\".",
+                "type": "string"
+              },
+              "network": {
+                "description": "Keep only assets on this network, for example \"eth\", \"trx\", \"sol\".",
+                "type": "string"
+              },
+              "kind": {
+                "default": "crypto",
+                "description": "crypto for swappable coins and tokens, fiat for currencies that can only start a purchase, all for both.",
+                "type": "string",
+                "enum": [
+                  "crypto",
+                  "fiat",
+                  "all"
+                ]
+              },
+              "fixed_rate": {
+                "default": false,
+                "description": "Keep only assets the catalogue flags as fixed rate capable. The flag is a hint: a pair flagged false can still get a fixed rate, so confirm with quote_swap rather than filtering a user out.",
+                "type": "boolean"
+              },
+              "popular": {
+                "default": false,
+                "description": "Return the short curated list. Use this to answer \"what can I swap\" without paging.",
+                "type": "boolean"
+              },
+              "limit": {
+                "default": 50,
+                "description": "How many assets to return. Default 50, maximum 500.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 500
+              },
+              "cursor": {
+                "description": "Cursor from next_cursor of the previous page. Only needed when has_more is true.",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "assets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "asset": {
+                      "type": "string"
+                    },
+                    "ticker": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "network": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "fixed_rate": {
+                      "type": "boolean"
+                    },
+                    "memo": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "asset",
+                    "ticker",
+                    "name",
+                    "network",
+                    "kind",
+                    "fixed_rate",
+                    "memo"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "returned": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              },
+              "has_more": {
+                "type": "boolean"
+              },
+              "next_cursor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "catalogue_version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "assets",
+              "returned",
+              "total",
+              "has_more",
+              "next_cursor",
+              "catalogue_version"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "get_asset",
+          "title": "Asset details",
+          "description": "Everything needed to build a swap for one asset: the canonical id, the legacy ticker used in website links, decimals, whether a memo is required and what the receiving side calls it, the address format, the token contract and the warnings to relay to the user. Minimum and maximum amounts are not here because they belong to the pair, not to the asset: get them from quote_swap.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string",
+                "description": "Canonical id \"usdt.trx\". A legacy ticker \"usdttrc20\" or a page slug \"tether-trc20\" is also accepted."
+              }
+            },
+            "required": [
+              "asset"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string"
+              },
+              "ticker": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "network": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "fixed_rate": {
+                "type": "boolean"
+              },
+              "memo": {
+                "type": "boolean"
+              },
+              "slug": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "decimals": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "memo_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "address_regex": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "memo_regex": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "token_contract": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "warning_send": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "warning_receive": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "explorer_address_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "explorer_tx_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "price_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "asset",
+              "ticker",
+              "name",
+              "network",
+              "kind",
+              "fixed_rate",
+              "memo",
+              "slug",
+              "decimals",
+              "memo_name",
+              "address_regex",
+              "memo_regex",
+              "token_contract",
+              "warning_send",
+              "warning_receive",
+              "explorer_address_url",
+              "explorer_tx_url",
+              "price_usd"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "quote_swap",
+          "title": "Quote a swap",
+          "description": "Ask what a swap would give, in either direction: pass amount_from to learn what the user receives, or amount_to to learn what the user must send. Returns the rate, the pair minimum and maximum, who would execute the order, and the warnings to relay. With rate_type \"fixed\" it also returns the rate_id that create_swap needs; that lock lasts about two minutes, so quote again right before creating the order. A fixed rate is not offered on every pair and the tool says so rather than quietly falling back to a float rate. Nothing is created and no funds move.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "description": "Asset the user sends, canonical id, for example \"btc.btc\"."
+              },
+              "to": {
+                "type": "string",
+                "description": "Asset the user receives, canonical id, for example \"usdt.trx\"."
+              },
+              "amount_from": {
+                "description": "Amount the user sends, as a decimal string. Pass this or amount_to, never both.",
+                "type": "string"
+              },
+              "amount_to": {
+                "description": "Amount the user wants to receive, as a decimal string. The answer then says how much to send.",
+                "type": "string"
+              },
+              "rate_type": {
+                "default": "float",
+                "description": "float: the rate is settled when the deposit arrives. fixed: the rate is held until valid_until, about two minutes, and returns the rate_id create_swap needs, usually at a slightly worse rate. Ask for fixed whenever the user wants a guaranteed number; if this pair cannot hold one the answer says so instead of quietly returning a float rate.",
+                "type": "string",
+                "enum": [
+                  "float",
+                  "fixed"
+                ]
+              },
+              "promo_code": {
+                "description": "Promo code to apply, if the user has one.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "from_name": {
+                "type": "string"
+              },
+              "to_name": {
+                "type": "string"
+              },
+              "amount_from": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "amount_to": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rate": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rate_type": {
+                "type": "string",
+                "enum": [
+                  "float",
+                  "fixed"
+                ]
+              },
+              "rate_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "valid_until": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "min_amount": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "max_amount": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "limits_in": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "changenow",
+                  "third-party",
+                  "unknown"
+                ]
+              },
+              "high_network_fee": {
+                "type": "boolean"
+              },
+              "speed_forecast_minutes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "quote_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "from",
+              "to",
+              "from_name",
+              "to_name",
+              "amount_from",
+              "amount_to",
+              "rate",
+              "rate_type",
+              "rate_id",
+              "valid_until",
+              "min_amount",
+              "max_amount",
+              "limits_in",
+              "provider",
+              "high_network_fee",
+              "speed_forecast_minutes",
+              "quote_id",
+              "warnings"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "validate_address",
+          "title": "Validate a recipient address",
+          "description": "Check a recipient address, and its memo when the asset needs one, against the format the network requires, before any order exists. Call this on every address the user gives. A valid-looking address on the wrong network is the one mistake in a swap that destroys the funds with no way back, so when the address belongs to another network the answer names that network instead of just refusing. A few assets carry no address format in the catalogue; for those the answer says the address could not be checked rather than calling it valid.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string",
+                "description": "Asset that will be received at this address, canonical id."
+              },
+              "address": {
+                "type": "string",
+                "description": "Recipient address to check."
+              },
+              "memo": {
+                "description": "Memo or destination tag, when the asset needs one.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "asset",
+              "address"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string"
+              },
+              "network": {
+                "type": "string"
+              },
+              "valid": {
+                "type": "boolean"
+              },
+              "format_checked": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "memo_required": {
+                "type": "boolean"
+              },
+              "memo_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "memo_valid": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "network_hint": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "warning": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "asset",
+              "network",
+              "valid",
+              "format_checked",
+              "reason",
+              "memo_required",
+              "memo_name",
+              "memo_valid",
+              "network_hint",
+              "warning"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "swap_link",
+          "title": "Build a confirmation link",
+          "description": "Build a changenow.io link with the pair, the amount, the recipient address and the memo already filled in, so the user checks the numbers on the real page and presses Confirm themselves. Opening the link creates nothing. This is the recommended way to finish a swap: the user sees the rate and the address with their own eyes, which no amount of care in a chat transcript can replace. Use create_swap instead only when the user has explicitly approved this exact amount and address.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "description": "Asset the user sends, canonical id."
+              },
+              "to": {
+                "type": "string",
+                "description": "Asset the user receives, canonical id."
+              },
+              "amount_from": {
+                "description": "Amount to prefill as the amount sent.",
+                "type": "string"
+              },
+              "amount_to": {
+                "description": "Amount to prefill as the amount received. Implies a fixed rate on the page.",
+                "type": "string"
+              },
+              "address": {
+                "description": "Recipient address to prefill. The user can still change it on the page.",
+                "type": "string"
+              },
+              "memo": {
+                "description": "Memo or destination tag to prefill.",
+                "type": "string"
+              },
+              "refund_address": {
+                "description": "Refund address to prefill.",
+                "type": "string"
+              },
+              "rate_type": {
+                "default": "float",
+                "description": "Which rate the page opens with.",
+                "type": "string",
+                "enum": [
+                  "float",
+                  "fixed"
+                ]
+              },
+              "locale": {
+                "description": "Two letter locale for the page, for example \"es\". English needs no locale.",
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "prefilled": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "creates_order": {
+                "type": "boolean",
+                "const": false
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "url",
+              "prefilled",
+              "creates_order",
+              "notes"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        {
+          "name": "create_swap",
+          "title": "Create a swap order",
+          "description": "Create a real swap order and return the deposit address the user has to send funds to. This call moves no money by itself, but the order is real: it exists in support, it can expire, and a fixed rate is locked against it. Quote the swap first, validate the recipient address, and confirm the amount and the address with the user before calling this. If the user has not explicitly approved both, use swap_link instead and let them confirm on the page. The answer names who executes the order, and that has to be relayed: some orders are routed to a partner aggregator rather than ChangeNOW.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "description": "Asset the user sends, canonical id, for example \"eth.eth\"."
+              },
+              "to": {
+                "type": "string",
+                "description": "Asset the user receives, canonical id, for example \"usdt.trx\"."
+              },
+              "address": {
+                "type": "string",
+                "description": "Address that receives the swapped asset. Check it with validate_address first; a wrong network here loses the funds."
+              },
+              "amount_from": {
+                "description": "Amount the user sends. Pass this or amount_to, never both.",
+                "type": "string"
+              },
+              "amount_to": {
+                "description": "Amount the user wants to receive. Requires rate_id from quote_swap.",
+                "type": "string"
+              },
+              "memo": {
+                "description": "Memo or destination tag for the recipient address, when the asset needs one.",
+                "type": "string"
+              },
+              "refund_address": {
+                "description": "Where the deposit returns if the swap cannot complete. Strongly recommended: without it a failed swap needs support.",
+                "type": "string"
+              },
+              "refund_memo": {
+                "description": "Memo for the refund address.",
+                "type": "string"
+              },
+              "rate_id": {
+                "description": "The rate_id from quote_swap with rate_type \"fixed\". Required for a fixed rate order. It holds for about two minutes, so quote again right before this call if the user needed time to decide.",
+                "type": "string"
+              },
+              "contact_email": {
+                "description": "Optional email for status notifications about this order.",
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "promo_code": {
+                "description": "Promo code to apply, if the user has one.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "from",
+              "to",
+              "address"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "changenow",
+                  "third-party",
+                  "unknown"
+                ]
+              },
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "amount_from": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "amount_to": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rate_type": {
+                "type": "string",
+                "enum": [
+                  "float",
+                  "fixed"
+                ]
+              },
+              "payin_address": {
+                "type": "string"
+              },
+              "payin_extra_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payout_address": {
+                "type": "string"
+              },
+              "payout_extra_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "refund_address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "refund_memo": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "valid_until": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "created_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "track_url": {
+                "type": "string"
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "status",
+              "provider",
+              "from",
+              "to",
+              "amount_from",
+              "amount_to",
+              "rate_type",
+              "payin_address",
+              "payin_extra_id",
+              "payout_address",
+              "payout_extra_id",
+              "refund_address",
+              "refund_memo",
+              "valid_until",
+              "created_at",
+              "track_url",
+              "warnings"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "check_swap_status",
+          "title": "Check a swap order",
+          "description": "Follow an existing order by id: where it stands, what the deposit and payout amounts turned out to be, the transaction hashes, and a plain-language explanation of what the current stage means and what happens next. Use it after create_swap, and again whenever the user asks where their swap is.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Order id returned by create_swap."
+              },
+              "sub_id": {
+                "description": "Sub order id, for an order the provider split in two.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "outputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "stage_explanation": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "changenow",
+                  "third-party",
+                  "unknown"
+                ]
+              },
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "expected_amount_from": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "expected_amount_to": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "amount_from": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "amount_to": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payin_address": {
+                "type": "string"
+              },
+              "payin_extra_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payout_address": {
+                "type": "string"
+              },
+              "payout_extra_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "refund_address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "refund_memo": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payin_hash": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payout_hash": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "refund_hash": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "refund_amount": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "deposit_received_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "valid_until": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "created_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "updated_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "track_url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "status",
+              "stage_explanation",
+              "provider",
+              "from",
+              "to",
+              "expected_amount_from",
+              "expected_amount_to",
+              "amount_from",
+              "amount_to",
+              "payin_address",
+              "payin_extra_id",
+              "payout_address",
+              "payout_extra_id",
+              "refund_address",
+              "refund_memo",
+              "payin_hash",
+              "payout_hash",
+              "refund_hash",
+              "refund_amount",
+              "deposit_received_at",
+              "valid_until",
+              "created_at",
+              "updated_at",
+              "track_url"
+            ],
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          }
+        }
+      ]
+    }
+  ]
+}

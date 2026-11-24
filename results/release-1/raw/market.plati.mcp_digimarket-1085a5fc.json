@@ -1,0 +1,142 @@
+{
+  "registry_name": "market.plati.mcp/digimarket",
+  "url": "https://mcp.plati.market/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:01:46Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "digimarket-mcp",
+      "version": "1.0.0"
+    }
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "get_products_from_plati_market",
+          "title": "Search products on plati.market",
+          "description": "Search the plati.market (Digiseller) catalogue and return matching products with their description, prices and the seller offering them. Wraps the 'Items search' API (show=xml&f=7).",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 3,
+                "description": "Search phrase, at least 3 characters."
+              },
+              "pagesize": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "description": "Results per page (default 10, max 100)."
+              },
+              "pagenum": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Page number (default 1)."
+              },
+              "lang": {
+                "type": "string",
+                "enum": [
+                  "en-US",
+                  "ru-RU"
+                ],
+                "description": "Response language (default en-US)."
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "get_product_from_plati_market",
+          "title": "Get a product and its seller from plati.market",
+          "description": "Fetch the full description of a single plati.market product plus the seller (id and name) that offers it, by product id. JSON output is requested via response_format=json.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "exclusiveMinimum": 0
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                ],
+                "description": "Numeric product id, e.g. 3099674."
+              },
+              "lang": {
+                "type": "string",
+                "enum": [
+                  "en-US",
+                  "ru-RU"
+                ],
+                "description": "Response language (default en-US)."
+              },
+              "currency": {
+                "type": "string",
+                "enum": [
+                  "USD",
+                  "RUR",
+                  "EUR",
+                  "UAH"
+                ],
+                "description": "Currency for the price."
+              }
+            },
+            "required": [
+              "product_id"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          },
+          "_meta": {
+            "securitySchemes": [
+              {
+                "type": "noauth"
+              },
+              {
+                "type": "oauth2",
+                "scopes": [
+                  "mcp"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

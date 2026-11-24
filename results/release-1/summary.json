@@ -1,0 +1,49 @@
+{
+  "registry_snapshot_utc": "2026-11-23T16:44:52Z",
+  "protocol_version_asked": "2025-06-18",
+  "tranco_file": "tranco.zip",
+  "tranco_sha256": "7591e81e3d9150b7cb72b53c9aa92d887f43c835dbbaeb8bc693d94eff172cbf",
+  "top": 100,
+  "public_suffix_list": "publicsuffixlist 1.1.2.20261122",
+  "lowest_tranco_rank_reached": 86956,
+  "remote_servers_considered": 445,
+  "excluded": 345,
+  "excluded_by_reason": {
+    "needs sign-in": 238,
+    "URL needs account-specific values or a sign-in header": 89,
+    "answers with an error (HTTP 403)": 7,
+    "answers with an error (HTTP 404)": 3,
+    "does not answer within 30 seconds after one retry": 2,
+    "answers with an error (HTTP 429)": 2,
+    "answers with an error (HTTP 405)": 1,
+    "answers with an error (HTTP 400)": 1,
+    "two different tool lists in two readings": 1,
+    "answers with an error (HTTP 522)": 1
+  },
+  "excluded_conflict_of_interest": 1,
+  "servers": 100,
+  "tools": 1345,
+  "m3_tokens": {
+    "median": 3622.5,
+    "lowest": 155,
+    "highest": 64713
+  },
+  "m4_share": {
+    "median": 1.0,
+    "lowest": 0.0,
+    "highest": 1.0
+  },
+  "m5_tools_share": {
+    "median": 0.0,
+    "lowest": 0.0,
+    "highest": 0.0
+  },
+  "m5_params_share": {
+    "median": 0.0,
+    "lowest": 0.0,
+    "highest": 1.0
+  },
+  "m4_share_all_tools": 0.9651,
+  "m5_tools_share_all_tools": 0.0,
+  "m5_params_share_all_params": 0.172
+}

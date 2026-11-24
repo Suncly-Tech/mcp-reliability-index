@@ -1,0 +1,139 @@
+{
+  "registry_name": "network.moonbeam.next/paid-calls",
+  "url": "https://next.moonbeam.network/api/acp/x402/mcp",
+  "transport": "streamable-http",
+  "read_at_utc": "2026-11-23T17:11:40Z",
+  "protocol_version_asked": "2025-06-18",
+  "initialize_result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {}
+    },
+    "serverInfo": {
+      "name": "moonbeam-agent-listings",
+      "title": "Moonbeam agent listings",
+      "version": "1.1.0"
+    },
+    "instructions": "Moonbeam lists agents on ERC-8004, the MCP Registry and A2A; listing runs on a plan (https://next.moonbeam.network/acp/plans). moonbeam_where_listed is free: it reads where an agent is listed. Each other tool answers one call, priced in USDC and paid with x402: call it once to read its terms, then again with the signed payment in params._meta[\"x402/payment\"]."
+  },
+  "tools_list_results": [
+    {
+      "tools": [
+        {
+          "name": "moonbeam_where_listed",
+          "title": "Where an agent is listed",
+          "description": "Where an ERC-8004 agent on Base stands on the markets Moonbeam lists agents on: ERC-8004, the MCP Registry and the A2A Registry, each listed, queued, held or not asked. Free. Listing it there runs on a Moonbeam plan.",
+          "inputSchema": {
+            "type": "object",
+            "required": [
+              "ref"
+            ],
+            "properties": {
+              "ref": {
+                "type": "string",
+                "pattern": "^8453:[0-9]{1,12}$",
+                "description": "the agent as 8453:<ERC-8004 id>"
+              }
+            },
+            "additionalProperties": false
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": true
+          }
+        },
+        {
+          "name": "market_price",
+          "title": "Market price",
+          "description": "One market.price answer, bought through Moonbeam and paid with x402 on Base. One call is 0.001714 USDC, paid with x402 on Base.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "enum": [
+                  "BTC",
+                  "ETH",
+                  "SOL",
+                  "NQ",
+                  "ES",
+                  "YM"
+                ],
+                "description": "the symbol to price: one the venue tape holds"
+              }
+            },
+            "required": [
+              "symbol"
+            ],
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": true
+          },
+          "_meta": {
+            "x402/price": {
+              "amount": "1714",
+              "asset": "USDC",
+              "decimals": 6,
+              "scheme": "exact",
+              "network": "eip155:8453",
+              "usdc": "0.001714"
+            }
+          }
+        },
+        {
+          "name": "data_onchain_query",
+          "title": "Data onchain query",
+          "description": "One data.onchain_query answer, bought through Moonbeam and paid with x402 on Base. One call is 0.013714 USDC, paid with x402 on Base.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string",
+                "enum": [
+                  "pool_tokens",
+                  "block_hash"
+                ]
+              },
+              "chainId": {
+                "type": "integer",
+                "enum": [
+                  8453
+                ]
+              },
+              "pool": {
+                "type": "string",
+                "description": "pool_tokens: a Uniswap V3 pool address"
+              },
+              "block": {
+                "type": "integer",
+                "description": "block_hash: a block number"
+              }
+            },
+            "required": [
+              "question",
+              "chainId"
+            ]
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": true
+          },
+          "_meta": {
+            "x402/price": {
+              "amount": "13714",
+              "asset": "USDC",
+              "decimals": 6,
+              "scheme": "exact",
+              "network": "eip155:8453",
+              "usdc": "0.013714"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
