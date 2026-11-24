@@ -2,6 +2,8 @@
 
 An independent, pre-registered check of whether the tools of popular remote MCP servers do what their own descriptions say. Run by [Suncly](https://suncly.com).
 
+**Run an MCP server?** See where yours stands, or have Suncly check whether its tools do what they claim: [suncly.com](https://suncly.com)
+
 ## How it works
 - **[METHOD.md](METHOD.md)**: the full method, published on 23 November 2026, before any data was collected. Any change after 23 November 2026 is recorded in its changelog with the date and the reason.
 - **Release 1 (November 2026):** a ranking of public remote MCP servers from the official MCP Registry on what their tool lists declare: context cost, safety labels and undocumented inputs. No tools are called.
